@@ -1,0 +1,62 @@
+% Portada de los documentos (capítulos)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[./00-Trabajo_Final.tex]{subfiles}
+
+\begin{document}
+\unchapter{\NombreDocumento}
+\thispagestyle{empty}
+\newpage
+\thispagestyle{empty}
+
+\hspace{2.25cm}
+\begin{tabular}{ll}
+    \large
+    \textbf{Título} & \TituloUno    \\
+                    & \TituloDos    \\
+                    %& \TituloTres   \\
+\\
+\\
+\end{tabular}
+
+\begin{center}
+\vspace{0.5cm}
+\noindent\makebox[\linewidth]{\rule{\textwidth}{1pt}}
+
+\vspace{0.2cm}
+\Huge{\textbf{\NombreDocumento}}
+
+\vspace{-0.4cm}
+\noindent\makebox[\linewidth]{\rule{\textwidth}{1pt}}
+
+\vspace{3cm}
+
+\large
+\begin{tabular}{rl}
+    \textbf{Peticionario}   & \parbox{0.6\linewidth}{\Escuela}  \\
+                            & \parbox{0.6\linewidth}{\Direccion}    \\
+\\
+\\
+\\
+\\
+    \textbf{Fecha}          & \Fecha    \\
+\\
+\\
+\\
+\\
+    \textbf{\AutorSex}          & \Autor \\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+    \textbf{Fdo.}           & \Autor
+\end{tabular}
+\end{center}
+
+\normalsize
+
+\newpage
+
+\end{document}

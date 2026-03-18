@@ -1,0 +1,39 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.7.22)  13 OCT 2024 19:40
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**./Portada_documento.tex
+(Portada_documento.tex
+LaTeX2e <2024-06-01> patch level 2
+L3 programming layer <2024-05-27>
+
+(C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/latex/subfiles\subfiles.cls
+Document Class: subfiles 2020/11/14 v2.2 Multi-file projects (class)
+Preamble taken from file `./00-Trabajo_Final.tex'
+(C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/latex/import\import.sty
+Package: import 2020/04/01  v 6.2
+)
+
+! LaTeX Error: File `./00-Trabajo_Final.tex' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: tex)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.45 \input{\preamble@file}
+                           ^^M
+*** (cannot \read from terminal in nonstop modes)
+
+ 
+Here is how much of TeX's memory you used:
+ 76 strings out of 473865
+ 1992 string characters out of 5723902
+ 1925908 words of memory out of 5000000
+ 23052 multiletter control sequences out of 15000+600000
+ 558069 words of font info for 36 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 42i,0n,55p,157b,18s stack positions out of 10000i,1000n,20000p,200000b,200000s
+!  ==> Fatal error occurred, no output PDF file produced!
