@@ -1,11 +1,4 @@
 \@ifundefined {etoctocstyle}{\let \etoc@startlocaltoc \@gobble \let \etoc@settocdepth \@gobble \let \etoc@depthtag \@gobble \let \etoc@setlocaltop \@gobble }{}
 \babel@toc {spanish}{}\relax 
 \contentsline {section}{\numberline {1}Introducción}{2}{section.0.1}%
-\contentsline {subsection}{\numberline {1.1}Características técnicas inversor}{2}{subsection.0.1.1}%
-\contentsline {subsection}{\numberline {1.2}Características técnicas de los paneles solares}{3}{subsection.0.1.2}%
-\contentsline {section}{\numberline {2}Esquema eléctrico de la instalación}{4}{section.0.2}%
-\contentsline {section}{\numberline {3}Instalación de generación fotovoltaica}{4}{section.0.3}%
-\contentsline {subsection}{\numberline {3.1}Instalación de CC}{4}{subsection.0.3.1}%
-\contentsline {subsubsection}{\numberline {3.1.1}Dimensionamiento del cable}{6}{subsubsection.0.3.1.1}%
-\contentsline {subsection}{\numberline {3.2}Instalación de CA}{7}{subsection.0.3.2}%
-\contentsline {section}{\numberline {4}Dimensionamiento de la Derivación Individual}{8}{section.0.4}%
+\contentsline {section}{\numberline {2}Descripción del conjunto de datos}{2}{section.0.2}%
