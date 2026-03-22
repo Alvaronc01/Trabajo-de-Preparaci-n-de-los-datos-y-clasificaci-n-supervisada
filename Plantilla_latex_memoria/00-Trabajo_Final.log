@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.4.28)  22 MAR 2026 14:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.4.28)  22 MAR 2026 17:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1044,7 +1044,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 219--221
+Underfull \hbox (badness 10000) in paragraph at lines 225--227
 
  []
 
@@ -1053,9 +1053,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 219--221
 File: lstlang1.sty 2024/09/23 1.10c listings language file
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 239.
+nput line 245.
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-39.
+45.
  (C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1069,7 +1069,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [4]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 245.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 251.
 
 
 
@@ -1135,7 +1135,7 @@ ic/lm/lmsy10.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/pu
 blic/lm/lmtk10.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/
 public/lm/lmtt10.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type
 1/public/lm/lmtti10.pfb>
-Output written on 00-Trabajo_Final.pdf (9 pages, 476804 bytes).
+Output written on 00-Trabajo_Final.pdf (9 pages, 476740 bytes).
 PDF statistics:
  256 PDF objects out of 1000 (max. 8388607)
  108 named destinations out of 1000 (max. 500000)
