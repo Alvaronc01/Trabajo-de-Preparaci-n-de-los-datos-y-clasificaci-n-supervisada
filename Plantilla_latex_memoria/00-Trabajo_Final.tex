@@ -44,7 +44,7 @@
 %\newcommand{\Numero}{2324\_GEM\_30}
 % Tipo de Trabajo Final (comentar el que no sea correcto)
 \newcommand{\TipoTrabajo}{Introducción al Aprendizaje Automático}
-\newcommand{\TipoAbreviado}{IRVE}
+\newcommand{\TipoAbreviado}{IAA: P1}
 %\newcommand{\TipoTrabajo}{Trabajo Fin de Máster}
 %\newcommand{\TipoAbreviado}{TFM}
 % Tutor/es (en caso de no haber co-tutor, se deberá de comentar la línea correspondiente)
@@ -117,10 +117,103 @@
 	Para poder realizar este análisis, se implementará un programa en Python utilizando la librería \textit{scikit-learn} para aplicar las técnicas de preprocesado de los datos y de aprendizaje automático. Además, se emplearán otras librerías como \textit{Pandas} o \textit{Numpy}, necesarias para la correcta lectura y manejo de los datos.
 	
 	\section{Descripción del conjunto de datos}
-	La elección del conjunto de datos con el que se vaya a trabajar representa el primer paso de este proyecto. Como el objetivo es emplear conjuntos de datos reales, se han consultado distintas opciones en plataformas web como Kaggle o UCI y finalmente se ha escogido una base de datos que permite clasificar las setas en dos tipos: comestibles o venenosas.
+	La elección del conjunto de datos con el que se vaya a trabajar representa el primer paso de este proyecto. Como el objetivo es emplear conjuntos de datos reales, se han consultado distintas opciones en plataformas web como Kaggle o UCI y finalmente se ha escogido una base de datos que permite clasificar las setas pertenecientes a la familia \textit{Agaricus y Lepiota} como o venenosas o comestibles. \cite{Dataset}
 	
-	%(Te dejo esta parte para que la termines tu)
-
+	El conjunto de datos elegido tiene un total de 8124 muestras para cada una de las cuales se identifican un total de 22 características que permiten clasificar cada seta como venenosa o comestible. A continuación se exponen cada una de las 22 variables que se consideran:
+	\begin{enumerate}
+		\item Forma del sombrero
+		
+		b $\rightarrow$ Campana | c $\rightarrow$ Cónica | x $\rightarrow$ Convexa | f $\rightarrow$ Plana | k $\rightarrow$ Con mamelón (protuberancia) | s $\rightarrow$ Deprimido
+		
+		\item Superficie del sombrero
+		
+		f $\rightarrow$ Fibroso | g $\rightarrow$ Con surcos | y $\rightarrow$ Escamoso | s $\rightarrow$ Liso
+		
+		\item Color del sombrero
+		
+		n $\rightarrow$ Marrón | b $\rightarrow$ Ante/Crema | c $\rightarrow$ Canela | g $\rightarrow$ Gris | r $\rightarrow$ Verde | p $\rightarrow$ Rosa |
+	
+		u $\rightarrow$ Morado | e $\rightarrow$ Rojo | w $\rightarrow$ Blanco | y $\rightarrow$ Amarillo
+		
+		\item Hematomas o manchas
+		
+		t $\rightarrow$ Sí | f $\rightarrow$ No
+		
+		\item Olor
+		
+		a $\rightarrow$ Almendra | l $\rightarrow$ Anís | c $\rightarrow$ Creosota | y $\rightarrow$ Pescado | f $\rightarrow$ Fétido | m $\rightarrow$ Moho | n $\rightarrow$ Inoloro | p $\rightarrow$ Picante | s $\rightarrow$ Especiado
+		
+		\item Inserción de las láminas
+		
+		a $\rightarrow$ Unidas | d $\rightarrow$ Decurrentes | f $\rightarrow$ Libres | n $\rightarrow$ Escotadas
+		
+		\item Espaciado de las láminas
+		
+		c $\rightarrow$ Cerradas | w $\rightarrow$ Apiñadas | d $\rightarrow$ Distantes
+		
+		\item Tamaño de las láminas
+		
+		b $\rightarrow$ Anchas | n $\rightarrow$ Estrechas
+		
+		\item Color de las láminas
+		
+		k $\rightarrow$ Negro | n $\rightarrow$ Marrón | b $\rightarrow$ Ante/Crema | h $\rightarrow$ Chocolate | g $\rightarrow$ Gris | r $\rightarrow$ Verde o $\rightarrow$ Naranja | p $\rightarrow$ Rosa | u $\rightarrow$ Morado | e $\rightarrow$ Rojo | w $\rightarrow$ Blanco | y $\rightarrow$ Amarillo
+		
+		\item Forma del tallo o pie
+		
+		e $\rightarrow$ Ensanchado hacia la base | t $\rightarrow$ Se estrecha hacia la base
+		
+		\item Raíz del tallo
+		
+		b $\rightarrow$ Bulbosa | c $\rightarrow$ En forma de maza | u $\rightarrow$ En forma de copa | e $\rightarrow$ Cilíndrica | 
+		
+		z $\rightarrow$ Rizomorfos | r $\rightarrow$ Con raíz | ? $\rightarrow$ No hay registro
+		
+		\item Superficie del tallo por encima del anillo
+		
+		f $\rightarrow$ Fibrosa | y $\rightarrow$ Escamosa | k $\rightarrow$ Sedosa | s $\rightarrow$ Lisa
+		
+		\item Superficie del tallo por debajo del anillo
+		
+		f $\rightarrow$ Fibrosa | y $\rightarrow$ Escamosa | k $\rightarrow$ Sedosa | s $\rightarrow$ Lisa
+		
+		\item Color del tallo por encima del anillo
+		
+		n $\rightarrow$ Marrón | b $\rightarrow$ Ante/Crema | c $\rightarrow$ Canela | g $\rightarrow$ Gris | o $\rightarrow$ Naranja |  p $\rightarrow$ Rosa | e $\rightarrow$ Rojo | w $\rightarrow$ Blanco | y $\rightarrow$ Amarillo
+		
+		\item Color del tallo por debajo del anillo
+		
+		n $\rightarrow$ Marrón | b $\rightarrow$ Ante/Crema | c $\rightarrow$ Canela | g $\rightarrow$ Gris | o $\rightarrow$ Naranja |  p $\rightarrow$ Rosa | e $\rightarrow$ Rojo | w $\rightarrow$ Blanco | y $\rightarrow$ Amarillo
+		
+		\item Tipo de velo
+		
+		p $\rightarrow$ Parcial | u $\rightarrow$ Universal
+		
+		\item Color del velo
+		
+		n $\rightarrow$ Marrón | o $\rightarrow$ Naranja | w $\rightarrow$ Blanco | y $\rightarrow$ Amarillo
+		
+		\item Número de anillos
+		
+		n $\rightarrow$ Ninguno | o $\rightarrow$ Uno | t $\rightarrow$ Dos
+		
+		\item Tipo de anillo
+		
+		c $\rightarrow$ Cortina | e $\rightarrow$ Sutil | f $\rightarrow$ Acampanado | l $\rightarrow$ Grande | n $\rightarrow$ No hay anillo | p $\rightarrow$ Péndulo | s $\rightarrow$ Envainado | z $\rightarrow$ En zona
+		
+		\item Color de la esporada
+		
+		k $\rightarrow$ Negro | n $\rightarrow$ Marrón | b $\rightarrow$ Ante/Crema | h $\rightarrow$ Chocolate | r $\rightarrow$ Verde | o $\rightarrow$ Naranja | u $\rightarrow$ Morado | w $\rightarrow$ Blanco | y $\rightarrow$ Amarillo
+		
+		\item Población
+		
+		a $\rightarrow$ Abundante | c $\rightarrow$ Apiñada | n $\rightarrow$ Numerosa | s $\rightarrow$ Dispersa | v $\rightarrow$ Varias | y $\rightarrow$ Solitaria
+		
+		\item Hábitat
+		
+		g $\rightarrow$ Pastizales | l $\rightarrow$ Hojarasca | m $\rightarrow$ Praderas | p $\rightarrow$ Senderos | u $\rightarrow$ Urbano | w $\rightarrow$ Vertederos | d $\rightarrow$ Bosques
+		
+	\end{enumerate}
 	\section{Descripción de las pruebas realizadas}
 	
 	Una vez hemos definido el conjunto de datos de forma completa, este se utilizará para realizar predicciones de si una seta es comestible o venenosa pero, para conseguir esto, se pueden aplicar diferentes técnicas de preprocesado y algoritmos de clasificación que puedan mejorar la eficacia y eficiencia del modelo a la hora de predecir este resultado.
@@ -227,4 +320,10 @@
 		
 	\end{lstlisting}
 	En "train\_test\_split" se podría añadir un valor (" test\_size") que permite modificar el tamaño de cada división según se considere, por defecto este valor es de 75\% de datos de entrenamiento y un 25\% de datos de prueba, dado que nuestro conjunto de datos es bastante grande para lo que se consideraba en la práctica, se ha decidido que esta proporción es adecuada, siendo finalmente 4452 filas de datos de entrenamiento y 1484 filas de datos de prueba, a falta de terminar con el proceso de preprocesado.
+	
+	\newpage
+	\section{Bibliografía}
+	\renewcommand{\NombreDocumento}{Bibliografía}
+	\bibliographystyle{plain}
+	\bibliography{Referencias}
 \end{document}
