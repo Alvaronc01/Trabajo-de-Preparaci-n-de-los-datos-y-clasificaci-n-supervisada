@@ -66,6 +66,7 @@
 \usepackage{siunitx}
 \usepackage{listings}
 \usepackage{xcolor} % para colores
+\usepackage{ulem} %Para tachar letras
 
 % Estilo para Python
 \lstdefinestyle{mypython}{
@@ -119,7 +120,7 @@
 	\section{Descripción del conjunto de datos}
 	La elección del conjunto de datos con el que se vaya a trabajar representa el primer paso de este proyecto. Como el objetivo es emplear conjuntos de datos reales, se han consultado distintas opciones en plataformas web como Kaggle o UCI y finalmente se ha escogido una base de datos que permite clasificar las setas pertenecientes a la familia \textit{Agaricus y Lepiota} como o venenosas o comestibles. \cite{Dataset}
 	
-	El conjunto de datos elegido tiene un total de 8124 muestras para cada una de las cuales se identifican un total de 22 características que permiten clasificar cada seta como venenosa o comestible. A continuación se exponen cada una de las 22 variables que se consideran:
+	El conjunto de datos seleccionado contiene un total de 8124 muestras. Para cada una de ellas se han identificado un total de 22 características, cada una con distintas opciones que permiten clasificar cada seta como venenosa o comestible. Aquellas opciones dentro de cada característica para las que no existe ninguna muestra aparecen tachadas. A continuación se exponen cada una de las 22 variables que se consideran:
 	\begin{enumerate}
 		\item Forma del sombrero
 		
@@ -147,11 +148,11 @@
 		
 		\item Inserción de las láminas
 		
-		a $\rightarrow$ Unidas | d $\rightarrow$ Decurrentes | f $\rightarrow$ Libres | n $\rightarrow$ Escotadas
+		a $\rightarrow$ Unidas | \sout{d $\rightarrow$ Decurrentes} | f $\rightarrow$ Libres | \sout{n $\rightarrow$ Escotadas}
 		
 		\item Espaciado de las láminas
 		
-		c $\rightarrow$ Cerradas | w $\rightarrow$ Apiñadas | d $\rightarrow$ Distantes
+		c $\rightarrow$ Cerradas | w $\rightarrow$ Apiñadas | \sout{d $\rightarrow$ Distantes}
 		
 		\item Tamaño de las láminas
 		
@@ -167,9 +168,9 @@
 		
 		\item Raíz del tallo
 		
-		b $\rightarrow$ Bulbosa | c $\rightarrow$ En forma de maza | u $\rightarrow$ En forma de copa | e $\rightarrow$ Cilíndrica | 
+		b $\rightarrow$ Bulbosa | c $\rightarrow$ En forma de maza | \sout{u $\rightarrow$ En forma de copa} | e $\rightarrow$ Cilíndrica | 
 		
-		z $\rightarrow$ Rizomorfos | r $\rightarrow$ Con raíz | ? $\rightarrow$ No hay registro
+		\sout{z $\rightarrow$ Rizomorfos} | r $\rightarrow$ Con raíz | ? $\rightarrow$ No hay registro
 		
 		\item Superficie del tallo por encima del anillo
 		
@@ -189,7 +190,7 @@
 		
 		\item Tipo de velo
 		
-		p $\rightarrow$ Parcial | u $\rightarrow$ Universal
+		p $\rightarrow$ Parcial | \sout{u $\rightarrow$ Universal}
 		
 		\item Color del velo
 		
@@ -201,9 +202,9 @@
 		
 		\item Tipo de anillo
 		
-		c $\rightarrow$ Cortina | e $\rightarrow$ Sutil | f $\rightarrow$ Acampanado | l $\rightarrow$ Grande | n $\rightarrow$ No hay anillo | 
+		\sout{c $\rightarrow$ Cortina} | e $\rightarrow$ Sutil | f $\rightarrow$ Acampanado | l $\rightarrow$ Grande | n $\rightarrow$ No hay anillo | 
 		
-		p $\rightarrow$ Péndulo | s $\rightarrow$ Envainado | z $\rightarrow$ En zona
+		p $\rightarrow$ Péndulo | \sout{s $\rightarrow$ Envainado} | \sout{z $\rightarrow$ En zona}
 		
 		\item Color de la esporada
 		

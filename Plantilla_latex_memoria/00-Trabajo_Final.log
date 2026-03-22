@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.4.28)  22 MAR 2026 19:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.4.28)  22 MAR 2026 21:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -799,10 +799,22 @@ Package: translations 2022/02/05 v1.12 internationalization of LaTeX2e packages
 \l__siunitx_unit_position_int=\count364
 \l__siunitx_unit_total_int=\count365
 )
+(C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/latex/ulem\ulem.sty
+\UL@box=\box125
+\UL@hyphenbox=\box126
+\UL@skip=\skip122
+\UL@hook=\toks45
+\UL@height=\dimen278
+\UL@pe=\count366
+\UL@pixel=\dimen279
+\ULC@box=\box127
+Package: ulem 2019/11/18
+\ULdepth=\dimen280
+)
 (C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-p
 dftex.def
 File: l3backend-pdftex.def 2025-03-14 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count366
+\l__color_backend_stack_int=\count367
 ) (00-Trabajo_Final.aux
 LaTeX Info: Redefining \. on input line 12.
 LaTeX Info: Redefining \% on input line 12.
@@ -811,24 +823,24 @@ Package babel Info: 'spanish' activates 'spanish' shorthands.
 )
 \openout1 = `00-Trabajo_Final.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 96.
-LaTeX Font Info:    ... okay on input line 96.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 96.
-LaTeX Font Info:    ... okay on input line 96.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 96.
-LaTeX Font Info:    ... okay on input line 96.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 96.
-LaTeX Font Info:    ... okay on input line 96.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 96.
-LaTeX Font Info:    ... okay on input line 96.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 96.
-LaTeX Font Info:    ... okay on input line 96.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 96.
-LaTeX Font Info:    ... okay on input line 96.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 96.
-LaTeX Font Info:    ... okay on input line 96.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 96.
-LaTeX Font Info:    ... okay on input line 96.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 97.
+LaTeX Font Info:    ... okay on input line 97.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 97.
+LaTeX Font Info:    ... okay on input line 97.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 97.
+LaTeX Font Info:    ... okay on input line 97.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 97.
+LaTeX Font Info:    ... okay on input line 97.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 97.
+LaTeX Font Info:    ... okay on input line 97.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 97.
+LaTeX Font Info:    ... okay on input line 97.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 97.
+LaTeX Font Info:    ... okay on input line 97.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 97.
+LaTeX Font Info:    ... okay on input line 97.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 97.
+LaTeX Font Info:    ... okay on input line 97.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -864,23 +876,23 @@ LaTeX Font Info:    ... okay on input line 96.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \. on input line 96.
-LaTeX Info: Redefining \% on input line 96.
+LaTeX Info: Redefining \. on input line 97.
+LaTeX Info: Redefining \% on input line 97.
 
 (C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.
 mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count367
-\scratchdimen=\dimen278
-\scratchbox=\box125
-\nofMPsegments=\count368
-\nofMParguments=\count369
-\everyMPshowfont=\toks45
-\MPscratchCnt=\count370
-\MPscratchDim=\dimen279
-\MPnumerator=\count371
-\makeMPintoPDFobject=\count372
-\everyMPtoPDFconversion=\toks46
+\scratchcounter=\count368
+\scratchdimen=\dimen281
+\scratchbox=\box128
+\nofMPsegments=\count369
+\nofMParguments=\count370
+\everyMPshowfont=\toks46
+\MPscratchCnt=\count371
+\MPscratchDim=\dimen282
+\MPnumerator=\count372
+\makeMPintoPDFobject=\count373
+\everyMPtoPDFconversion=\toks47
 )
 (C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf
 -base.sty
@@ -902,7 +914,7 @@ Package caption Info: longtable package is loaded.
 Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 )
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring OFF on input line 96.
+Package hyperref Info: Link coloring OFF on input line 97.
  (00-Trabajo_Final.out) (00-Trabajo_Final.out)
 \@outlinefile=\write6
 \openout6 = `00-Trabajo_Final.out'.
@@ -922,7 +934,7 @@ Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
 )
 Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 ))
-\c@lstlisting=\count373
+\c@lstlisting=\count374
 
 (C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/latex/translations/dicts\tr
 anslations-basic-dictionary-spanish.trsl
@@ -930,7 +942,7 @@ File: translations-basic-dictionary-spanish.trsl (spanish translation file `tra
 nslations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
-or `spanish'. on input line 96.
+or `spanish'. on input line 97.
 
 (C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/latex/translations/dicts\tr
 anslations-basic-dictionary-english.trsl
@@ -1004,14 +1016,14 @@ Logo_UDC_EPEF.png> <./Plantilla/Logo_EPEF.pdf>])
 \tf@toc=\write7
 \openout7 = `00-Trabajo_Final.toc'.
 
-LaTeX Info: Redefining \. on input line 109.
-LaTeX Info: Redefining \% on input line 109.
+LaTeX Info: Redefining \. on input line 110.
+LaTeX Info: Redefining \% on input line 110.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 109.
+(Font)              <12> on input line 110.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 109.
+(Font)              <8> on input line 110.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 109.
+(Font)              <6> on input line 110.
 
 
 
@@ -1023,7 +1035,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [1]
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <12> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 117.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 118.
 
 
 
@@ -1044,7 +1056,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 225--227
+Underfull \hbox (badness 10000) in paragraph at lines 226--228
 
  []
 
@@ -1053,9 +1065,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 225--227
 File: lstlang1.sty 2024/09/23 1.10c listings language file
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 245.
+nput line 246.
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-45.
+46.
  (C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1069,7 +1081,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [4]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 251.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 252.
 
 
 
@@ -1118,11 +1130,11 @@ Package rerunfilecheck Info: File `00-Trabajo_Final.out' has not changed.
 (rerunfilecheck)             Checksum: B1D2DA6EA5901F694F9D9865A24394AD;2282.
  ) 
 Here is how much of TeX's memory you used:
- 23789 strings out of 469958
- 449826 string characters out of 5468845
- 1270613 words of memory out of 5000000
- 50127 multiletter control sequences out of 15000+600000
- 686094 words of font info for 88 fonts, out of 8000000 for 9000
+ 23879 strings out of 469958
+ 450966 string characters out of 5468845
+ 1271751 words of memory out of 5000000
+ 50212 multiletter control sequences out of 15000+600000
+ 686200 words of font info for 89 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,12n,93p,563b,2799s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmss12.
@@ -1135,7 +1147,7 @@ ic/lm/lmsy10.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/pu
 blic/lm/lmtk10.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/
 public/lm/lmtt10.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type
 1/public/lm/lmtti10.pfb>
-Output written on 00-Trabajo_Final.pdf (9 pages, 476740 bytes).
+Output written on 00-Trabajo_Final.pdf (9 pages, 477661 bytes).
 PDF statistics:
  256 PDF objects out of 1000 (max. 8388607)
  108 named destinations out of 1000 (max. 500000)
