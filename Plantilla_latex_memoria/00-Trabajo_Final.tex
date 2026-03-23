@@ -360,6 +360,87 @@ La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor q
 	
 	
 	\newpage
+		\subsubsection{Normalizado}
+	Una vez se ha realizado el balanceo de los datos, se procederá a realizar la normalización del conjunto de datos de entrenamiento y de prueba para evitar que los algoritmos tengan un sesgo y aprendan mejor unas características que otras, buscando que estos datos sigan una distribución normal lo máximo posible. Para ello, hay dos tipos de normalización que se pueden aplicar, "MinMaxScaler" y "StandardScaler", MinMaxScaler viene representado por la siguiente formula:
+	
+	\begin{equation*}
+		xi=\frac{xi-min(xi)}{max(xi)-min(xi)}
+	\end{equation*}
+	
+	MinMaxScaler se caracteriza por poder transformar una característica para que quede, habitualmente entre un rango fijo de 0 y 1, permitiendo reescalar las características de un conjunto de datos y conservar la forma de la distribución. Esta técnica difiere un poco con respecto a StandardScaler, que es la otra técnica de normalizado que se va a probar a usar. Esta técnica tiene como objetivo modificar todos los valores del conjunto de datos de tal forma que tengan un valor de media 0 y un valor de desviación típica de 1, tratando de aproximar los datos a la distribución normal estándar, lo máximo posible. La formula que aplica es la siguiente:
+	
+	\begin{equation*}
+		xi=\frac{xi-\mu i}{\sigma i}
+	\end{equation*}
+	
+	Finalmente, el código que se ha utilizado para el MinMaxScaler es el siguiente:
+	\begin{lstlisting}[style=mypython, caption={Normalización mediante MinMaxScaler}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
+		
+		scaler = preprocessing.MinMaxScaler()
+		
+		X_train = scaler.fit_transform(X_train) 
+		# aplica los calculos sobre el conjunto de datos de entrenamiento para escalarlos 
+		X_test = scaler.transform(X_test) 
+		# aplica los calculos sobre el conjunto de datos de prueba para escalarlos
+		
+		
+	\end{lstlisting}
+	
+	Y, para el caso de StandarScaler es el siguiente:
+	\begin{lstlisting}[style=mypython, caption={Normalización mediante StandarScaler}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
+		
+		scaler = preprocessing.StandardScaler()
+		
+		X_train = scaler.fit_transform(X_train) 
+		# aplica los calculos sobre el conjunto de datos de entrenamiento para escalarlos 
+		X_test = scaler.transform(X_test) 
+		# aplica los calculos sobre el conjunto de datos de prueba para escalarlos
+		
+		
+	\end{lstlisting}
+	
+	Realizando pruebas de exactitud y precisión, se pudo observar que ambos casos proporcionan resultados muy similares en los dos ámbitos, aunque definitivamente no funcionan igual, esto se puede observar en las gráficas que se muestran a continuación, que al realizar el escalado de forma distinta varían las densidades de muestras en el conjunto. Además, también se puede observar que si tiene un efecto claro sobre el conjunto de datos donde se equiparan los resultados obtenidos mucho más, haciendo la muestra más homogénea.
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[width=1\textwidth]{Figuras/GraficaNormalizado.png}
+		\caption{Gráfica de variación de la densidad y el escalado de los datos }
+		\label{Mennekes}
+	\end{figure}
+	
+	
+	\subsubsection{Análisis de componentes principales (PCA)}
+	Una vez se ha llevado a cabo la normalización de los 3 conjuntos de datos (original, original con undersampling y original con oversampling) se procederá a realizar el PCA para buscar conjuntos de ejes de coordenadas en los que algunas de las dimensiones no sean necesarias para estos 3 conjuntos de datos.
+	
+	Para ello se utilizará el algoritmo \textit{PCA} implementando la librería \textit{scikit-learn}. Inicialmente utilizaremos el algoritmo sin parámetros para analizar el porcentaje de varianza de todos los componentes utilizando \textit{explained\_variance\_ratio\_}, que devuelve una lista en este caso, con 22 elementos, donde cada elemento de la lista indica el porcentaje de variabilidad que representa ese componente.Además, sumando estos porcentajes de variabilidad se consigue saber la varianza acumulada correspondiente al número de componentes utilizados cumpliendose siempre que la suma de todos los elementos de la lista dará 1 como resultado. El código que se ha utilizado para obtener la varianza y la varianza acumulada es el siguiente:
+	\begin{lstlisting}[style=mypython, caption={Varianza y varianza acumulada de los componentes}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
+		
+		mypca = PCA()
+		mypca.fit(X_train)
+		
+		mypca.explained_variance_ratio_	#	muestra todos los componentes de la lista
+		
+		mypca.explained_variance_ratio_.sum()  # Suma todos los elementos de la lista 
+		
+		print("\n Varianza que aporta cada componente:")
+		variance = mypca.explained_variance_ratio_
+		print(variance)
+		
+		print("\n Varianza acumulada:")
+		acumvar = variance.cumsum()
+		
+		for i in range(len(acumvar)):
+		print(f" {(i+1):2} componentes: {acumvar[i]:.8f} ")		
+	\end{lstlisting}
+	
+	Conocidos estos porcentajes de varianza acumulada se pueden representar en una gráfica para poder ver claramente cual es la cantidad de componentes que se debería utilizar para hacer PCA.
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[width=1\textwidth]{Figuras/GraficaVarianzaAcumulada.png}
+		\caption{Gráfica de varianza acumulada }
+		\label{Mennekes}
+	\end{figure}
+	
+	\end{document}
 	\section{Bibliografía}
 	\renewcommand{\NombreDocumento}{Bibliografía}
 	\bibliographystyle{plain}
