@@ -91,6 +91,13 @@
 \addto\captionsspanish{\renewcommand{\contentsname}{Índice}}
 \makeatother
 
+%Permite poner tildes en los comentarios del código de Python
+\lstset{
+	literate=
+	{á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+	{Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+	{ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1 {¡}{{!`}}1
+}
 
 \renewcommand{\thesection}{\arabic{section}}
 
@@ -222,7 +229,7 @@
 		
 	\end{enumerate}
 	
-	Por último, falta definir la característica objetivo que permite determinar si la seta que se está considerando en cada muestra es comestible o bien es venenosa. El objetivo del presente proyecto es establecer patrones utilizando algoritmos de clasificación, entre esta característica objetivo y las otras 22 características descriptivas para ser capaz de determinar si una seta es venenosa o comestible si se conoce la forma del sombrero, su color, su olor, el tamaño de las láminas, ...
+	Por último, falta definir la característica objetivo que permite determinar si la seta que se está considerando en cada muestra es comestible o bien es venenosa. El objetivo del presente proyecto es establecer patrones utilizando algoritmos de clasificación, entre esta característica objetivo y las otras 22 características descriptivas para ser capaz de determinar si una seta es venenosa o comestible si se conoce la forma de su sombrero, su color, su olor, el tamaño de las láminas, ...
 	
 	
 	
@@ -242,110 +249,85 @@
 	
 	A continuación, se muestra el código que se ha utilizado para realizar el análisis que se ha descrito en el presente apartado.
 	
-	\subsection{Transformación de los valores del conjunto de datos de texto a número}
+\begin{lstlisting}[style=mypython, caption={Eliminar filas con información incompleta}, label={lst:eliminar-filas-con-información-incompleta}]
+	
+df_orig=pd.read_csv('mushroms1.csv', na_values=["?"]) #Lectura de los datos y conversión del símbolo "?" a NaN.
+df_orig.head()
+df_orig.shape #Se consulta la dimensión del conjunto de datos
+df_orig.isnull().sum() #Contabilización de la cantidad de muestras para las que faltan datos en cada atributo o característica.
+df=df_orig.dropna(axis=0) #Se elimnan las filas que contienen alguna columna que tenga un valor nulo y se guarda todo en la variable "df".
+df.shape
+df.isnull().sum() #Se consulta si existe algún valor nulo.
+df['poisonous'].value_counts() #Agrupa los valores únicos que hay en la columna "Poisonous" y devuelve la cuenta.
+	
+\end{lstlisting}
+	
+\subsection{Transformación de los valores del conjunto de datos de texto a número}
 	
 	
+Un problema que presenta este conjunto de datos es que todos sus valores están en formato texto, lo que imposibilita realizar todo el estudio sobre este conjunto de datos. Para evitar esto, se pasan todos los valores presentes en el conjunto de datos de texto a número mediante la siguiente técnica de preprocesado:
+\begin{lstlisting}[style=mypython, caption={Transformación de los valores de texto a número}, label={lst:Transformación-de-los-valores-de-texto-a-número}]
 	
-	
-	
-	
-	
-	
-	Una vez hemos definido el conjunto de datos de forma completa, este se utilizará para realizar predicciones de si una seta es comestible o venenosa pero, para conseguir esto, se pueden aplicar diferentes técnicas de preprocesado y algoritmos de clasificación que puedan mejorar la eficacia y eficiencia del modelo a la hora de predecir este resultado.
-	\\
-	
-	Por lo tanto, las pruebas a realizar serán las siguientes:
-	\begin{enumerate}
-		\item Proceso completo, utilizando todas las técnicas de preprocesado
-		\item Utilizando únicamente aquellos procesos de preprocesado estrictamente necesarios
-		\item Realizando todo preprocesado a excepción de PCA y normalizado
-		\item Realizando todo preprocesado a excepción de normalizado
-	\end{enumerate} 
-	
-	A parte de estas pruebas, también será necesario determinar ciertas características de los algoritmos de clasificación, en el caso del K-NN será necesario determinar el número de vecinos a utilizar y en el caso de SVM será necesario determinar los valores de C y que tipo de kernel es más adecuado para el conjunto de datos utilizado.
-	
-	\subsection{Proceso completo}
-	
-	Una vez definido que procesos son los que se quieren llevar a cabo, se decidió comenzar aplicando todas las técnicas de preprocesado conocidas, para posteriormente poder decidir, en función de los resultados obtenidos, si es necesario aplicar todas estas técnicas utilizadas y cuales realmente son necesarias.
+encoder = preprocessing.OrdinalEncoder(dtype=int)	#Se le ordena que convierta palabaras a números enteros
+df_encoded = encoder.fit_transform(df[['poisonous', "cap-shape","cap-surface","cap-color","bruises","odor",
+"gill-attachment","gill-spacing","gill-size","gill-color","stalk-shape","stalk-root",
+"stalk-surface-above-ring","stalk-surface-below-ring","stalk-color-above-ring",
+"stalk-color-below-ring","veil-type","veil-color","ring-number","ring-type",
+"spore-print-color","population","habitat"]]) #Conversión de palabras a enteros
+encoder.categories_ #Muestra el diccionario que la herramienta "encoder" ha creado
 
-	\subsubsection{Eliminar filas con información incompleta}
-	Para ello comenzaremos eliminando todas aquellas filas que tengan algún valor nulo o desconocido. Esto nos ayudará a reducir el tamaño del conjunto, que es bastante extenso y a reducir tiempos de entrenamiento a la vez que se asegura la fiabilidad de los datos del mismo, este será el código completo empleado:
-	
-	\begin{lstlisting}[style=mypython, caption={Eliminar filas con información incompleta}, label={lst:eliminar-filas-con-información-incompleta}]
-	
-	df_orig=pd.read_csv('mushroms1.csv', na_values=["?"])
-	df_orig.head()
-	
-	df_orig.shape
-	df_orig.isnull().sum()
-	df=df_orig.dropna(axis=0)
-	df.shape
-	df.isnull().sum()	
+df_encoded
 
-	\end{lstlisting}
-	
-	Utilizando este código se eliminarán todas las filas con valores nulos, lo que nos deja con un total de 5936 filas, eliminando un total de 2481 filas.
-	
-	\subsubsection{Transformación de los valores de texto a número}
-	Un problema que presenta este conjunto de datos es que todos sus valores están en formato texto, esto imposibilita realizar todo el estudio sobre este conjunto de datos. Para evitar esto, se pasan todos los valores presentes en el conjunto de datos de texto a número mediante la siguiente técnica de preprocesado:
-	\begin{lstlisting}[style=mypython, caption={Transformación de los valores de texto a número}, label={lst:Transformación-de-los-valores-de-texto-a-número}]
-	
-	encoder = preprocessing.OrdinalEncoder(dtype=int)
-	df_encoded = encoder.fit_transform(df[['poisonous', "cap-shape","cap-surface","cap-color","bruises","odor",
-	"gill-attachment","gill-spacing","gill-size","gill-color","stalk-shape","stalk-root",
-	"stalk-surface-above-ring","stalk-surface-below-ring","stalk-color-above-ring",
-	"stalk-color-below-ring","veil-type","veil-color","ring-number","ring-type",
-	"spore-print-color","population","habitat"]])
-	encoder.categories_
-	df_encoded
-	
-	df["poisonous"] = df_encoded[:,0]
-	df["cap-shape"] = df_encoded[:,1]
-	df["cap-surface"] = df_encoded[:,2]
-	df["cap-color"] = df_encoded[:,3]
-	df["bruises"] = df_encoded[:,4]
-	df["odor"] = df_encoded[:,5]
-	df["gill-attachment"] = df_encoded[:,6]
-	df["gill-spacing"] = df_encoded[:,7]
-	df["gill-size"] = df_encoded[:,8]
-	df["gill-color"] = df_encoded[:,9]
-	df["stalk-shape"] = df_encoded[:,10]
-	df["stalk-root"] = df_encoded[:,11]
-	df["stalk-surface-above-ring"] = df_encoded[:,12]
-	df["stalk-surface-below-ring"] = df_encoded[:,13]
-	df["stalk-color-above-ring"] = df_encoded[:,14]
-	df["stalk-color-below-ring"] = df_encoded[:,15]
-	df["veil-type"] = df_encoded[:,16]
-	df["veil-color"] = df_encoded[:,17]
-	df["ring-number"] = df_encoded[:,18]
-	df["ring-type"] = df_encoded[:,19]
-	df["spore-print-color"] = df_encoded[:,20]
-	df["population"] = df_encoded[:,21]
-	df["habitat"] = df_encoded[:,22]
-	df.head()
+#Se guardan en cada una de las columnas de la variable "df" todos los datos originales convertidos a número
 
-	\end{lstlisting}
+df["poisonous"] = df_encoded[:,0]
+df["cap-shape"] = df_encoded[:,1]
+df["cap-surface"] = df_encoded[:,2]
+df["cap-color"] = df_encoded[:,3]
+df["bruises"] = df_encoded[:,4]
+df["odor"] = df_encoded[:,5]
+df["gill-attachment"] = df_encoded[:,6]
+df["gill-spacing"] = df_encoded[:,7]
+df["gill-size"] = df_encoded[:,8]
+df["gill-color"] = df_encoded[:,9]
+df["stalk-shape"] = df_encoded[:,10]
+df["stalk-root"] = df_encoded[:,11]
+df["stalk-surface-above-ring"] = df_encoded[:,12]
+df["stalk-surface-below-ring"] = df_encoded[:,13]
+df["stalk-color-above-ring"] = df_encoded[:,14]
+df["stalk-color-below-ring"] = df_encoded[:,15]
+df["veil-type"] = df_encoded[:,16]
+df["veil-color"] = df_encoded[:,17]
+df["ring-number"] = df_encoded[:,18]
+df["ring-type"] = df_encoded[:,19]
+df["spore-print-color"] = df_encoded[:,20]
+df["population"] = df_encoded[:,21]
+df["habitat"] = df_encoded[:,22]
+
+\end{lstlisting}
 	
-	Al ejecutar este código se sustituyen los valores que presenta el conjunto de datos en formato texto a la hora de clasificar los tipos de setas por números enteros, lo que nos permitirá trabajar con estos datos más adelante sin problema.
+Al ejecutar este código se sustituyen los valores que presenta el conjunto de datos en formato texto a la hora de clasificar los tipos de setas por números enteros, lo que nos permitirá trabajar con estos datos más adelante sin problema.
 	
-	\subsubsection{División del conjunto de datos en datos de entrada y salida}
-	Una vez tenemos un conjunto de datos con el que podemos trabajar sin problema, se procederá a definir cuales son los datos de entrada y salida, para ello se seleccionarán las columnas que utilizaremos como entradas y las convertimos en un array de NumPy, para poder utilizarlo con los algoritmos de scikit learn, con las columnas que utilizaremos como salidas se hará lo mismo, utilizando el siguiente código:
-	\begin{lstlisting}[style=mypython, caption={División del conjunto de datos en datos de entrada y salida}, label={lst:División-del-conjunto-de-datos-entrada-salida}]
+\subsubsection{División del conjunto de datos en datos de entrada y salida}
+
+Una vez se tiene el conjunto de datos en donde para cada atributo se le asocia un número que define dicha caraterística, se procederá a definir cuales son los datos de entrada y salida. Para ello, se seleccionan las columnas que se utilizarán como entradas y se convierten en un array de NumPy, para poder utilizarlo con los algoritmos de scikit learn (con la columna que se utilizará como salida se hace lo mismo), utilizando el siguiente código:
+
+\begin{lstlisting}[style=mypython, caption={División del conjunto de datos en datos de entrada y salida}, label={lst:División-del-conjunto-de-datos-entrada-salida}]
 		
-		df.columns
-		feature_df = df[df.columns[1:df.shape[1]]]
-		# Usando DataFrame Pandas
-		X = feature_df
-		X_readed = np.asarray(feature_df)
-		X_readed[0:5]
-		feature_df.shape
-		y_readed = np.asarray(df['poisonous'])
-		y_readed[0:5]
+feature_df = df[df.columns[1:df.shape[1]]] #Se cogen todas las columnas menos la primera.
+X = feature_df #Se define el conjunto de datos de entrada
+X_readed = np.asarray(feature_df) #Se convierte el conjunto de datos de entrada en una matriz NumPy
+X_readed[0:5]
 
-	\end{lstlisting}
-	Por lo tanto, la columna "Poisonous" será nuestra salida, el valor que queremos predecir, y el resto de columnas constituirán las entradas, valores a partir de los cuales se realizará la predicción.
+y_readed = np.asarray(df['poisonous']) #Se coge la primera columna como dato de salida
+y_readed[0:5]
+
+\end{lstlisting}
 	
-	\subsubsection{División del conjunto de datos en datos de entrenamiento y prueba}
+La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor que queremos predecir, y el resto de columnas constituyen las entradas, los valores a partir de los cuales se realizará la predicción.
+	
+	
+\subsubsection{División del conjunto de datos en datos de entrenamiento y prueba}
 	A la hora de entrenar un modelo, este necesita una cantidad de datos que serán de entrenamiento, los cuales estudiará y donde tratará de encontrar patrones para que, posteriormente, pueda realizar las predicciones sobre los datos de prueba. Como ya se conocen los valores de estos datos antes de que el modelo realice las predicciones, esto nos puede permitir ver cuanta precisión tiene el modelo de cara a su uso en otros ámbitos. El código empleado para realizar esta clasificación es el siguiente:
 		\begin{lstlisting}[style=mypython, caption={División del conjunto de datos en datos de entrenamiento y prueba}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
 		
@@ -355,6 +337,27 @@
 		
 	\end{lstlisting}
 	En "train\_test\_split" se podría añadir un valor (" test\_size") que permite modificar el tamaño de cada división según se considere, por defecto este valor es de 75\% de datos de entrenamiento y un 25\% de datos de prueba, dado que nuestro conjunto de datos es bastante grande para lo que se consideraba en la práctica, se ha decidido que esta proporción es adecuada, siendo finalmente 4452 filas de datos de entrenamiento y 1484 filas de datos de prueba, a falta de terminar con el proceso de preprocesado.
+	
+	
+		\begin{comment}
+		
+		Una vez hemos definido el conjunto de datos de forma completa, este se utilizará para realizar predicciones de si una seta es comestible o venenosa pero, para conseguir esto, se pueden aplicar diferentes técnicas de preprocesado y algoritmos de clasificación que puedan mejorar la eficacia y eficiencia del modelo a la hora de predecir este resultado.
+		\\
+		
+		Por lo tanto, las pruebas a realizar serán las siguientes:
+		\begin{enumerate}
+			\item Proceso completo, utilizando todas las técnicas de preprocesado
+			\item Utilizando únicamente aquellos procesos de preprocesado estrictamente necesarios
+			\item Realizando todo preprocesado a excepción de PCA y normalizado
+			\item Realizando todo preprocesado a excepción de normalizado
+		\end{enumerate} 
+		
+		A parte de estas pruebas, también será necesario determinar ciertas características de los algoritmos de clasificación, en el caso del K-NN será necesario determinar el número de vecinos a utilizar y en el caso de SVM será necesario determinar los valores de C y que tipo de kernel es más adecuado para el conjunto de datos utilizado.
+		
+	\end{comment}
+	
+	
+	
 	
 	\newpage
 	\section{Bibliografía}

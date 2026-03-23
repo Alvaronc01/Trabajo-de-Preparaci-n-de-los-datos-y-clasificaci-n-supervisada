@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.4.28)  23 MAR 2026 13:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.4.28)  23 MAR 2026 15:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -823,24 +823,24 @@ Package babel Info: 'spanish' activates 'spanish' shorthands.
 )
 \openout1 = `00-Trabajo_Final.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 104.
+LaTeX Font Info:    ... okay on input line 104.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -876,8 +876,8 @@ LaTeX Font Info:    ... okay on input line 97.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \. on input line 97.
-LaTeX Info: Redefining \% on input line 97.
+LaTeX Info: Redefining \. on input line 104.
+LaTeX Info: Redefining \% on input line 104.
 
 (C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.
 mkii
@@ -914,7 +914,7 @@ Package caption Info: longtable package is loaded.
 Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 )
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring OFF on input line 97.
+Package hyperref Info: Link coloring OFF on input line 104.
  (00-Trabajo_Final.out) (00-Trabajo_Final.out)
 \@outlinefile=\write6
 \openout6 = `00-Trabajo_Final.out'.
@@ -942,14 +942,14 @@ File: translations-basic-dictionary-spanish.trsl (spanish translation file `tra
 nslations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
-or `spanish'. on input line 97.
+or `spanish'. on input line 104.
 
 (C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/latex/translations/dicts\tr
 anslations-basic-dictionary-english.trsl
 File: translations-basic-dictionary-english.trsl (english translation file `tra
 nslations-basic-dictionary')
 ) (Plantilla/Portada_principal.tex
-<Plantilla/Logo_UDC_EPEF.png, id=43, 300.3722pt x 65.49469pt>
+<Plantilla/Logo_UDC_EPEF.png, id=31, 300.3722pt x 65.49469pt>
 File: Plantilla/Logo_UDC_EPEF.png Graphic file (type png)
 <use Plantilla/Logo_UDC_EPEF.png>
 Package pdftex.def Info: Plantilla/Logo_UDC_EPEF.png  used on input line 15.
@@ -958,7 +958,7 @@ Package pdftex.def Info: Plantilla/Logo_UDC_EPEF.png  used on input line 15.
 
 pdfTeX warning: pdflatex.exe (file ./Plantilla/Logo_EPEF.pdf): PDF inclusion: f
 ound PDF version <1.6>, but at most version <1.5> allowed
-<Plantilla/Logo_EPEF.pdf, id=45, 76.84709pt x 83.71275pt>
+<Plantilla/Logo_EPEF.pdf, id=33, 76.84709pt x 83.71275pt>
 File: Plantilla/Logo_EPEF.pdf Graphic file (type pdf)
 <use Plantilla/Logo_EPEF.pdf>
 Package pdftex.def Info: Plantilla/Logo_EPEF.pdf  used on input line 17.
@@ -1016,14 +1016,14 @@ Logo_UDC_EPEF.png> <./Plantilla/Logo_EPEF.pdf>])
 \tf@toc=\write7
 \openout7 = `00-Trabajo_Final.toc'.
 
-LaTeX Info: Redefining \. on input line 110.
-LaTeX Info: Redefining \% on input line 110.
+LaTeX Info: Redefining \. on input line 117.
+LaTeX Info: Redefining \% on input line 117.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 110.
+(Font)              <12> on input line 117.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 110.
+(Font)              <8> on input line 117.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 110.
+(Font)              <6> on input line 117.
 
 
 
@@ -1035,7 +1035,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [1]
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <12> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 118.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 125.
 
 
 
@@ -1057,7 +1057,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [3]
 LaTeX Font Info:    Trying to load font information for TS1+lmss on input line 
-233.
+240.
  (C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmss.fd
 File: ts1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1071,21 +1071,19 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [4{C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc
 }]
-Underfull \hbox (badness 10000) in paragraph at lines 254--256
-
- []
-
-
 (C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2024/09/23 1.10c listings language file
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 274.
+nput line 252.
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-74.
+52.
  (C:\Users\USUARIO\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 257.
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1095,9 +1093,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [5]
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 280.
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1106,7 +1101,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[6]
+[6] Excluding 'comment' comment.
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1115,7 +1110,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[7]
+[7] (00-Trabajo_Final.bbl)
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1124,16 +1119,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[8] (00-Trabajo_Final.bbl)
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[9] (00-Trabajo_Final.aux
+[8] (00-Trabajo_Final.aux
 LaTeX Info: Redefining \. on input line 12.
 LaTeX Info: Redefining \% on input line 12.
 )
@@ -1142,16 +1128,16 @@ LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-03-26>
  ***********
 Package rerunfilecheck Info: File `00-Trabajo_Final.out' has not changed.
-(rerunfilecheck)             Checksum: 7CAFAA8CB9E8C9E360D7AF409F8EB9EF;2653.
+(rerunfilecheck)             Checksum: 993D3D9AFA5F7448C5E75113C64CAF48;1884.
  ) 
 Here is how much of TeX's memory you used:
- 23914 strings out of 469958
- 451718 string characters out of 5468845
- 1285972 words of memory out of 5000000
- 50240 multiletter control sequences out of 15000+600000
+ 23920 strings out of 469958
+ 451733 string characters out of 5468845
+ 1291732 words of memory out of 5000000
+ 50254 multiletter control sequences out of 15000+600000
  686580 words of font info for 90 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,12n,93p,747b,2799s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,12n,93p,747b,2685s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmss12.
 pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmss8
 .pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmss
@@ -1162,9 +1148,9 @@ ic/lm/lmsy10.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/pu
 blic/lm/lmtk10.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/
 public/lm/lmtt10.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type
 1/public/lm/lmtti10.pfb>
-Output written on 00-Trabajo_Final.pdf (10 pages, 484585 bytes).
+Output written on 00-Trabajo_Final.pdf (9 pages, 486204 bytes).
 PDF statistics:
- 271 PDF objects out of 1000 (max. 8388607)
- 110 named destinations out of 1000 (max. 500000)
- 91 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 245 PDF objects out of 1000 (max. 8388607)
+ 102 named destinations out of 1000 (max. 500000)
+ 67 words of extra memory for PDF output out of 10000 (max. 10000000)
 

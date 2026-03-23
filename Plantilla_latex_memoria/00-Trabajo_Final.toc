@@ -4,9 +4,6 @@
 \contentsline {section}{\numberline {2}Descripción del conjunto de datos}{2}{section.0.2}%
 \contentsline {subsection}{\numberline {2.1}Lectura de los datos}{4}{subsection.0.2.1}%
 \contentsline {subsection}{\numberline {2.2}Transformación de los valores del conjunto de datos de texto a número}{5}{subsection.0.2.2}%
-\contentsline {subsection}{\numberline {2.3}Proceso completo}{5}{subsection.0.2.3}%
-\contentsline {subsubsection}{\numberline {2.3.1}Eliminar filas con información incompleta}{5}{subsubsection.0.2.3.1}%
-\contentsline {subsubsection}{\numberline {2.3.2}Transformación de los valores de texto a número}{6}{subsubsection.0.2.3.2}%
-\contentsline {subsubsection}{\numberline {2.3.3}División del conjunto de datos en datos de entrada y salida}{7}{subsubsection.0.2.3.3}%
-\contentsline {subsubsection}{\numberline {2.3.4}División del conjunto de datos en datos de entrenamiento y prueba}{7}{subsubsection.0.2.3.4}%
-\contentsline {section}{\numberline {3}Bibliografía}{9}{section.0.3}%
+\contentsline {subsubsection}{\numberline {2.2.1}División del conjunto de datos en datos de entrada y salida}{6}{subsubsection.0.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}División del conjunto de datos en datos de entrenamiento y prueba}{7}{subsubsection.0.2.2.2}%
+\contentsline {section}{\numberline {3}Bibliografía}{8}{section.0.3}%
