@@ -113,14 +113,14 @@
 	
 	\section{Introducción}
 	El presente trabajo tiene el objetivo de analizar el funcionamiento de dos técnicas de aprendizaje supervisado sobre un conjunto de datos etiquetados, de modo que se pueda realizar una caracterización objetiva de su funcionamiento en base a los resultados obtenidos. 
-	Para ello, primero se escogerá un conjunto de datos que sea válido para utilizarlo en tareas de clasificación, luego se le aplicarán las distintas técnicas de preprocesado que se consideren oportunas para finalmente, aplicar las técnicas de aprendizaje automático y realizar una comparación de sus resultados.
+	Para ello, primero se escogerá un conjunto de datos que sea válido para utilizarlo en tareas de clasificación, luego se le aplicarán distintas técnicas de preprocesado para finalmente, aplicar las técnicas de aprendizaje automático. Como resultado, se desea obtener la configuración óptima de técnicas de preprocesado más las técnicas de aprendizaje automático, para obtener un algoritmo capaz de predecir con la mayor precisión posible, una característica determinada del conjunto de datos que se utilice.
 	
 	Para poder realizar este análisis, se implementará un programa en Python utilizando la librería \textit{scikit-learn} para aplicar las técnicas de preprocesado de los datos y de aprendizaje automático. Además, se emplearán otras librerías como \textit{Pandas} o \textit{Numpy}, necesarias para la correcta lectura y manejo de los datos.
 	
 	\section{Descripción del conjunto de datos}
-	La elección del conjunto de datos con el que se vaya a trabajar representa el primer paso de este proyecto. Como el objetivo es emplear conjuntos de datos reales, se han consultado distintas opciones en plataformas web como Kaggle o UCI y finalmente se ha escogido una base de datos que permite clasificar las setas pertenecientes a la familia \textit{Agaricus y Lepiota} como o venenosas o comestibles. \cite{Dataset}
+	La elección del conjunto de datos con el que se vaya a trabajar representa el primer paso de este proyecto. Como el objetivo es emplear conjuntos de datos reales, se han consultado distintas opciones en plataformas web como Kaggle o UCI y finalmente, se ha escogido una base de datos que permite clasificar las setas pertenecientes a la familia \textit{Agaricus y Lepiota} como o venenosas o comestibles. \cite{Dataset}
 	
-	El conjunto de datos seleccionado contiene un total de 8124 muestras. Para cada una de ellas se han identificado un total de 22 características, cada una con distintas opciones que permiten clasificar cada seta como venenosa o comestible. Aquellas opciones dentro de cada característica para las que no existe ninguna muestra aparecen tachadas. A continuación se exponen cada una de las 22 variables que se consideran:
+	El conjunto de datos seleccionado contiene un total de 8124 muestras. Para cada una de ellas se asocian un total de 22 características, cada una con distintas opciones. Aunque los autores de este conjunto de datos consideran distintas posibilidades dentro de cada característica, existen algunas opciones para las que no existe ninguna muestra, por lo que aparecen tachadas. A continuación se exponen cada una de las 22 variables que conforman la base de datos:
 	\begin{enumerate}
 		\item Forma del sombrero
 		
@@ -221,7 +221,35 @@
 		g $\rightarrow$ Pastizales | l $\rightarrow$ Hojarasca | m $\rightarrow$ Praderas | p $\rightarrow$ Senderos | u $\rightarrow$ Urbano | w $\rightarrow$ Vertederos | d $\rightarrow$ Bosques
 		
 	\end{enumerate}
-	\section{Descripción de las pruebas realizadas}
+	
+	Por último, falta definir la característica objetivo que permite determinar si la seta que se está considerando en cada muestra es comestible o bien es venenosa. El objetivo del presente proyecto es establecer patrones utilizando algoritmos de clasificación, entre esta característica objetivo y las otras 22 características descriptivas para ser capaz de determinar si una seta es venenosa o comestible si se conoce la forma del sombrero, su color, su olor, el tamaño de las láminas, ...
+	
+	
+	
+	\subsection{Lectura de los datos}
+	Una vez elegido el conjunto de datos, el siguiente paso es leer su contenido de forma correcta. Cada columna representa una característica y cada fila una muestra o seta que se ha analizado.
+	
+	
+	El conjunto de datos que se ha elegido tiene algunas muestras que no tienen definidas las 22 características, ya que falta alguna sobre la cual no hay información. Los autores de esta base de datos han identificado con el símbolo \textgravedbl?\textacutedbl aquellos datos que faltan, por lo que lo primero que se ha hecho es asociar al símbolo ? un valor nulo (utilizando la librería \textit{Pandas}).
+	
+	
+	Luego, para comprobar la calidad del conjunto de datos elegido, se ha comprobado la cantidad de datos que faltan en cada una de las características, es decir, la cantidad de muestras para las que no hay información de cada atributo que se contempla. Como resultado, se observa que hay 2481 muestras para la que no hay información del atributo \textit{Raíz del tallo}.
+	
+	El hecho de que falten datos para alguno de los atributos dificulta que los algoritmos de clasificación encuentren patrones, por lo que conviene eliminar las muestras que no tengan toda la información. Como resultado, se reduce la cantidad de muestras, obteniendo un conjunto de datos compuesto por 5936 muestras que están caracterizadas por los 23 atributos.
+	
+	
+	Por otro lado, se observa que la columna \textit{Poisonous} es la que define la característica o atributo objetivo que permite clasificar cada seta en comestible o venenosa. Realizando un recuento de cuantas de las setas analizadas son comestibles o venenosas, se obtiene que 3768 son aptas para el consumo y las 2168 restantes no lo son. Esto refleja que el 63,48\% de las muestras son comestibles, lo que implica que los datos no están balanceados. Esto representa un problema para los algoritmos de clasificación, ya que provoca que el modelo determine de manera sesgada si una seta es apta o no para el consumo, tendiendo a considerarla como comestible. Este problema se abordará más adelante.
+	
+	A continuación, se muestra el código que se ha utilizado para realizar el análisis que se ha descrito en el presente apartado.
+	
+	\subsection{Transformación de los valores del conjunto de datos de texto a número}
+	
+	
+	
+	
+	
+	
+	
 	
 	Una vez hemos definido el conjunto de datos de forma completa, este se utilizará para realizar predicciones de si una seta es comestible o venenosa pero, para conseguir esto, se pueden aplicar diferentes técnicas de preprocesado y algoritmos de clasificación que puedan mejorar la eficacia y eficiencia del modelo a la hora de predecir este resultado.
 	\\
