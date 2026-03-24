@@ -94,6 +94,13 @@
 \addto\captionsspanish{\renewcommand{\contentsname}{Índice}}
 \makeatother
 
+%Permite poner tildes en los comentarios del código de Python
+\lstset{
+	literate=
+	{á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+	{Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+	{ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1 {¡}{{!`}}1
+}
 
 \renewcommand{\thesection}{\arabic{section}}
 
@@ -245,67 +252,67 @@ A continuación, se muestra el código que se ha utilizado para realizar el aná
 
 \begin{lstlisting}[style=mypython, caption={Eliminar filas con información incompleta}, label={lst:eliminar-filas-con-información-incompleta}]
 	
-	df_orig=pd.read_csv('mushroms1.csv', na_values=["?"]) #Lectura de los datos y conversion del simbolo "?" a NaN.
+	df_orig=pd.read_csv('mushroms1.csv', na_values=["?"]) #Lectura de los datos y conversión del símbolo "?" a NaN.
 	df_orig.head()
-	df_orig.shape #Se consulta la dimension del conjunto de datos
-	df_orig.isnull().sum() #Contabilizacion de la cantidad de muestras para las que faltan datos en cada atributo o caracteristica.
+	df_orig.shape #Se consulta la dimensión del conjunto de datos
+	df_orig.isnull().sum() #Contabilización de la cantidad de muestras para las que faltan datos en cada atributo o característica.
 	df=df_orig.dropna(axis=0) #Se elimnan las filas que contienen alguna columna que tenga un valor nulo y se guarda todo en la variable "df".
 	df.shape
-	df.isnull().sum() #Se consulta si existe algun valor nulo.
-	df['poisonous'].value_counts() #Agrupa los valores unicos que hay en la columna "Poisonous" y devuelve la cuenta.
+	df.isnull().sum() #Se consulta si existe algún valor nulo.
+	df['poisonous'].value_counts() #Agrupa los valores únicos que hay en la columna "Poisonous" y devuelve la cuenta.
 	
 \end{lstlisting}
 
+\subsection{Transformación de los valores del conjunto de datos de texto a número}
+
+
+Un problema que presenta este conjunto de datos es que todos sus valores están en formato texto, lo que imposibilita realizar todo el estudio sobre este conjunto de datos. Para evitar esto, se pasan todos los valores presentes en el conjunto de datos de texto a número mediante la siguiente técnica de preprocesado:
+\begin{lstlisting}[style=mypython, caption={Transformación de los valores de texto a número}, label={lst:Transformación-de-los-valores-de-texto-a-número}]
 	
-	\subsubsection{Transformación de los valores de texto a número}
-	Un problema que presenta este conjunto de datos es que todos sus valores están en formato texto, esto imposibilita realizar todo el estudio sobre este conjunto de datos. Para evitar esto, se pasan todos los valores presentes en el conjunto de datos de texto a número mediante la siguiente técnica de preprocesado:
+	encoder = preprocessing.OrdinalEncoder(dtype=int)	#Se le ordena que convierta palabaras a números enteros
+	df_encoded = encoder.fit_transform(df[['poisonous', "cap-shape","cap-surface","cap-color","bruises","odor",
+	"gill-attachment","gill-spacing","gill-size","gill-color","stalk-shape","stalk-root",
+	"stalk-surface-above-ring","stalk-surface-below-ring","stalk-color-above-ring",
+	"stalk-color-below-ring","veil-type","veil-color","ring-number","ring-type",
+	"spore-print-color","population","habitat"]]) #Conversión de palabras a enteros
+	encoder.categories_ #Muestra el diccionario que la herramienta "encoder" ha creado
 	
-	\begin{lstlisting}[style=mypython, caption={Transformación de los valores de texto a número}, label={lst:Transformación-de-los-valores-de-texto-a-número}]
-		
-		encoder = preprocessing.OrdinalEncoder(dtype=int)	#Se le ordena que convierta palabaras a numeros enteros
-		df_encoded = encoder.fit_transform(df[['poisonous', "cap-shape","cap-surface","cap-color","bruises","odor",
-		"gill-attachment","gill-spacing","gill-size","gill-color","stalk-shape","stalk-root",
-		"stalk-surface-above-ring","stalk-surface-below-ring","stalk-color-above-ring",
-		"stalk-color-below-ring","veil-type","veil-color","ring-number","ring-type",
-		"spore-print-color","population","habitat"]]) #Conversion de palabras a enteros
-		encoder.categories_ #Muestra el diccionario que la herramienta "encoder" ha creado
-		
-		df_encoded
-		
-		#Se guardan en cada una de las columnas de la variable "df" todos los datos originales convertidos a numero
-		
-		df["poisonous"] = df_encoded[:,0]
-		df["cap-shape"] = df_encoded[:,1]
-		df["cap-surface"] = df_encoded[:,2]
-		df["cap-color"] = df_encoded[:,3]
-		df["bruises"] = df_encoded[:,4]
-		df["odor"] = df_encoded[:,5]
-		df["gill-attachment"] = df_encoded[:,6]
-		df["gill-spacing"] = df_encoded[:,7]
-		df["gill-size"] = df_encoded[:,8]
-		df["gill-color"] = df_encoded[:,9]
-		df["stalk-shape"] = df_encoded[:,10]
-		df["stalk-root"] = df_encoded[:,11]
-		df["stalk-surface-above-ring"] = df_encoded[:,12]
-		df["stalk-surface-below-ring"] = df_encoded[:,13]
-		df["stalk-color-above-ring"] = df_encoded[:,14]
-		df["stalk-color-below-ring"] = df_encoded[:,15]
-		df["veil-type"] = df_encoded[:,16]
-		df["veil-color"] = df_encoded[:,17]
-		df["ring-number"] = df_encoded[:,18]
-		df["ring-type"] = df_encoded[:,19]
-		df["spore-print-color"] = df_encoded[:,20]
-		df["population"] = df_encoded[:,21]
-		df["habitat"] = df_encoded[:,22]
-		
-	\end{lstlisting}
+	df_encoded
 	
-	Al ejecutar este código se sustituyen los valores que presenta el conjunto de datos en formato texto a la hora de clasificar los tipos de setas por números enteros, lo que nos permitirá trabajar con estos datos más adelante sin problema.
+	#Se guardan en cada una de las columnas de la variable "df" todos los datos originales convertidos a número
 	
-	\subsubsection{División del conjunto de datos en datos de entrada y salida}
+	df["poisonous"] = df_encoded[:,0]
+	df["cap-shape"] = df_encoded[:,1]
+	df["cap-surface"] = df_encoded[:,2]
+	df["cap-color"] = df_encoded[:,3]
+	df["bruises"] = df_encoded[:,4]
+	df["odor"] = df_encoded[:,5]
+	df["gill-attachment"] = df_encoded[:,6]
+	df["gill-spacing"] = df_encoded[:,7]
+	df["gill-size"] = df_encoded[:,8]
+	df["gill-color"] = df_encoded[:,9]
+	df["stalk-shape"] = df_encoded[:,10]
+	df["stalk-root"] = df_encoded[:,11]
+	df["stalk-surface-above-ring"] = df_encoded[:,12]
+	df["stalk-surface-below-ring"] = df_encoded[:,13]
+	df["stalk-color-above-ring"] = df_encoded[:,14]
+	df["stalk-color-below-ring"] = df_encoded[:,15]
+	df["veil-type"] = df_encoded[:,16]
+	df["veil-color"] = df_encoded[:,17]
+	df["ring-number"] = df_encoded[:,18]
+	df["ring-type"] = df_encoded[:,19]
+	df["spore-print-color"] = df_encoded[:,20]
+	df["population"] = df_encoded[:,21]
+	df["habitat"] = df_encoded[:,22]
 	
-	Una vez se tiene el conjunto de datos en donde para cada atributo se le asocia un número que define dicha caraterística, se procederá a definir cuales son los datos de entrada y salida. Para ello, se seleccionan las columnas que se utilizarán como entradas y se convierten en un array de NumPy, para poder utilizarlo con los algoritmos de scikit learn (con la columna que se utilizará como salida se hace lo mismo), utilizando el siguiente código:
-	
+\end{lstlisting}
+
+Al ejecutar este código se sustituyen los valores que presenta el conjunto de datos en formato texto a la hora de clasificar los tipos de setas por números enteros, lo que nos permitirá trabajar con estos datos más adelante sin problema.
+
+\subsubsection{División del conjunto de datos en datos de entrada y salida}
+
+Una vez se tiene el conjunto de datos en donde para cada atributo se le asocia un número que define dicha caraterística, se procederá a definir cuales son los datos de entrada y salida. Para ello, se seleccionan las columnas que se utilizarán como entradas y se convierten en un array de NumPy, para poder utilizarlo con los algoritmos de scikit learn (con la columna que se utilizará como salida se hace lo mismo), utilizando el siguiente código:
+
 \begin{lstlisting}[style=mypython, caption={División del conjunto de datos en datos de entrada y salida}, label={lst:División-del-conjunto-de-datos-entrada-salida}]
 	
 	feature_df = df[df.columns[1:df.shape[1]]] #Se cogen todas las columnas menos la primera.
@@ -317,7 +324,8 @@ A continuación, se muestra el código que se ha utilizado para realizar el aná
 	y_readed[0:5]
 	
 \end{lstlisting}
-	La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor que queremos predecir, y el resto de columnas constituyen las entradas, los valores a partir de los cuales se realizará la predicción.
+
+La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor que queremos predecir, y el resto de columnas constituyen las entradas, los valores a partir de los cuales se realizará la predicción.
 	
 	\subsubsection{División del conjunto de datos en datos de entrenamiento y prueba}
 	A la hora de entrenar un modelo, este necesita una cantidad de datos que serán de entrenamiento, los cuales estudiará y donde tratará de encontrar patrones para que, posteriormente, pueda realizar las predicciones sobre los datos de prueba. Como ya se conocen los valores de estos datos antes de que el modelo realice las predicciones, esto nos puede permitir ver cuanta precisión tiene el modelo de cara a su uso en otros ámbitos. El código empleado para realizar esta clasificación es el siguiente:
@@ -609,6 +617,15 @@ A continuación, se muestra el código que se ha utilizado para realizar el aná
 	\end{figure}
 	
 	Para este último caso, de oversampling con PCA, se ha vuelto a obtener una precisión del 100\% para valores de k comprendidos entre 5 y 17 por lo que, guiándonos por el tiempo de entrenamiento, se toma que la mejor situación es para k= 8 donde se obtiene un tiempo de entrenamiento de 6.93 ms, siendo este el mejor caso para oversampling con PCA.
+	
+	
+	
+	
+	\newpage
+\section{Bibliografía}
+\renewcommand{\NombreDocumento}{Bibliografía}
+\bibliographystyle{plain}
+\bibliography{Referencias}
 	
 \end{document}
 
