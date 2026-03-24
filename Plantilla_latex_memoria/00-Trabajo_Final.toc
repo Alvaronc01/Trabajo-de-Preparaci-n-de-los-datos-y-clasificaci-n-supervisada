@@ -10,4 +10,5 @@
 \contentsline {subsubsection}{\numberline {2.2.4}Análisis de componentes principales (PCA)}{9}{subsubsection.0.2.2.4}%
 \contentsline {subsection}{\numberline {2.3}Descripción de las pruebas realizadas y las gráficas obtenidas}{10}{subsection.0.2.3}%
 \contentsline {subsubsection}{\numberline {2.3.1}Algoritmo de clasificación por vecindad k-nn}{11}{subsubsection.0.2.3.1}%
-\contentsline {section}{\numberline {3}Bibliografía}{19}{section.0.3}%
+\contentsline {subsubsection}{\numberline {2.3.2}Algoritmo de clasificación mediante métodos Kernel (SVM)}{19}{subsubsection.0.2.3.2}%
+\contentsline {section}{\numberline {3}Bibliografía}{21}{section.0.3}%

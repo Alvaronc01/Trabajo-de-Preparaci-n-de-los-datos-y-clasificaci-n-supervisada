@@ -599,7 +599,7 @@ La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor q
 		\label{fig:comparacion}
 	\end{figure}
 	
-	Donde se puede observar que el mejor caso es para k=10, donde conseguimos una precisión del 100\% con un tiempo de entrenamiento de 6.44 ms. Terminaremos analizando y obteniendo las gráficas para el caso de oversampling con PCA.
+	Donde se puede observar que el mejor caso es para k=10, donde conseguimos una precisión del 1.00 con un tiempo de entrenamiento de 6.44 ms. Terminaremos analizando y obteniendo las gráficas para el caso de oversampling con PCA.
 	
 	\begin{figure}[H]
 	\centering
@@ -622,7 +622,49 @@ La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor q
 		\label{fig:comparacion}
 	\end{figure}
 	
-	Para este último caso, de oversampling con PCA, se ha vuelto a obtener una precisión del 100\% para valores de k comprendidos entre 5 y 17 por lo que, guiándonos por el tiempo de entrenamiento, se toma que la mejor situación es para k= 8 donde se obtiene un tiempo de entrenamiento de 6.93 ms, siendo este el mejor caso para oversampling con PCA.
+	Para este último caso, de oversampling con PCA, se ha vuelto a obtener una precisión del 1.00 para valores de k comprendidos entre 5 y 17 por lo que, guiándonos por el tiempo de entrenamiento, se toma que la mejor situación es para k= 8 donde se obtiene un tiempo de entrenamiento de 6.93 ms, siendo este el mejor caso para oversampling con PCA.
+	
+	Para poder ver de una forma más clara los resultados finales obtenidos por cada conjunto de datos, se decide realizar una tabla para representarlos:
+	
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		Conjunto de datos& Exactitud del modelo & Tiempo de entrenamiento & Nº Vecinos \\ \hline
+		Original sin PCA & 1.000 & 5.38 ms & k=7 \\ \hline
+		Original con PCA & 1.000 & 7.20 ms & k=8 \\ \hline
+		Con undersampling sin PCA & 0.985 & 4.96 ms & k=7 \\ \hline
+		Con undersampling con PCA & 0.981 & 6.03 ms & k=6 \\ \hline
+		Con oversampling sin PCA & 1.000 & 6.44 ms & k=10 \\ \hline
+		Con oversampling con PCA & 1.000 & 6.93 ms & k=8 \\ \hline
+	\end{tabular}
+	\caption{Resultados obtenidos para los conjuntos de datos}
+	\label{tab:leyenda-dual}
+\end{table}
+
+Observando esta tabla se puede observar que la precisión del conjunto de datos es extremadamente alta, consiguiendo para aquellos casos con mayor cantidad de datos, es decir, el conjunto de datos original y el conjunto de datos con oversampling, que cuentan con una cantidad de filas muy superior al caso de undersampling, consiguen una precisión del 100\%. 
+\\
+
+Esto nos quiere decir que la cantidad de datos que se tienen para entrenar el modelo es un factor clave a la hora de conseguir precisiones altas con el mismo, aunque esto también esté sujeto a aumentos en el tiempo de entrenamiento, como se puede ver en la comparativa entre los conjuntos de datos de aplicación de undersampling sin PCA y oversampling sin PCA, donde a pesar de que con el oversampling se consigue una precisión del 100\%, las diferencias en los tiempos de entrenamiento es de 1.48 ms. Este valor aunque no implica gran cosa a simple vista, supone un aumento en los tiempos de entrenamiento del 30\% en comparación con el caso con undersampling. 
+\\
+
+Para la aplicación de PCA se puede observar como, al disminuir el número de dimensiones que se analizan de 22 a 15 disminuye la exactitud del modelo sutilmente, como se puede observar en los 2 casos con undersampling, pero no solo eso, también es notable un aumento en los tiempos de entrenamiento en relación con los casos donde no se aplica lo que nos lleva a una duda considerable con respecto a los beneficios de su aplicación.
+\\
+
+Por lo tanto, si nos guiásemos unicamente por la tabla resumen, el mejor caso sería para el conjunto de datos original sin PCA. Esta afirmación tiene ciertos matices ya que este modelo podría tener algún tipo de sesgo a la hora de predecir debido al propio conjunto de datos. Esto se debe a que la correlación entre setas venenosas y comestibles no es 50/50 sino que se tienen 1600 casos adicionales de setas comestibles en comparación con las setas venenosas. Es por esto que finalmente se decide que el modelo óptimo es el que se corresponde con el conjunto de datos con oversampling sin PCA aplicando un valor de k=10, ya que se busca priorizar la exactitud del modelo frente a un tiempo de entrenamiento más bajo.
+
+\subsubsection{Algoritmo de clasificación mediante métodos Kernel (SVM)}
+	Ahora se realizarán las pruebas sobre los distintos conjuntos de datos con el algoritmo SVM. El algoritmo SVM se caracteriza por minimizar el riesgo estructural para reducir la posibilidad de cometer errores futuros. Dentro de este algoritmo, este se puede modificar y variar de dos formas, campbiando el valor de C o cambiando el tipo de kernel. 
+	\\
+	
+	Para realizar el estudio de este algoritmo se llevarán a cabo 2 pruebas, la primera consistirá en cambiar el valor de C en el rango de 1-10 para ver de que manera varían los resultados obtenidos, y la segunda será cambiando el tipo de kernel utilizado para tratar de obtener los mejores resultados con nuestro código.
+	\\
+	
+	El parametro C es es que controla el peso de los terminos de error, es decir, indica cuanto castiga la SVM los errores de clasificación. Esto quiere decir que con un valor de C alto el sistema será más sensible al ruido y tendrá una tendencia a sobreajustar, lo que lo hace menos fiable en otros conjuntos de datos. Sin embargo para un valor de C bajo el modelo tenderá más a ignorar el ruido presente en el conjunto, pero tiene una mayor tendencia a no capturar bien estructuras complejas.
+	\\
+	En lo referente al kernel aplicado, se aplicarán 2 tipos de kernel, kernel lineal y kernel no lineal para tratar de observar como afecta al resultado obtenido. Las principales diferencias entre ambos son que un kernel lineal siempre buscará trazar una frontera lineal para separar las clases, mientras que un kernel no lineal permite crear fronteras de decisión no lineales, muy flexibles y capaces de adaptarse a datos complejos. Por lo tanto, se decidió aplicar los kernel \textit{lineal}, \textit{RBF} y \textit{polinómico}.
+	
+	
 	
 	
 	
