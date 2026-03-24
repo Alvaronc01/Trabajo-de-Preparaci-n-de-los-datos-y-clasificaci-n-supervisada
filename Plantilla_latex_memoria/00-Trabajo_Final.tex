@@ -345,7 +345,9 @@ La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor q
 		xi=\frac{xi-min(xi)}{max(xi)-min(xi)}
 	\end{equation*}
 	
-	MinMaxScaler se caracteriza por poder transformar una característica para que quede, habitualmente entre un rango fijo de 0 y 1, permitiendo reescalar las características de un conjunto de datos y conservar la forma de la distribución. Esta técnica difiere un poco con respecto a StandardScaler, que es la otra técnica de normalizado que se va a probar a usar. Esta técnica tiene como objetivo modificar todos los valores del conjunto de datos de tal forma que tengan un valor de media 0 y un valor de desviación típica de 1, tratando de aproximar los datos a la distribución normal estándar, lo máximo posible. La formula que aplica es la siguiente:
+	MinMaxScaler se caracteriza por poder transformar una característica para que quede, habitualmente entre un rango fijo de 0 y 1, permitiendo reescalar las características de un conjunto de datos y conservar la forma de la distribución. Esta técnica difiere un poco con respecto a \textit{StandardScaler}, que es la otra técnica de normalizado que se va a probar a usar. 
+	
+	El \textit{StandardScaler} tiene como objetivo modificar todos los valores del conjunto de datos de tal forma que tengan un valor de media 0 y un valor de desviación típica de 1, tratando de aproximar los datos a la distribución normal estándar lo máximo posible. La fórmula que aplica es la siguiente:
 	
 	\begin{equation*}
 		xi=\frac{xi-\mu i}{\sigma i}
@@ -378,6 +380,8 @@ La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor q
 	\end{lstlisting}
 	
 	Realizando pruebas de exactitud y precisión, se pudo observar que ambos casos proporcionan resultados muy similares en los dos ámbitos, aunque definitivamente no funcionan igual, esto se puede observar en las gráficas que se muestran a continuación, que al realizar el escalado de forma distinta varían las densidades de muestras en el conjunto. Además, también se puede observar que si tiene un efecto claro sobre el conjunto de datos donde se equiparan los resultados obtenidos mucho más, haciendo la muestra más homogénea.
+	%Ponerlo más claro, explicar que la distribución normal se centra sobre un valor medio distinto y también las diferencias relativas entre los datos cambian
+	
 	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=1\textwidth]{Figuras/GraficaNormalizado.png}
@@ -387,9 +391,9 @@ La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor q
 	
 	
 	\subsubsection{Análisis de componentes principales (PCA)}
-	Una vez se ha llevado a cabo la normalización de los 3 conjuntos de datos (original, original con undersampling y original con oversampling) se procederá a realizar el PCA para buscar conjuntos de ejes de coordenadas en los que algunas de las dimensiones no sean necesarias para estos 3 conjuntos de datos.
+	Una vez se ha llevado a cabo la normalización de los 3 conjuntos de datos (original, original con undersampling y original con oversampling), se procederá a realizar el PCA para buscar conjuntos de ejes de coordenadas en los que algunas de las dimensiones no sean necesarias para estos 3 conjuntos de datos.
 	
-	Para ello se utilizará el algoritmo \textit{PCA} implementando la librería \textit{scikit-learn}. Inicialmente utilizaremos el algoritmo sin parámetros para analizar el porcentaje de varianza de todos los componentes utilizando \textit{explained\_variance\_ratio\_}, que devuelve una lista en este caso, con 22 elementos, donde cada elemento de la lista indica el porcentaje de variabilidad que representa ese componente.Además, sumando estos porcentajes de variabilidad se consigue saber la varianza acumulada correspondiente al número de componentes utilizados cumpliendose siempre que la suma de todos los elementos de la lista dará 1 como resultado. El código que se ha utilizado para obtener la varianza y la varianza acumulada es el siguiente:
+	Para ello se utilizará el algoritmo \textit{PCA} implementando la librería \textit{scikit-learn}. Inicialmente utilizaremos el algoritmo sin parámetros para analizar el porcentaje de varianza de todos los componentes utilizando \textit{explained\_variance\_ratio\_}, que devuelve una lista en este caso, con 22 elementos, donde cada elemento de la lista indica el porcentaje de variabilidad que representa ese componente. Además, sumando estos porcentajes de variabilidad se consigue saber la varianza acumulada correspondiente al número de componentes utilizado,s cumpliéndose siempre que la suma de todos los elementos de la lista dará 1 como resultado. El código que se ha utilizado para obtener la varianza y la varianza acumulada es el siguiente:
 	\begin{lstlisting}[style=mypython, caption={Varianza y varianza acumulada de los componentes}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
 		
 		mypca = PCA()
@@ -416,7 +420,7 @@ La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor q
 		\centering
 		\includegraphics[width=1.1\textwidth]{Figuras/GraficaVarianzaAcumulada.png}
 		\caption{Gráfica de varianza acumulada }
-		\label{Mennekes}
+		\label{Varianza_acumulada}
 	\end{figure}
 	
 	Aquí se puede observar como a partir del decimoquinto componente la varianza acumulada tiene un valor muy cercano al 95\%, esto quiere decir que los datos que se van a perder se corresponden con el 5\% de los datos totales. Es por ello que se decide tomar un total de 15 componentes para realizar el cálculo del PCA, ya que con menos componentes las pérdidas de datos se consideran demasiado grandes todavía. Para confirmar que el \textit{Projection loss} no es demasiado alto, se utilizará el siguiente código que nos devolverá su valor:
@@ -439,10 +443,12 @@ La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor q
 	Una vez hemos terminado de realizar todas las técnicas de preprocesado tenemos finalmente 6 posibles conjuntos a probar (original, original + PCA, oversampling sin PCA, oversampling + PCA, undersampling sin PCA, undersampling + PCA). A estos conjuntos de datos se les aplicarán los algoritmos de clasificación que se han seleccionado, en este caso, \textit{k-nn} y \textit{SVM}.
 	
 	\subsubsection{Algoritmo de clasificación por vecindad k-nn}
-	Este será el primer algoritmo de clasificación que utilicemos, este es muy característico debido al empleo de vecinos, a la hora de determinar un dato perteneciente a una clase, se estima que aquellos datos pertenecientes a la misma clase se encontrarán próximos en el espacio de representación, siendo estos los "vecinos" representados en el código por la letra k. Las pruebas que se realizarán serán para un rango de k de entre 5 y 100 tratando de buscar un valor que nos de buenos resultados. Además, se intentará que este valor de k no sea ni muy bajo ni muy alto ya que  un valor de k alto da lugar a un modelo muy estable y poco sensible al ruido pero puede perder detalles y un valor de k bajo que proporciona un modelo flexible y que se adapta muy bien a variaciones y detalles, pero que es muy sensible al ruido.
+	Este será el primer algoritmo de clasificación que se utilice. A la hora de determinar un dato perteneciente a una clase, se estima que aquellos datos pertenecientes a la misma clase se encontrarán próximos en el espacio de representación, siendo estos los \textgravedbl vecinos\textacutedbl representados en el código por la letra k. 
+	
+	Las pruebas que se realizarán serán para un rango de k de entre 5 y 100, tratando de buscar un valor que otorgue buenos resultados. Además, se intentará que este valor de k no sea ni muy bajo ni muy alto, ya que  un valor de k alto da lugar a un modelo muy estable y poco sensible al ruido, pero puede perder detalles. En cambio, un valor de k bajo que proporciona un modelo flexible, que se adapta muy bien a variaciones y detalles, pero que es muy sensible al ruido.
 	\\
 
-	Para realizar pruebas de una forma cómoda y comprobar cual es el mejor caso se ha empleado un bucle "for" que nos devuelva el valor de exactitud del modelo y el tiempo de entrenamiento empleado para cada caso. Además, también se realizará el cálculo de exactitud y tiempo de entrenamiento 5 veces para cada valor de k y, posteriormente,  nos quedaremos con el mejor caso de los 5 calculados:
+	Para realizar pruebas de una forma cómoda y comprobar cual es el mejor caso se ha empleado un bucle \textit{for} que permite obtener el valor de exactitud del modelo y el tiempo de entrenamiento empleado para cada valor de \textit{k}. De esta manera, se realiza el cálculo de exactitud y tiempo de entrenamiento 5 veces para cada valor de k para, posteriormente,  escoger el mejor caso de los 5 calculados.
 	
 	\begin{lstlisting}[style=mypython, caption={Código del algoritmo de clasificación k-nn}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
 		

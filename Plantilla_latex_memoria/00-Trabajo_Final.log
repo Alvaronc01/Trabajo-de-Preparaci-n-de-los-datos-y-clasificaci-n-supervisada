@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.4.28)  24 MAR 2026 15:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.4.28)  24 MAR 2026 15:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -842,9 +842,6 @@ LaTeX Warning: Label `lst:División-del-conjunto-de-datos-entrenamiento-prueba'
  multiply defined.
 
 
-LaTeX Warning: Label `Mennekes' multiply defined.
-
-
 LaTeX Warning: Label `lst:División-del-conjunto-de-datos-entrenamiento-prueba'
  multiply defined.
 
@@ -1228,7 +1225,7 @@ c}]
 <Figuras/GraficaNormalizado.png, id=195, 1293.633pt x 426.393pt>
 File: Figuras/GraficaNormalizado.png Graphic file (type png)
 <use Figuras/GraficaNormalizado.png>
-Package pdftex.def Info: Figuras/GraficaNormalizado.png  used on input line 383
+Package pdftex.def Info: Figuras/GraficaNormalizado.png  used on input line 387
 .
 (pdftex.def)             Requested size: 455.24408pt x 150.05305pt.
 
@@ -1245,10 +1242,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 File: Figuras/GraficaVarianzaAcumulada.png Graphic file (type png)
 <use Figuras/GraficaVarianzaAcumulada.png>
 Package pdftex.def Info: Figuras/GraficaVarianzaAcumulada.png  used on input li
-ne 417.
+ne 421.
 (pdftex.def)             Requested size: 500.77126pt x 197.48068pt.
 
-Overfull \hbox (45.52718pt too wide) in paragraph at lines 417--418
+Overfull \hbox (45.52718pt too wide) in paragraph at lines 421--422
  [][] 
  []
 
@@ -1265,11 +1262,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 442--444
-
- []
-
-
 Underfull \vbox (badness 2057) has occurred while \output is active []
 
 
@@ -1282,6 +1274,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [10 <./Figuras/GraficaVarianzaAcumulada.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 448--450
+
+ []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1295,13 +1292,13 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 File: Figuras/PrecModeloOriginalSinPCA.png Graphic file (type png)
 <use Figuras/PrecModeloOriginalSinPCA.png>
 Package pdftex.def Info: Figuras/PrecModeloOriginalSinPCA.png  used on input li
-ne 489.
+ne 495.
 (pdftex.def)             Requested size: 318.66946pt x 237.74594pt.
 <Figuras/TimeModeloOriginalSinPCA.png, id=291, 455.301pt x 339.669pt>
 File: Figuras/TimeModeloOriginalSinPCA.png Graphic file (type png)
 <use Figuras/TimeModeloOriginalSinPCA.png>
 Package pdftex.def Info: Figuras/TimeModeloOriginalSinPCA.png  used on input li
-ne 496.
+ne 502.
 (pdftex.def)             Requested size: 318.66946pt x 237.74594pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1320,13 +1317,13 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 File: Figuras/PrecModeloOriginalConPCA.png Graphic file (type png)
 <use Figuras/PrecModeloOriginalConPCA.png>
 Package pdftex.def Info: Figuras/PrecModeloOriginalConPCA.png  used on input li
-ne 511.
+ne 517.
 (pdftex.def)             Requested size: 318.66946pt x 237.74594pt.
 <Figuras/TimeModeloOriginalConPCA.png, id=301, 455.301pt x 339.669pt>
 File: Figuras/TimeModeloOriginalConPCA.png Graphic file (type png)
 <use Figuras/TimeModeloOriginalConPCA.png>
 Package pdftex.def Info: Figuras/TimeModeloOriginalConPCA.png  used on input li
-ne 518.
+ne 524.
 (pdftex.def)             Requested size: 318.66946pt x 237.74594pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1346,13 +1343,13 @@ A.png>]
 File: Figuras/PrecModeloUndersamplingSinPCA.png Graphic file (type png)
 <use Figuras/PrecModeloUndersamplingSinPCA.png>
 Package pdftex.def Info: Figuras/PrecModeloUndersamplingSinPCA.png  used on inp
-ut line 534.
+ut line 540.
 (pdftex.def)             Requested size: 318.66946pt x 237.74594pt.
 <Figuras/TimeModeloUndersamplingSinPCA.png, id=311, 475.5366pt x 339.669pt>
 File: Figuras/TimeModeloUndersamplingSinPCA.png Graphic file (type png)
 <use Figuras/TimeModeloUndersamplingSinPCA.png>
 Package pdftex.def Info: Figuras/TimeModeloUndersamplingSinPCA.png  used on inp
-ut line 541.
+ut line 547.
 (pdftex.def)             Requested size: 318.66946pt x 227.6185pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1372,13 +1369,13 @@ A.png>]
 File: Figuras/PrecModeloUndersamplingConPCA.png Graphic file (type png)
 <use Figuras/PrecModeloUndersamplingConPCA.png>
 Package pdftex.def Info: Figuras/PrecModeloUndersamplingConPCA.png  used on inp
-ut line 557.
+ut line 563.
 (pdftex.def)             Requested size: 318.66946pt x 237.74594pt.
 <Figuras/TimeModeloUndersamplingConPCA.png, id=320, 478.4274pt x 339.669pt>
 File: Figuras/TimeModeloUndersamplingConPCA.png Graphic file (type png)
 <use Figuras/TimeModeloUndersamplingConPCA.png>
 Package pdftex.def Info: Figuras/TimeModeloUndersamplingConPCA.png  used on inp
-ut line 564.
+ut line 570.
 (pdftex.def)             Requested size: 318.66946pt x 226.25021pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1398,13 +1395,13 @@ plingSinPCA.png>]
 File: Figuras/PrecModeloOversamplingSinPCA.png Graphic file (type png)
 <use Figuras/PrecModeloOversamplingSinPCA.png>
 Package pdftex.def Info: Figuras/PrecModeloOversamplingSinPCA.png  used on inpu
-t line 580.
+t line 586.
 (pdftex.def)             Requested size: 318.66946pt x 237.74594pt.
 <Figuras/TimeModeloOversamplingSinPCA.png, id=329, 475.5366pt x 339.669pt>
 File: Figuras/TimeModeloOversamplingSinPCA.png Graphic file (type png)
 <use Figuras/TimeModeloOversamplingSinPCA.png>
 Package pdftex.def Info: Figuras/TimeModeloOversamplingSinPCA.png  used on inpu
-t line 587.
+t line 593.
 (pdftex.def)             Requested size: 318.66946pt x 227.6185pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1424,13 +1421,13 @@ plingConPCA.png>]
 File: Figuras/PrecModeloOversamplingConPCA.png Graphic file (type png)
 <use Figuras/PrecModeloOversamplingConPCA.png>
 Package pdftex.def Info: Figuras/PrecModeloOversamplingConPCA.png  used on inpu
-t line 603.
+t line 609.
 (pdftex.def)             Requested size: 318.66946pt x 237.74594pt.
 <Figuras/TimeModeloOversamplingConPCA.png, id=338, 478.4274pt x 339.669pt>
 File: Figuras/TimeModeloOversamplingConPCA.png Graphic file (type png)
 <use Figuras/TimeModeloOversamplingConPCA.png>
 Package pdftex.def Info: Figuras/TimeModeloOversamplingConPCA.png  used on inpu
-t line 610.
+t line 616.
 (pdftex.def)             Requested size: 318.66946pt x 226.25021pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1487,13 +1484,13 @@ Package rerunfilecheck Info: File `00-Trabajo_Final.out' has not changed.
 (rerunfilecheck)             Checksum: 5CFAA2CEA6411D2AF79A0DAFAAF52EE9;3019.
  ) 
 Here is how much of TeX's memory you used:
- 24244 strings out of 469958
- 459670 string characters out of 5468845
- 1343546 words of memory out of 5000000
- 50474 multiletter control sequences out of 15000+600000
+ 24242 strings out of 469958
+ 459645 string characters out of 5468845
+ 1343640 words of memory out of 5000000
+ 50472 multiletter control sequences out of 15000+600000
  686580 words of font info for 90 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,12n,93p,879b,2807s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,12n,93p,804b,2807s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.
 pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12
 .pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmss
@@ -1507,7 +1504,7 @@ blic/lm/lmsso17.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1
 e1/public/lm/lmtk10.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/t
 ype1/public/lm/lmtt10.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts
 /type1/public/lm/lmtti10.pfb>
-Output written on 00-Trabajo_Final.pdf (20 pages, 1093232 bytes).
+Output written on 00-Trabajo_Final.pdf (20 pages, 1093397 bytes).
 PDF statistics:
  458 PDF objects out of 1000 (max. 8388607)
  200 named destinations out of 1000 (max. 500000)
