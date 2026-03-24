@@ -660,11 +660,50 @@ Por lo tanto, si nos guiásemos unicamente por la tabla resumen, el mejor caso s
 	Para realizar el estudio de este algoritmo se llevarán a cabo 2 pruebas, la primera consistirá en cambiar el valor de C en el rango de 1-10 para ver de que manera varían los resultados obtenidos, y la segunda será cambiando el tipo de kernel utilizado para tratar de obtener los mejores resultados con nuestro código.
 	\\
 	
-	El parametro C es es que controla el peso de los terminos de error, es decir, indica cuanto castiga la SVM los errores de clasificación. Esto quiere decir que con un valor de C alto el sistema será más sensible al ruido y tendrá una tendencia a sobreajustar, lo que lo hace menos fiable en otros conjuntos de datos. Sin embargo para un valor de C bajo el modelo tenderá más a ignorar el ruido presente en el conjunto, pero tiene una mayor tendencia a no capturar bien estructuras complejas.
+	El parametro C es el que controla el peso de los terminos de error, es decir, indica cuanto castiga la SVM los errores de clasificación. Esto quiere decir que con un valor de C alto el sistema será más sensible al ruido y tendrá una tendencia a sobreajustar, lo que lo hace menos fiable en otros conjuntos de datos. Sin embargo para un valor de C bajo el modelo tenderá más a ignorar el ruido presente en el conjunto, pero tiene una mayor tendencia a no capturar bien estructuras complejas.
 	\\
+	
 	En lo referente al kernel aplicado, se aplicarán 2 tipos de kernel, kernel lineal y kernel no lineal para tratar de observar como afecta al resultado obtenido. Las principales diferencias entre ambos son que un kernel lineal siempre buscará trazar una frontera lineal para separar las clases, mientras que un kernel no lineal permite crear fronteras de decisión no lineales, muy flexibles y capaces de adaptarse a datos complejos. Por lo tanto, se decidió aplicar los kernel \textit{lineal}, \textit{RBF} y \textit{polinómico}.
+	\\
 	
+	Como consecuencia de todos los parámetros que se quieren evaluar se diseñó un código muy similar al aplicado para el algoritmo k-nn solo que en este caso el bucle se realizará para unos valores de C de 1.0 hasta 10.0 e inicialmente, se aplicará para un kernel lineal:
 	
+		\begin{lstlisting}[style=mypython, caption={Código del algoritmo de clasificación SVM con kernel linear}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
+		
+		Score_linear = np.zeros(10)
+		Posicion_linear = np.zeros(10)
+		Time_linear = np.zeros(10)
+		for i in range(1,11):
+		Score_ind=np.zeros(5)
+		Posicion_ind=np.zeros(5)
+		Time_ind=np.zeros(5)
+		for u in range (1,6):
+		ini = time.time() 
+		clf_svm = svm.SVC(C=i,kernel='linear')
+		clf_svm.fit(X_train, y_train) 
+		y_predict_svm = clf_svm.predict(X_test)
+		Score_ind[u-1] = clf_svm.score(X_test, y_test)
+		Posicion_ind[u-1] = i
+		Time_ind[u-1] = (time.time() - ini)*1000
+		Time_linear[i-1] = np.max(Time_ind)
+		Score_linear[i-1] = np.max(Score_ind)
+		Posicion_linear[i-1] = i
+		print(f"Tiempo entrenamiento para C={i}  = {Time_linear[i-1]} ms") 
+		print("Exactitud media obtenida con SVM para C={i}: ".format(i=i), clf_svm.score(X_test, y_test))
+		
+		Valor_maximo = np.max(Score_linear)
+		Tiempo_min = np.min(Time_linear)
+		
+		print(f"El valor máximo de exactitud es de: {Valor_maximo}")
+		print(f"Y está situado en la posición: {Score_linear.argmax()}")
+		print(f"El valor mínimo de tiempo es de: {Tiempo_min}")
+		print(f"Y está situado en la posición: {Time_linear.argmin()}")
+		
+		clf_svm = svm.SVC(C=Score_linear.argmax(),kernel='linear')
+		
+	\end{lstlisting}
+	
+	Con este código obtendremos de resultado final el caso para el valor máximo de exactitud y el caso para el tiempo mínimo de entrenamiento, para el modelo sin balancear y sin PCA el caso para mayor precisión se da para C=10, mientras que el tiempo de entrenamiento mínimo se dió para C=7, por lo que, para poder estudiar más en detalle todos los casos y ver claramente que opción escoger, se mostrarán las gráficas para cada conjunto de datos a estudiar las cuales servirán como guía:
 	
 	
 	

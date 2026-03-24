@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.11.1)  24 MAR 2026 17:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.11.1)  24 MAR 2026 22:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -927,6 +927,10 @@ LaTeX Warning: Label `sub@fig:sub2' multiply defined.
 
 LaTeX Warning: Label `fig:comparacion' multiply defined.
 
+
+LaTeX Warning: Label `lst:División-del-conjunto-de-datos-entrenamiento-prueba'
+ multiply defined.
+
 )
 \openout1 = `00-Trabajo_Final.aux'.
 
@@ -1497,6 +1501,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 660--662
  []
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 663--665
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 666--668
+
+ []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1505,7 +1519,16 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[20] (00-Trabajo_Final.bbl
+[20]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[21] (00-Trabajo_Final.bbl
 
 LaTeX Warning: Empty `thebibliography' environment on input line 3.
 
@@ -1518,7 +1541,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[21] (00-Trabajo_Final.aux
+[22] (00-Trabajo_Final.aux
 LaTeX Info: Redefining \. on input line 12.
 LaTeX Info: Redefining \% on input line 12.
 )
@@ -1537,10 +1560,10 @@ Package rerunfilecheck Info: File `00-Trabajo_Final.out' has not changed.
 (rerunfilecheck)             Checksum: F6CE1640227011163E338BEBFABE7714;3401.
  ) 
 Here is how much of TeX's memory you used:
- 24262 strings out of 468080
- 459695 string characters out of 5425772
- 1366068 words of memory out of 5000000
- 52372 multiletter control sequences out of 15000+600000
+ 24305 strings out of 468080
+ 460362 string characters out of 5425772
+ 1366087 words of memory out of 5000000
+ 52382 multiletter control sequences out of 15000+600000
  687476 words of font info for 90 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,12n,93p,947b,2821s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1557,9 +1580,9 @@ pfb><C:/Users/alvar/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtk10.
 pfb><C:/Users/alvar/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.
 pfb><C:/Users/alvar/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtti10
 .pfb>
-Output written on 00-Trabajo_Final.pdf (22 pages, 1101090 bytes).
+Output written on 00-Trabajo_Final.pdf (23 pages, 1111618 bytes).
 PDF statistics:
- 472 PDF objects out of 1000 (max. 8388607)
- 204 named destinations out of 1000 (max. 500000)
+ 517 PDF objects out of 1000 (max. 8388607)
+ 237 named destinations out of 1000 (max. 500000)
  177 words of extra memory for PDF output out of 10000 (max. 10000000)
 
