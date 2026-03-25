@@ -232,7 +232,12 @@ El conjunto de datos seleccionado contiene un total de 8124 muestras. Para cada 
 	
 \end{enumerate}
 
-Por último, falta definir la característica objetivo que permite determinar si la seta que se está considerando en cada muestra es comestible o bien es venenosa. El objetivo del presente proyecto es establecer patrones utilizando algoritmos de clasificación, entre esta característica objetivo y las otras 22 características descriptivas para ser capaz de determinar si una seta es venenosa o comestible si se conoce la forma de su sombrero, su color, su olor, el tamaño de las láminas, ...
+Es necesario aclarar que el archivo .csv que contiene el conjunto de datos, tiene definidas cada una de las opciones de cada atributo con una letra. En consecuencia, se ha expuesto el significado de cada letra, no obstante, el conjunto de datos que se utilizará a partir de ahora, tiene definidas cada una de las opciones de cada atributo con una palabra equivalente a su respectiva letra.
+
+
+Por último, falta definir la característica objetivo que permite determinar si la seta que se está considerando en cada muestra es comestible o bien es venenosa. El objetivo del presente proyecto es establecer patrones utilizando algoritmos de clasificación, entre esta característica objetivo y las otras 22 características descriptivas, para ser capaz de determinar si una seta es venenosa o comestible si se conoce la forma de su sombrero, su color, su olor, el tamaño de las láminas, ...
+
+
 	
 \subsection{Lectura de los datos}
 Una vez elegido el conjunto de datos, el siguiente paso es leer su contenido de forma correcta. Cada columna representa una característica y cada fila una muestra o seta que se ha analizado.
@@ -277,7 +282,7 @@ Un problema que presenta este conjunto de datos es que todos sus valores están 
 	"spore-print-color","population","habitat"]]) #Conversión de palabras a enteros
 	encoder.categories_ #Muestra el diccionario que la herramienta "encoder" ha creado
 	
-	df_encoded
+	df_encoded #Se muestran los números enteros que definen el conjunto de datos
 	
 	#Se guardan en cada una de las columnas de la variable "df" todos los datos originales convertidos a número
 	
@@ -309,9 +314,9 @@ Un problema que presenta este conjunto de datos es que todos sus valores están 
 
 Al ejecutar este código se sustituyen los valores que presenta el conjunto de datos en formato texto a la hora de clasificar los tipos de setas por números enteros, lo que nos permitirá trabajar con estos datos más adelante sin problema.
 
-\subsubsection{División del conjunto de datos en datos de entrada y salida}
+\subsection{División del conjunto de datos en datos de entrada y salida}
 
-Una vez se tiene el conjunto de datos en donde para cada atributo se le asocia un número que define dicha caraterística, se procederá a definir cuales son los datos de entrada y salida. Para ello, se seleccionan las columnas que se utilizarán como entradas y se convierten en un array de NumPy, para poder utilizarlo con los algoritmos de scikit learn (con la columna que se utilizará como salida se hace lo mismo), utilizando el siguiente código:
+Una vez que se tiene el conjunto de datos en donde para cada atributo se le asocia un número que define dicha caraterística, se procederá a definir cuales son los datos de entrada y salida. Para ello, se seleccionan las columnas que se utilizarán como entradas y se convierten en un array de \textit{NumPy}, para poder utilizarlo con los algoritmos de clasificación de la librería \textit{Scikit-learn} (con la columna que se utilizará como salida se hace lo mismo), utilizando el siguiente código:
 
 \begin{lstlisting}[style=mypython, caption={División del conjunto de datos en datos de entrada y salida}, label={lst:División-del-conjunto-de-datos-entrada-salida}]
 	
@@ -319,55 +324,114 @@ Una vez se tiene el conjunto de datos en donde para cada atributo se le asocia u
 	X = feature_df #Se define el conjunto de datos de entrada
 	X_readed = np.asarray(feature_df) #Se convierte el conjunto de datos de entrada en una matriz NumPy
 	X_readed[0:5]
-	
 	y_readed = np.asarray(df['poisonous']) #Se coge la primera columna como dato de salida
 	y_readed[0:5]
 	
 \end{lstlisting}
 
-La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor que queremos predecir, y el resto de columnas constituyen las entradas, los valores a partir de los cuales se realizará la predicción.
+La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor que se quiere predecir, y el resto de columnas constituyen las entradas, los valores a partir de los cuales se realizará la predicción.
 	
-	\subsubsection{División del conjunto de datos en datos de entrenamiento y prueba}
-	A la hora de entrenar un modelo, este necesita una cantidad de datos que serán de entrenamiento, los cuales estudiará y donde tratará de encontrar patrones para que, posteriormente, pueda realizar las predicciones sobre los datos de prueba. Como ya se conocen los valores de estos datos antes de que el modelo realice las predicciones, esto nos puede permitir ver cuanta precisión tiene el modelo de cara a su uso en otros ámbitos. El código empleado para realizar esta clasificación es el siguiente:
-		\begin{lstlisting}[style=mypython, caption={División del conjunto de datos en datos de entrenamiento y prueba}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
+\subsection{División del conjunto de datos en datos de entrenamiento y prueba}
+A la hora de entrenar un modelo, este necesita una cantidad de datos de \textit{entrenamiento} ($X\_train$ e $Y\_train$), los cuales estudiará y tratará de encontrar patrones para que, posteriormente, pueda realizar predicciones sobre unos \textit{datos de prueba} ($X\_test$ e $Y\_test$). Esto permitirá afinar la configuración modelo para luego emplearlo en la realidad.
+ 
+Por lo tanto, este paso es clave para alcanzar el objetivo de definir un modelo que sea capaz de clasificar si una seta es comestible o venenosa, una vez se tiene la información de los 22 atributos que se están utilizando.  
+
+El código empleado para realizar esta separación de los datos es el siguiente:
+\begin{lstlisting}[style=mypython, caption={División del conjunto de datos en datos de entrenamiento y prueba}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
 		
-		X_train, X_test, y_train, y_test = train_test_split(X_readed, y_readed, random_state = 1)
-		print ('Train set:', X_train.shape,  y_train.shape)
-		print ('Test set:', X_test.shape,  y_test.shape)
+	X_train, X_test, y_train, y_test = train_test_split(X_readed, y_readed, random_state = 1)
+	print ('Train set:', X_train.shape,  y_train.shape)
+	print ('Test set:', X_test.shape,  y_test.shape)
 		
-	\end{lstlisting}
-	En "train\_test\_split" se podría añadir un valor (" test\_size") que permite modificar el tamaño de cada división según se considere, por defecto este valor es de 75\% de datos de entrenamiento y un 25\% de datos de prueba, dado que nuestro conjunto de datos es bastante grande para lo que se consideraba en la práctica, se ha decidido que esta proporción es adecuada, siendo finalmente 4452 filas de datos de entrenamiento y 1484 filas de datos de prueba, a falta de terminar con el proceso de preprocesado.
+\end{lstlisting}
+En la función \textgravedbl train\_test\_split\textacutedbl se podría añadir un valor (\textgravedbl test\_size\textacutedbl) que permite modificar la proporción de la división de los datos según se considere. Por defecto, esta función establece que el 75\% de los datos sea de entrenamiento y el 25\% restante sean datos de prueba. 
+
+Dado que el conjunto de datos que se está utilizando es bastante grande, se ha decidido que esta proporción es adecuada, obteniendo finalmente 4452 filas de datos de entrenamiento y 1484 filas de datos de prueba, a falta de terminar con el proceso de preprocesado.
+
+
+\subsection{Balanceo de datos}
+Tal y como se mencionó con anterioridad, la base de datos elegida para definir un modelo de clasificación está \textit{desbalanceada}. Es decir, la cantidad de valores en la columna \textit{poisonous} que se corresponden con setas comestibles y con setas venenosas no es la misma, siendo su diferencia igual a 1600 muestras, lo que supone que un 63\% de las setas estudiadas son comestibles y un 37\% son venenosas.
+
+Esto puede influir en la capacidad del algoritmo para predecir correctamente la clase minoritaria (en este caso que una seta sea venenosa), ya que al estar menos representada este puede ignorarla, haciendo que el cálculo de la precisión del modelo no se asemeje completamente a la realidad.
+
+Por lo tanto, para corregir esto, se utiliza la librería \textit{Imbalanced-learn} para realizar el balanceo del conjunto de datos, el cual se puede realizar siguiendo dos filosofías distintas: eliminando muestras de la clase mayoritaria (\textit{Undersampling}), o bien generando datos \textit{sintéticos} de la clase minoritaria (\textit{Oversampling}).
+
+\subsubsection{Undersampling}
+La técnica de \textit{Undersampling} elimina muestras que se clasifican como setas comestibles, es decir, elimina las filas en cuya clase objetivo (que es \textit{Poisonous}) se define una seta como comestible, que es la tipología de muestra mayoritaria. El objetivo es eliminar todas las muestras necesarias para que la cantidad de setas que se clasifican como comestibles y venenosas sea la misma para ambos casos.
+
+Además, el algoritmo \textit{NearMiss} no elimina las muestras de setas comestibles al azar. Calcula matemáticamente cuáles son las setas comestibles que están más cerca (o se parecen más) a las setas venenosas y se queda con esas, descartando las comestibles que son demasiado \textgravedbl obvias\textacutedbl. De esta manera, el futuro modelo de clasificación aprenderá a distinguir los casos más difíciles.
+
+El código empleado para realizar el balanceo de datos utilizando la técnica de \textit{Undersampling} es el siguiente:
+
+
+
+
+\begin{lstlisting}[style=mypython, caption={Balanceo del conjunto de datos: Undersampling}, label={lst:Undersampling}]
+
+	unique, counts = np.unique(y_train, return_counts=True) 
+	#Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
+	sm = NearMiss() #Inicializa el algoritmo NearMiss y lo guarda en la variable "sm"
+	X_train, y_train= sm.fit_resample(X_train, y_train) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
 	
-	\subsubsection{Normalizado}
-	Una vez se ha realizado el balanceo de los datos, se procederá a realizar la normalización del conjunto de datos de entrenamiento y de prueba para evitar que los algoritmos tengan un sesgo y aprendan mejor unas características que otras, buscando que estos datos sigan una distribución normal lo máximo posible. Para ello, hay dos tipos de normalización que se pueden aplicar, "MinMaxScaler" y "StandardScaler", MinMaxScaler viene representado por la siguiente formula:
+	print('\nBalanceado undersampling:', X_train.shape,  y_train.shape)
+	unique, counts = np.unique(y_train, return_counts=True) 
+	print(dict(zip(unique, counts))) #Comprobación de que el proceso de balanceado se ha realizado con éxito
+
+
+\end{lstlisting}
+
+
+\subsubsection{Oversampling}
+
+La técnica de \textit{Oversampling} genera muestras que se clasifican como setas venenosas, es decir, identifica cuál es el tipo de muestra minoritaria y añade filas que sean de ese tipo. El objetivo es generar de forma sintética todas las muestras necesarias para que la cantidad de setas que se clasifican como comestibles y venenosas sea la misma para ambos casos.
+
+El algoritmo \textit{SMOTE}, no se limita a copiar y pegar muestras de tipo seta venenosa, sino que genera nuevas muestras muy similares a las ya existentes, de forma que sus propiedades sean realistas para una seta venenosa. Además, definiendo la opción \textit{random\_state = 1}, se consigue que siempre genere las mismas muestras cada vez que se ejecuta el código (es lo que se conoce como una \textit{semilla aleatoria}).
+
+El código empleado para realizar el balanceo de datos utilizando la técnica de \textit{Oversampling} es el siguiente:
+
+\begin{lstlisting}[style=mypython, caption={Balanceo del conjunto de datos: Oversampling}, label={lst:Oversampling}]
+
+	unique, counts = np.unique(y_train, return_counts=True) #Escanea y cuenta cuántas setas hay de cada tipo antes de hacer la transformación.
+	sm = SMOTE(random_state=1) #Inicializa el algoritmo SMOTE y lo guarda en la variable "sm"
+	X_train, y_train= sm.fit_resample(X_train, y_train) #Generación de muestras sintéticas del tipo minoriario (setas venenosas) y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
 	
-	\begin{equation*}
-		xi=\frac{xi-min(xi)}{max(xi)-min(xi)}
-	\end{equation*}
+	print('\nBalanceado oversampling:', X_train.shape,  y_train.shape)
+	unique, counts = np.unique(y_train, return_counts=True)
+	print(dict(zip(unique, counts))) #Comprobación de que el proceso de balanceado se ha realizado con éxito
+
+\end{lstlisting}
+
+
+\subsection{Normalizado}
+Una vez se ha realizado el balanceo de los datos, se procederá a realizar la normalización del conjunto de datos de entrenamiento y de prueba para evitar que los algoritmos tengan un sesgo y aprendan mejor unas características que otras, buscando que estos datos sigan una distribución normal lo máximo posible. Para ello, hay dos tipos de normalización que se pueden aplicar, "MinMaxScaler" y "StandardScaler", MinMaxScaler viene representado por la siguiente formula:
 	
-	MinMaxScaler se caracteriza por poder transformar una característica para que quede, habitualmente entre un rango fijo de 0 y 1, permitiendo reescalar las características de un conjunto de datos y conservar la forma de la distribución. Esta técnica difiere un poco con respecto a \textit{StandardScaler}, que es la otra técnica de normalizado que se va a probar a usar. 
+\begin{equation*}
+	xi=\frac{xi-min(xi)}{max(xi)-min(xi)}
+\end{equation*}
 	
-	El \textit{StandardScaler} tiene como objetivo modificar todos los valores del conjunto de datos de tal forma que tengan un valor de media 0 y un valor de desviación típica de 1, tratando de aproximar los datos a la distribución normal estándar lo máximo posible. La fórmula que aplica es la siguiente:
+MinMaxScaler se caracteriza por poder transformar una característica para que quede, habitualmente entre un rango fijo de 0 y 1, permitiendo reescalar las características de un conjunto de datos y conservar la forma de la distribución. Esta técnica difiere un poco con respecto a \textit{StandardScaler}, que es la otra técnica de normalizado que se va a probar a usar. 
 	
-	\begin{equation*}
-		xi=\frac{xi-\mu i}{\sigma i}
-	\end{equation*}
+El \textit{StandardScaler} tiene como objetivo modificar todos los valores del conjunto de datos de tal forma que tengan un valor de media 0 y un valor de desviación típica de 1, tratando de aproximar los datos a la distribución normal estándar lo máximo posible. La fórmula que aplica es la siguiente:
 	
-	Finalmente, el código que se ha utilizado para el MinMaxScaler es el siguiente:
-	\begin{lstlisting}[style=mypython, caption={Normalización mediante MinMaxScaler}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
+\begin{equation*}
+	xi=\frac{xi-\mu i}{\sigma i}
+\end{equation*}
+	
+Finalmente, el código que se ha utilizado para el MinMaxScaler es el siguiente:
+\begin{lstlisting}[style=mypython, caption={Normalización mediante MinMaxScaler}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
 		
-		scaler = preprocessing.MinMaxScaler()
+	scaler = preprocessing.MinMaxScaler()
 		
-		X_train = scaler.fit_transform(X_train) 
-		# aplica los calculos sobre el conjunto de datos de entrenamiento para escalarlos 
-		X_test = scaler.transform(X_test) 
-		# aplica los calculos sobre el conjunto de datos de prueba para escalarlos
+	X_train = scaler.fit_transform(X_train) 
+	# aplica los calculos sobre el conjunto de datos de entrenamiento para escalarlos 
+	X_test = scaler.transform(X_test) 
+	# aplica los calculos sobre el conjunto de datos de prueba para escalarlos
 		
 		
-	\end{lstlisting}
+\end{lstlisting}
 	
-	Y, para el caso de StandarScaler es el siguiente:
-	\begin{lstlisting}[style=mypython, caption={Normalización mediante StandarScaler}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
+Y, para el caso de StandarScaler es el siguiente:
+\begin{lstlisting}[style=mypython, caption={Normalización mediante StandarScaler}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
 		
 	scaler = preprocessing.StandardScaler()
 
@@ -377,80 +441,80 @@ La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor q
 	# aplica los calculos sobre el conjunto de datos de prueba para escalarlos
 	 
 		
-	\end{lstlisting}
+\end{lstlisting}
 	
-	Realizando pruebas de exactitud y precisión, se pudo observar que ambos casos proporcionan resultados muy similares en los dos ámbitos, aunque definitivamente no funcionan igual, esto se puede observar en las gráficas que se muestran a continuación, que al realizar el escalado de forma distinta varían las densidades de muestras en el conjunto. Además, también se puede observar que si tiene un efecto claro sobre el conjunto de datos donde se equiparan los resultados obtenidos mucho más, haciendo la muestra más homogénea.
-	%Ponerlo más claro, explicar que la distribución normal se centra sobre un valor medio distinto y también las diferencias relativas entre los datos cambian
+Realizando pruebas de exactitud y precisión, se pudo observar que ambos casos proporcionan resultados muy similares en los dos ámbitos, aunque definitivamente no funcionan igual, esto se puede observar en las gráficas que se muestran a continuación, que al realizar el escalado de forma distinta varían las densidades de muestras en el conjunto. Además, también se puede observar que si tiene un efecto claro sobre el conjunto de datos donde se equiparan los resultados obtenidos mucho más, haciendo la muestra más homogénea.
+%Ponerlo más claro, explicar que la distribución normal se centra sobre un valor medio distinto y también las diferencias relativas entre los datos cambian
 	
-	\begin{figure}[!ht]
-		\centering
-		\includegraphics[width=1\textwidth]{Figuras/GraficaNormalizado.png}
-		\caption{Gráfica de variación de la densidad y el escalado de los datos }
-		\label{Mennekes}
-	\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\textwidth]{Figuras/GraficaNormalizado.png}
+	\caption{Gráfica de variación de la densidad y el escalado de los datos }
+	\label{Mennekes}
+\end{figure}
 	
 	
-	\subsubsection{Análisis de componentes principales (PCA)}
-	Una vez se ha llevado a cabo la normalización de los 3 conjuntos de datos (original, original con undersampling y original con oversampling), se procederá a realizar el PCA para buscar conjuntos de ejes de coordenadas en los que algunas de las dimensiones no sean necesarias para estos 3 conjuntos de datos.
+\subsection{Análisis de componentes principales (PCA)}
+Una vez se ha llevado a cabo la normalización de los 3 conjuntos de datos (original, original con undersampling y original con oversampling), se procederá a realizar el PCA para buscar conjuntos de ejes de coordenadas en los que algunas de las dimensiones no sean necesarias para estos 3 conjuntos de datos.
 	
-	Para ello se utilizará el algoritmo \textit{PCA} implementando la librería \textit{scikit-learn}. Inicialmente utilizaremos el algoritmo sin parámetros para analizar el porcentaje de varianza de todos los componentes utilizando \textit{explained\_variance\_ratio\_}, que devuelve una lista en este caso, con 22 elementos, donde cada elemento de la lista indica el porcentaje de variabilidad que representa ese componente. Además, sumando estos porcentajes de variabilidad se consigue saber la varianza acumulada correspondiente al número de componentes utilizado,s cumpliéndose siempre que la suma de todos los elementos de la lista dará 1 como resultado. El código que se ha utilizado para obtener la varianza y la varianza acumulada es el siguiente:
-	\begin{lstlisting}[style=mypython, caption={Varianza y varianza acumulada de los componentes}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
+Para ello se utilizará el algoritmo \textit{PCA} implementando la librería \textit{scikit-learn}. Inicialmente utilizaremos el algoritmo sin parámetros para analizar el porcentaje de varianza de todos los componentes utilizando \textit{explained\_variance\_ratio\_}, que devuelve una lista en este caso, con 22 elementos, donde cada elemento de la lista indica el porcentaje de variabilidad que representa ese componente. Además, sumando estos porcentajes de variabilidad se consigue saber la varianza acumulada correspondiente al número de componentes utilizado,s cumpliéndose siempre que la suma de todos los elementos de la lista dará 1 como resultado. El código que se ha utilizado para obtener la varianza y la varianza acumulada es el siguiente:
+\begin{lstlisting}[style=mypython, caption={Varianza y varianza acumulada de los componentes}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
 		
-		mypca = PCA()
-		mypca.fit(X_train)
+	mypca = PCA()
+	mypca.fit(X_train)
 		
-		mypca.explained_variance_ratio_	#	muestra todos los componentes de la lista
+	mypca.explained_variance_ratio_	#	muestra todos los componentes de la lista
 		
-		mypca.explained_variance_ratio_.sum()  # Suma todos los elementos de la lista 
+	mypca.explained_variance_ratio_.sum()  # Suma todos los elementos de la lista 
 		
-		print("\n Varianza que aporta cada componente:")
-		variance = mypca.explained_variance_ratio_
-		print(variance)
+	print("\n Varianza que aporta cada componente:")
+	variance = mypca.explained_variance_ratio_
+	print(variance)
 		
-		print("\n Varianza acumulada:")
-		acumvar = variance.cumsum()
+	print("\n Varianza acumulada:")
+	acumvar = variance.cumsum()
 		
-		for i in range(len(acumvar)):
-		print(f" {(i+1):2} componentes: {acumvar[i]:.8f} ")		
-	\end{lstlisting}
+	for i in range(len(acumvar)):
+	print(f" {(i+1):2} componentes: {acumvar[i]:.8f} ")		
+\end{lstlisting}
 	
-	Conocidos estos porcentajes de varianza acumulada se pueden representar en una gráfica para poder ver claramente cual es la cantidad de componentes que se debería utilizar para hacer PCA.
+Conocidos estos porcentajes de varianza acumulada se pueden representar en una gráfica para poder ver claramente cual es la cantidad de componentes que se debería utilizar para hacer PCA.
 	
-		\begin{figure}[H]
-		\centering
-		\includegraphics[width=1.1\textwidth]{Figuras/GraficaVarianzaAcumulada.png}
-		\caption{Gráfica de varianza acumulada }
-		\label{Varianza_acumulada}
-	\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.1\textwidth]{Figuras/GraficaVarianzaAcumulada.png}
+	\caption{Gráfica de varianza acumulada }
+	\label{Varianza_acumulada}
+\end{figure}
 	
-	Aquí se puede observar como a partir del decimoquinto componente la varianza acumulada tiene un valor muy cercano al 95\%, esto quiere decir que los datos que se van a perder se corresponden con el 5\% de los datos totales. Es por ello que se decide tomar un total de 15 componentes para realizar el cálculo del PCA, ya que con menos componentes las pérdidas de datos se consideran demasiado grandes todavía. Para confirmar que el \textit{Projection loss} no es demasiado alto, se utilizará el siguiente código que nos devolverá su valor:
-		\begin{lstlisting}[style=mypython, caption={Projection loss para 15 componentes}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
+Aquí se puede observar como a partir del decimoquinto componente la varianza acumulada tiene un valor muy cercano al 95\%, esto quiere decir que los datos que se van a perder se corresponden con el 5\% de los datos totales. Es por ello que se decide tomar un total de 15 componentes para realizar el cálculo del PCA, ya que con menos componentes las pérdidas de datos se consideran demasiado grandes todavía. Para confirmar que el \textit{Projection loss} no es demasiado alto, se utilizará el siguiente código que nos devolverá su valor:
+\begin{lstlisting}[style=mypython, caption={Projection loss para 15 componentes}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
 		
-		mypca15 = PCA(n_components=15)
-		mypca15.fit(X_train)
-		values_proj15 = mypca15.transform(X_train)
+	mypca15 = PCA(n_components=15)
+	mypca15.fit(X_train)
+	values_proj15 = mypca15.transform(X_train)
 		
-		X_projected15 = mypca15.inverse_transform(values_proj15)
-		loss15 = ((X_train - X_projected15) ** 2).mean()
+	X_projected15 = mypca15.inverse_transform(values_proj15)
+	loss15 = ((X_train - X_projected15) ** 2).mean()
 		
-		print("Projection loss (15 components): " + str(loss15)) 
+	print("Projection loss (15 components): " + str(loss15)) 
 		
-	\end{lstlisting}
+\end{lstlisting}
 	
-	Obteniendo finalmente un valor de \textit{Proyection loss} del 5.07\% reduciendo las dimensiones del conjunto de 22 a 15, por lo que se considera aceptable.
+Obteniendo finalmente un valor de \textit{Proyection loss} del 5.07\% reduciendo las dimensiones del conjunto de 22 a 15, por lo que se considera aceptable.
 	
-	\subsection{Descripción de las pruebas realizadas y las gráficas obtenidas}
-	Una vez hemos terminado de realizar todas las técnicas de preprocesado tenemos finalmente 6 posibles conjuntos a probar (original, original + PCA, oversampling sin PCA, oversampling + PCA, undersampling sin PCA, undersampling + PCA). A estos conjuntos de datos se les aplicarán los algoritmos de clasificación que se han seleccionado, en este caso, \textit{k-nn} y \textit{SVM}.
+\section{Descripción de las pruebas realizadas y las gráficas obtenidas}
+Una vez hemos terminado de realizar todas las técnicas de preprocesado tenemos finalmente 6 posibles conjuntos a probar (original, original + PCA, oversampling sin PCA, oversampling + PCA, undersampling sin PCA, undersampling + PCA). A estos conjuntos de datos se les aplicarán los algoritmos de clasificación que se han seleccionado, en este caso, \textit{k-nn} y \textit{SVM}.
 	
-	\subsubsection{Algoritmo de clasificación por vecindad k-nn}
-	Este será el primer algoritmo de clasificación que se utilice. A la hora de determinar un dato perteneciente a una clase, se estima que aquellos datos pertenecientes a la misma clase se encontrarán próximos en el espacio de representación, siendo estos los \textgravedbl vecinos\textacutedbl representados en el código por la letra k. 
+\subsection{Algoritmo de clasificación por vecindad k-nn}
+Este será el primer algoritmo de clasificación que se utilice. A la hora de determinar un dato perteneciente a una clase, se estima que aquellos datos pertenecientes a la misma clase se encontrarán próximos en el espacio de representación, siendo estos los \textgravedbl vecinos\textacutedbl representados en el código por la letra k. 
 	
-	Las pruebas que se realizarán serán para un rango de k de entre 5 y 100, tratando de buscar un valor que otorgue buenos resultados. Además, se intentará que este valor de k no sea ni muy bajo ni muy alto, ya que  un valor de k alto da lugar a un modelo muy estable y poco sensible al ruido, pero puede perder detalles. En cambio, un valor de k bajo que proporciona un modelo flexible, que se adapta muy bien a variaciones y detalles, pero que es muy sensible al ruido.
-	\\
+Las pruebas que se realizarán serán para un rango de k de entre 5 y 100, tratando de buscar un valor que otorgue buenos resultados. Además, se intentará que este valor de k no sea ni muy bajo ni muy alto, ya que  un valor de k alto da lugar a un modelo muy estable y poco sensible al ruido, pero puede perder detalles. En cambio, un valor de k bajo que proporciona un modelo flexible, que se adapta muy bien a variaciones y detalles, pero que es muy sensible al ruido.
+\\
 
-	Para realizar pruebas de una forma cómoda y comprobar cual es el mejor caso se ha empleado un bucle \textit{for} que permite obtener el valor de exactitud del modelo y el tiempo de entrenamiento empleado para cada valor de \textit{k}. De esta manera, se realiza el cálculo de exactitud y tiempo de entrenamiento 5 veces para cada valor de k para, posteriormente,  escoger el mejor caso de los 5 calculados.
+Para realizar pruebas de una forma cómoda y comprobar cual es el mejor caso se ha empleado un bucle \textit{for} que permite obtener el valor de exactitud del modelo y el tiempo de entrenamiento empleado para cada valor de \textit{k}. De esta manera, se realiza el cálculo de exactitud y tiempo de entrenamiento 5 veces para cada valor de k para, posteriormente,  escoger el mejor caso de los 5 calculados.
 	
-	\begin{lstlisting}[style=mypython, caption={Código del algoritmo de clasificación k-nn}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
+\begin{lstlisting}[style=mypython, caption={Código del algoritmo de clasificación k-nn}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
 		
 		Score = np.zeros(95)
 		Posicion = np.zeros(95)
@@ -653,7 +717,7 @@ Para la aplicación de PCA se puede observar como, al disminuir el número de di
 
 Por lo tanto, si nos guiásemos unicamente por la tabla resumen, el mejor caso sería para el conjunto de datos original sin PCA. Esta afirmación tiene ciertos matices ya que este modelo podría tener algún tipo de sesgo a la hora de predecir debido al propio conjunto de datos. Esto se debe a que la correlación entre setas venenosas y comestibles no es 50/50 sino que se tienen 1600 casos adicionales de setas comestibles en comparación con las setas venenosas. Es por esto que finalmente se decide que el modelo óptimo es el que se corresponde con el conjunto de datos con oversampling sin PCA aplicando un valor de k=10, ya que se busca priorizar la exactitud del modelo frente a un tiempo de entrenamiento más bajo. Por último, no se muestran las matrices de confusión en estos casos ya que para una precisión de 1.00 no son muy representativas, no hay ningún error que se pueda observar.
 
-\subsubsection{Algoritmo de clasificación mediante métodos Kernel (SVM)}
+\subsection{Algoritmo de clasificación mediante métodos Kernel (SVM)}
 	Ahora se realizarán las pruebas sobre los distintos conjuntos de datos con el algoritmo SVM. El algoritmo SVM se caracteriza por minimizar el riesgo estructural para reducir la posibilidad de cometer errores futuros. Dentro de este algoritmo, este se puede modificar y variar de dos formas, campbiando el valor de C o cambiando el tipo de kernel. 
 	\\
 	
