@@ -769,7 +769,396 @@ Por lo tanto, si nos guiásemos unicamente por la tabla resumen, el mejor caso s
 	
 	Con este código obtendremos de resultado final el caso para el valor máximo de exactitud y el caso para el tiempo mínimo de entrenamiento, para el modelo sin balancear y sin PCA el caso para mayor precisión se da para C=10, mientras que el tiempo de entrenamiento mínimo se dió para C=7, por lo que, para poder estudiar más en detalle todos los casos y ver claramente que opción escoger, se mostrarán las gráficas para cada conjunto de datos a estudiar las cuales servirán como guía:
 	
+	\begin{figure}[H]
+		\centering
+		
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/PrecModeloOriginalSinPCALinear.png}
+			\caption{\centering Precisión del modelo sin PCA}
+			\label{fig:sub1}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/TimeModeloOriginalSinPCALinear.png}
+			\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
+			\label{fig:sub2}
+		\end{subfigure}
+		
+		\caption{Precisión y tiempo de entrenamiento del modelo original sin PCA}
+		\label{fig:comparacion}
+	\end{figure}
 	
+	Por lo tanto, se considera que el mejor caso es para C=7 donde se consigue una precisión del valor de 0.998 y en un tiempo de entrenamiento de 63.122 ms. Ahora se realizará el mismo proceso para el conjunto de datos original aplicandole PCA:
+	
+	\begin{figure}[H]
+		\centering
+		
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/PrecModeloOriginalConPCALinear.png}
+			\caption{\centering Precisión del modelo con PCA}
+			\label{fig:sub1}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/TimeModeloOriginalConPCALinear.png}
+			\caption{\centering Tiempo de entrenamiento del modelo con PCA}
+			\label{fig:sub2}
+		\end{subfigure}
+		
+		\caption{Precisión y tiempo de entrenamiento del modelo original con PCA}
+		\label{fig:comparacion}
+	\end{figure}
+	
+	Para este caso se puede observar un dato muy curioso, la exactitud se mantiene constante, no se ve afectada por la variación de C y el tiempo de entrenamineto aumenta de forma drástica cuanto mayor es C, es por ello que nuestro mejor caso será para C=1 con una exactitud del 0.929 y su tiempo de entrenamiento será de 173.155 ms, un valor muy superior a los obtenidos anteriormente. Ahora se aplicará undersampling y se probará el conjunto de datos sin PCA:
+	
+	\begin{figure}[H]
+		\centering
+		
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/PrecModeloUndersamplingSinPCALinear.png}
+			\caption{\centering Precisión del modelo sin PCA}
+			\label{fig:sub1}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/TimeModeloUndersamplingSinPCALinear.png}
+			\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
+			\label{fig:sub2}
+		\end{subfigure}
+		
+		\caption{Precisión y tiempo de entrenamiento del modelo con undersampling sin PCA}
+		\label{fig:comparacion}
+	\end{figure}
+	
+	Para este caso se puede ver de manera clara que los mejores resultados se obtienen para C=2, se llega a una precisión alta, 0.9838 y en un tiempo reducido para los tiempos habituales en SVM, 22.786 ms. Una vez conocido este valor se aplicará PCA al modelo con undersampling y se estudiarán los resultados:
+	
+	\begin{figure}[H]
+		\centering
+		
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/PrecModeloUndersamplingConPCALinear.png}
+			\caption{\centering Precisión del modelo con PCA}
+			\label{fig:sub1}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/TimeModeloUndersamplingConPCALinear.png}
+			\caption{\centering Tiempo de entrenamiento del modelo con PCA}
+			\label{fig:sub2}
+		\end{subfigure}
+		
+		\caption{Precisión y tiempo de entrenamiento del modelo con undersampling con PCA}
+		\label{fig:comparacion}
+	\end{figure}
+	
+	A pesar de que para el caso de aplicación de undersampling sin PCA se conseguían unos resultados muy buenos, mejores que para el mismo caso de aplicación de k-nn, en el momento en el que se le aplica PCA la exactitud se desploma casi un 0.2, el mejor caso se da para C=4 donde se tiene una precisión de 0.817 para un tiempo de entrenamiento de 93.559 ms. Este conjunto de datos se puede observar que tiene un desempeño claramente peor al resto mostrado, esto puede ser debido a la reducción del número de componentes, que condiciona y reduce la capacidad de predecir los resultados para un conjunto de datos más pequeño que para el caso original, esto quiere decir que los datos que las dimensiones que se han reducido han reducido enormemente el margen que hay entre el plano linear que separa los valores y los puntos más cercanos a este margen. Ahora se realizarán las pruebas para el caso de oversampling sin PCA:
+	
+	\begin{figure}[H]
+		\centering
+		
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/PrecModeloOversamplingSinPCALinear.png}
+			\caption{\centering Precisión del modelo sin PCA}
+			\label{fig:sub1}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/TimeModeloOversamplingSinPCALinear.png}
+			\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
+			\label{fig:sub2}
+		\end{subfigure}
+		
+		\caption{Precisión y tiempo de entrenamiento del modelo con oversampling sin PCA}
+		\label{fig:comparacion}
+	\end{figure}
+	
+	Estas gráficas nos muestran los datos para las pruebas realizadas y, aunque se llega al 100\% de exactitud, se considera que el mejor caso es para C=4 donde la exactitud es de 0.996 y el tiempo de entrenamiento es de 73.350 ms, mucho más bajo que para C=10. Por último se comprobará que valores se pueden obtener para el conjunto de datos aplicando PCA:
+	
+	\begin{figure}[H]
+		\centering
+		
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/PrecModeloOversamplingConPCALinear.png}
+			\caption{\centering Precisión del modelo con PCA}
+			\label{fig:sub1}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/TimeModeloOversamplingConPCALinear.png}
+			\caption{\centering Tiempo de entrenamiento del modelo con PCA}
+			\label{fig:sub2}
+		\end{subfigure}
+		
+		\caption{Precisión y tiempo de entrenamiento del modelo con oversampling con PCA}
+		\label{fig:comparacion}
+	\end{figure}
+	
+	Vistos los resultados obtenidos por las gráficas, se determina que para este caso la mejor opción es para C=1 donde se obtiene una precisión de 0.932 con un tiempo de entrenamiento de 300.632 ms.
+	\\
+	
+	Ahora, con la intención de sacar unas conclusiones a cerca de los resultados obtenidos, se decide representar los distintos resultados en una tabla:
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			Conjunto de datos& Exactitud del modelo & Tiempo de entrenamiento & Valor de C \\ \hline
+			Original sin PCA & 0.998 & 63.122 ms & C=7 \\ \hline
+			Original con PCA & 0.929 & 173.155 ms & C=1 \\ \hline
+			Con undersampling sin PCA & 0.984 & 22.786 ms & C=2 \\ \hline
+			Con undersampling con PCA & 0.817 & 93.559 ms & C=4 \\ \hline
+			Con oversampling sin PCA & 0.996 & 73.350 ms & C=4 \\ \hline
+			Con oversampling con PCA & 0.932 & 300.632 ms & C=1 \\ \hline
+		\end{tabular}
+		\caption{Resultados obtenidos para los conjuntos de datos}
+		\label{tab:leyenda-dual}
+	\end{table}
+	
+	Analizando esta tabla se pueden observar varios detalles que diferencian el SVM linear con el k-nn, en este caso el SVM ofrece peores resultados en todos los sentidos, tiempos de entrenamiento mucho más grandes y precisiones más bajas, ya que en ninguno de estos valores se alcanza el 100\% de precisión mientras que con k-nn eso se conseguía para 4 conjuntos de datos. Para este caso, se puede observar que los mejores resultados se obtienen para undersampling sin PCA y el conjunto de datos original sin PCA, aunque ninguno de estos casos se acerca a la precisión y rapidez de entrenamiento logrado por el k-nn.
+	\\
+	
+	Además, otro punto a tener en cuenta es que se vuelve a repetir el caso que, de forma genérica, se obtienen mejores resultados sin aplicar el PCA en preprocesado que aplicandolo, esto se puede ver tanto en tiempos de entrenamiento como en precisión del modelo, destacando el caso de undersampling con PCA, donde baja la precisión del modelo 0.16 y aumenta el tiempo de entrenamiento 70 ms únicamente con la diferencia de haber aplicado el PCA o no.
+	\\
+	
+	En estas pruebas se decidió tomar C en un rango de valores entre 1, que es el valor que se le suele dar por defecto, y 10 que es un valor donde el algoritmo se acerca más a realizar un sobreajuste sobre el conjunto de datos aunque, tras los datos obtenidos, se considera que el rango de C es adecuado, valores más altos implican mayores tiempos de entrenamiento y además ya se están consiguiendo precisiones muy altas en la mayoría de los modelos.
+	\\
+	
+	Para terminar de decidir que conjunto de datos tiene el modelo más ajustado, se analizarán las matrices de confusión del conjunto de datos original y con undersampling sin la aplicación de PCA para ver que tipo de errores tiene cada modelo.
+	
+		\begin{figure}[H]
+		\centering
+		
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/MatrizConfusionOriginalLinear.png}
+			\caption{\centering Matriz de confusión del conjunto de datos original sin PCA}
+			\label{fig:sub1}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/MatrizConfusionUndersamplingLinear.png}
+			\caption{\centering Matriz de confusión del conjunto de datos con undersampling sin PCA}
+			\label{fig:sub2}
+		\end{subfigure}
+		
+		\caption{Matrices de confusión de los mejores modelos de SVM con kernel Linear}
+		\label{fig:comparacion}
+				
+	\end{figure}
+	
+	Como se puede observar aquí, ninguno de los dos caso comete errores clasificando setas venenosas como comestibles que es nuestra principal preocupación, ya que una persona podría resultar herida. Sin embargo, dado que el conjunto de datos original esta desbalanceado y la diferencia es infima en el error, se ha decidido que nuestro mejor modelo es el que emplea el undersampling sin PCA, este modelo tiene menor tiempo de entrenamiento, tiene una precisión muy alta y no hay el riesgo de que el modelo tome algún sesgo basado en la dispariedad del conjunto de datos, donde, en el conjunto de datos original, hay 1600 muestras adicionales de setas comestibles que venenosas.
+	\\
+	
+	Ahora, una vez se ha estudiado la aplicación de un kernel lineal, se estudiará la aplicación de un kernel no lineal con el kernel RBF. Este es el kernel más utilizado con el algoritmo SVM por su capacidad para adaptarse a cualquier tipo de datos ya que permite crear fronteras de decisión no lineales, muy flexibles y capaces de adaptarse a datos complejos. Para esto este algoritmo busca similitudes entre aquellos puntos muy cercanos entre si y, al proyectarlos en un espacio con muchas dimensiones permite dibujar fronteras curvas y ajustadas a las necesidades del conjunto de datos. Por lo tanto, ahora se aplicará a los distintos conjuntos de datos para estudiar su comportamiento:
+	
+	\begin{figure}[H]
+		\centering
+		
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/PrecModeloOriginalSinPCARBF.png}
+			\caption{\centering Precisión del modelo sin PCA}
+			\label{fig:sub1}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/TimeModeloOriginalSinPCARBF.png}
+			\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
+			\label{fig:sub2}
+		\end{subfigure}
+		
+		\caption{Precisión y tiempo de entrenamiento del modelo original sin PCA}
+		\label{fig:comparacion}
+	\end{figure}
+	
+	Donde se puede observar que el mejor caso es para C=10 ya que se cuenta con un tiempo de entrenamiento de 46.043 ms, mientras el resto de la exactitud permanece constante en 1.00. Se comprobará ahora como se comporta el algoritmo con el mismo conjunto de datos aplicando PCA:
+	
+	\begin{figure}[H]
+	\centering
+	
+	\begin{subfigure}[c]{0.7\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Figuras/PrecModeloOriginalConPCARBF.png}
+		\caption{\centering Precisión del modelo con PCA}
+		\label{fig:sub1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[c]{0.7\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Figuras/TimeModeloOriginalConPCARBF.png}
+		\caption{\centering Tiempo de entrenamiento del modelo con PCA}
+		\label{fig:sub2}
+	\end{subfigure}
+	
+	\caption{Precisión y tiempo de entrenamiento del modelo original con PCA}
+	\label{fig:comparacion}
+\end{figure}	
+	
+	Atendiendo a los mismos criterios que para el caso anterior, para este modelo el mejor caso es para C=6, con un tiempo de entrenamiento de 37.952 ms ya que es donde se puede observar que el tiempo de entrenamiento es menor, mientras que la precisión se queda constante en 1.00. Ahora se realizará la comprobación para el caso con undersampling sin PCA, para ver si con un conjunto de datos más pequeño el modelo es capaz de conseguir un 1.00 de exactitud:
+	
+		\begin{figure}[H]
+		\centering
+		
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/PrecModeloUndersamplingSinPCARBF.png}
+			\caption{\centering Precisión del modelo sin PCA}
+			\label{fig:sub1}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/TimeModeloUndersamplingSinPCARBF.png}
+			\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
+			\label{fig:sub2}
+		\end{subfigure}
+		
+		\caption{Precisión y tiempo de entrenamiento del modelo con undersampling sin PCA}
+		\label{fig:comparacion}
+	\end{figure}	
+	
+	Observando las dos gráficas se puede ver que el mejor caso es para C=9 ya que es cuando se consigue un menor tiempo, 36.185 ms, de tiempo de entrenamiento. Ahora se estudiará el mismo conjunto de datos aplicando PCA:
+	
+	\begin{figure}[H]
+		\centering
+		
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/PrecModeloUndersamplingConPCARBF.png}
+			\caption{\centering Precisión del modelo con PCA}
+			\label{fig:sub1}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/TimeModeloUndersamplingConPCARBF.png}
+			\caption{\centering Tiempo de entrenamiento del modelo con PCA}
+			\label{fig:sub2}
+		\end{subfigure}
+		
+		\caption{Precisión y tiempo de entrenamiento del modelo con undersampling con PCA}
+		\label{fig:comparacion}
+	\end{figure}	
+	
+	Comparando las distintas gráficas que se han ido mostrando, del conjunto original y del conjunto con undersampling, se puede observar que la C no afecta al funcionamiento del algoritmo sobre el conjunto de datos,  en todos los casos la precisión se mantiene prácticamente constante sin importar el valor de C, además, para un valor de C alto el algoritmo debería tender a sobreajustar más, esto implica, mayores tiempos de entrenamiento y una mayor precisión para C=10 que para C=1, mientras que en este caso se puede ver que para C=6 el tiempo de entrenamiento es de 28.918 ms, un valor bastante más bajo que para C=1 o para C=2, además, en el caso de la precisión del modelo, tampoco se esta cumpliendo. Sin embargo, ahora se hará el mismo proceso para los dos conjuntos de datos a los que se les ha aplicado oversampling:
+	
+		\begin{figure}[H]
+		\centering
+		
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/PrecModeloOversamplingSinPCARBF.png}
+			\caption{\centering Precisión del modelo sin PCA}
+			\label{fig:sub1}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/TimeModeloOversamplingSinPCARBF.png}
+			\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
+			\label{fig:sub2}
+		\end{subfigure}
+		
+		\caption{Precisión y tiempo de entrenamiento del modelo con oversampling sin PCA}
+		\label{fig:comparacion}
+	\end{figure}	
+	
+	Para el modelo de oversampling sin PCA el mejor caso se da para C=6 donde el tiempo de entrenamiento es de 56.677 ms y la precisión de 1.00. Por último se representará el modelo de oversampling con PCA:
+	
+			\begin{figure}[H]
+		\centering
+		
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/PrecModeloOversamplingConPCARBF.png}
+			\caption{\centering Precisión del modelo con PCA}
+			\label{fig:sub1}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[c]{0.7\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figuras/TimeModeloOversamplingConPCARBF.png}
+			\caption{\centering Tiempo de entrenamiento del modelo con PCA}
+			\label{fig:sub2}
+		\end{subfigure}
+		
+		\caption{Precisión y tiempo de entrenamiento del modelo con oversampling con PCA}
+		\label{fig:comparacion}
+	\end{figure}	
+	
+	En estas gráficas, al igual que para los otros 5 conjuntos estudiados anteriormente, la precisión se mantiene constante con un valor de 1.00 por lo que el mejor caso lo define el tiempo de entrenamiento que para el caso de C=10 es de 47.668 ms. A continuación se hará una tabla para poner todos los datos un poco más en perspectiva:
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			Conjunto de datos& Exactitud del modelo & Tiempo de entrenamiento & Valor de C \\ \hline
+			Original sin PCA & 1.000 & 46.043 ms & C=10 \\ \hline
+			Original con PCA & 1.000 & 37.952 ms & C=6 \\ \hline
+			Con undersampling sin PCA & 0.900 & 36.185 ms & C=9 \\ \hline
+			Con undersampling con PCA & 0.896 & 28.918 ms & C=6 \\ \hline
+			Con oversampling sin PCA & 1.000 & 56.677 ms & C=6 \\ \hline
+			Con oversampling con PCA & 1.000 & 47.668 ms & C=10 \\ \hline
+		\end{tabular}
+		\caption{Resultados obtenidos para los conjuntos de datos}
+		\label{tab:leyenda-dual}
+	\end{table}
+	
+	Para el kernel RBF se pueden observar varios detalles interesantes, en primer lugar su precisión y tiempo de entrenamiento no se ven afectados por el valor de C, sino que al contrario, para valores de C más altos, que es cuando más debería ajustar el modelo, se obtienen los mejores tiempos de entrenamiento y, da igual que valor de C tomes, que la exactitud del modelo no varía.
+	\\
+	
+	Otro punto importante es el hecho de que para este kernel, aquellos conjuntos de datos a los que se les ha aplicado PCA tienen un tiempo de entrenamiento más bajo que los casos en los que no se aplica, en contraposición con los algoritmos vistos anteriormente. Esto nos quiere decir que, mientras que los otros algoritmos no se veían especialmente afectados por la reducción de dimensionalidad, a la hora de aplicar un kernel no lineal si puede ser de gran ayuda, además que la disminución de la precisión, como se puede ver en los dos casos de undersampling, es prácticamente despreciable.
+	\\
+	
+	En cuanto al mejor caso, claramente es mejor aplicar PCA para este algoritmo y se buscará tener una precisión del 1.00 ya que se tienen varios casos. El conjunto de datos original con PCA es el modelo más adecuado, tiene un valor de C=6 por lo que no hay demasiado sobreajuste y tiene el menor tiempo de entrenamiento de aquellos casos que mantienen una precisión del 100\%.
+	
+	\section{Conclusiones finales}
+	
+	En conclusión, a la hora de estudiar los algoritmos aplicados, se puede ver que el mejor caso es claramente el algoritmo k-nn, esto se debe principalmente, a que aunque SVM suele ser más preciso, en este caso con el conjunto de datos que se tenía, ya se lograba suficiente precisión con un algoritmo mas sencillo como k-nn y con unos tiempos de entrenamiento mucho más bajos, si bien para otro tipo de conjuntos de datos con menor cantidad de datos o más complejos el SVM puede ofrecer mejores resultados, sobre todo con la aplicación de kernels no lineales, ya que estos permiten trabajar con una mayor cantidad de dimensiones y se ven más beneficiados por las aplicaciones de PCA, que para k-nn y SVM con kernels lineales, suponen un aumento en el error de predicción y aumentos en los tiempos de entrenamiento. Por último, se expone todo lo anteriormente comentado en una tabla donde se pueden ver todos los casos:
+	
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			Conjunto de datos k-nn& Exactitud del modelo & Tiempo de entrenamiento & Nº Vecinos \\ \hline
+			Original sin PCA & 1.000 & 5.38 ms & k=7 \\ \hline
+			Original con PCA & 1.000 & 7.20 ms & k=8 \\ \hline
+			Con undersampling sin PCA & 0.985 & 4.96 ms & k=7 \\ \hline
+			Con undersampling con PCA & 0.981 & 6.03 ms & k=6 \\ \hline
+			Con oversampling sin PCA & 1.000 & 6.44 ms & k=10 \\ \hline
+			Con oversampling con PCA & 1.000 & 6.93 ms & k=8 \\ \hline
+			Conjunto de datos SVM linear& Exactitud del modelo & Tiempo de entrenamiento & Valor de C \\ \hline
+			Original sin PCA & 0.998 & 63.122 ms & C=7 \\ \hline
+			Original con PCA & 0.929 & 173.155 ms & C=1 \\ \hline
+			Con undersampling sin PCA & 0.984 & 22.786 ms & C=2 \\ \hline
+			Con undersampling con PCA & 0.817 & 93.559 ms & C=4 \\ \hline
+			Con oversampling sin PCA & 0.996 & 73.350 ms & C=4 \\ \hline
+			Con oversampling con PCA & 0.932 & 300.632 ms & C=1 \\ \hline
+			Conjunto de datos SVM RBF& Exactitud del modelo & Tiempo de entrenamiento & Valor de C \\ \hline
+			Original sin PCA & 1.000 & 46.043 ms & C=10 \\ \hline
+			Original con PCA & 1.000 & 37.952 ms & C=6 \\ \hline
+			Con undersampling sin PCA & 0.900 & 36.185 ms & C=9 \\ \hline
+			Con undersampling con PCA & 0.896 & 28.918 ms & C=6 \\ \hline
+			Con oversampling sin PCA & 1.000 & 56.677 ms & C=6 \\ \hline
+			Con oversampling con PCA & 1.000 & 47.668 ms & C=10 \\ \hline
+		\end{tabular}
+		\caption{Resultados obtenidos para todas las pruebas realizadas}
+		\label{tab:leyenda-dual}
+	\end{table}
 	
 	
 	\newpage
