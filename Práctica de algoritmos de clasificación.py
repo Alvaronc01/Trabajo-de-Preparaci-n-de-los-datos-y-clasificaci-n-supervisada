@@ -70,6 +70,75 @@ def PCA(X_train):
 
     return X_projected15
 
+def Caso_1_Datos_originales(X_train, X_test, y_train, y_test):
+    print(X_train[1].shape)
+    for i in range(1, 6):
+        unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
+        sm = NearMiss() #Inicializa el algoritmo NearMiss y lo guarda en la variable "sm"
+        X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
+        
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+
+    #Caso 1: Datos originales
+    Score = np.zeros(95)
+    Score_desvest = np.zeros(95)
+    Posicion = np.zeros(95)
+    
+    for k in range(5,100):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            neigh = KNeighborsClassifier(n_neighbors = k)
+            neigh.fit(X_train[i],y_train[i])
+            y_predict_knn = neigh.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = neigh.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = k
+        Score[k-5] = np.mean(Score_ind)
+        Score_desvest[k-5] = np.std(Score_ind)
+        Posicion[k-5] = k 
+        print("Exactitud media obtenida con k-NN para k={k}: ".format(k=k), Score[k-5])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de K con mayor exactitud son: ", Top_5)
+    print(f"El valor de K con mayor precisión es: K = ",Score.argmax()+5)
+    print(f"El valor de K con menor desviación es: K = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_k = Score.argmax()+5 #Mejor valor de K
+    neigh = KNeighborsClassifier(n_neighbors = mejor_k)
+    neigh.fit(X_train[1],y_train[1])
+    y_predict_knn = neigh.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_K = neigh.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de K es de: ",Exactiud_K)
+    print("El tiempo de ejecución para el mejor valor de K es de: ",Time,"(ms)")
+    
+
+    tabla_KNN = pd.DataFrame({
+        "Valor de k": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_KNN)
+
+    tabla_KNN.to_csv("tabla_KNN_Caso 1.csv", index=False)
+
+    #Matriz de confusión
+    cm_kNN = confusion_matrix(y_test[1], y_predict_knn, labels=[0,1])
+    disp_knn = ConfusionMatrixDisplay(confusion_matrix=cm_kNN,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_knn.plot(cmap=plt.cm.Blues)
+    plt.title("k-NN: conjunto de datos original")
+    plt.savefig("matriz_confusion_knn_Caso 1.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_k, Exactiud_K
+
 
 def main():
     df_orig=pd.read_csv('mushroms1.csv', na_values=["?"]) #Lectura de los datos y conversión del símbolo "?" a NaN
@@ -133,66 +202,15 @@ def main():
         # 2. Ahora sí podemos asignar directamente a la "llave" i
         X_train[i], X_test[i], y_train[i], y_test[i] = train_test_split(X_readed, y_readed, random_state=i)
         #Normalizado Standard
-        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
-
-
-    Score = np.zeros(95)
-    Score_desvest = np.zeros(95)
-    Posicion = np.zeros(95)
-    Time = np.zeros(95)
-    #Caso 1: Datos originales
-    for k in range(5,100):
-        Score_ind=np.zeros(5)
-        Posicion_ind=np.zeros(5)
-        Time_ind=np.zeros(5)
-        for i in range(1,6):
-             
-
-            #Método KNN
-            ini = time.time()
-            neigh = KNeighborsClassifier(n_neighbors = k)
-            neigh.fit(X_train[i],y_train[i])
-            y_predict_knn = neigh.predict(X_test[i])
         
-            Time_ind[i-1] = (time.time() - ini)*1000
-            Score_ind[i-1] = neigh.score(X_test[i], y_test[i])
-            Posicion_ind[i-1] = k
-        Time[k-5] = np.mean(Time_ind)
-        Score[k-5] = np.mean(Score_ind)
-        Score_desvest[k-5] = np.std(Score_ind)
-        Posicion[k-5] = k
-        print(f"Tiempo entrenamiento para k={k}  = {Time[k-5]} ms") 
-        print("Exactitud media obtenida con k-NN para k={k}: ".format(k=k), Score[k-5])
-    Valor_maximo = np.max(Score)
-    Tiempo_min = np.min(Time)
-    print(f"El valor máximo de exactitud es de: {Valor_maximo}")
-    print(f"Y está situado en la posición: {Score.argmax()+1}")
-    print(f"El valor mínimo de tiempo es de: {Tiempo_min}") 
-    print(f"Y está situado en la posición: {Time.argmin()+1}")
+        #Normalizado MinMax
+        #X_train[i], X_test[i] = Normalizado_minmax(X_train[i], X_test[i])
 
-    # Creamos nuestra instancia de nuestro algoritmo KNN con K vecinos
-    
-    
-    mejor_k = Score.argmax()+5
-    neigh = KNeighborsClassifier(n_neighbors = mejor_k)
-    neigh.fit(X_train[1],y_train[1])
-    y_predict_knn = neigh.predict(X_test[1])
 
-    
+    Time_C1, K_C1, Exactitud_C1 =  Caso_1_Datos_originales(X_train, X_test, y_train, y_test)
 
-    tabla_KNN = pd.DataFrame({
-        "Valor de k": Posicion,
-        "Exactiud media": Score,
-        "Desviación": Score_desvest
-    })
-    print(tabla_KNN)
+    print(Time_C1, K_C1, Exactitud_C1)
 
-    #Matriz de confusión
-    cm_kNN = confusion_matrix(y_test[1], y_predict_knn, labels=[0,1])
-    disp_knn = ConfusionMatrixDisplay(confusion_matrix=cm_kNN,display_labels=['EDIBLE(0)','POISONOUS(1)'])
-    disp_knn.plot(cmap=plt.cm.Blues)
-    plt.title("Matriz de confusión k-NN")
-    plt.show()
 
 if __name__ == "__main__":
     main()
