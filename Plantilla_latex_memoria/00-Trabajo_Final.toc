@@ -10,9 +10,8 @@
 \contentsline {subsubsection}{\numberline {2.5.1}Undersampling}{8}{subsubsection.0.2.5.1}%
 \contentsline {subsubsection}{\numberline {2.5.2}Oversampling}{8}{subsubsection.0.2.5.2}%
 \contentsline {subsection}{\numberline {2.6}Normalizado}{9}{subsection.0.2.6}%
-\contentsline {subsection}{\numberline {2.7}Análisis de componentes principales (PCA)}{11}{subsection.0.2.7}%
+\contentsline {subsection}{\numberline {2.7}Análisis de componentes principales (PCA)}{10}{subsection.0.2.7}%
 \contentsline {section}{\numberline {3}Descripción de las pruebas realizadas y las gráficas obtenidas}{12}{section.0.3}%
 \contentsline {subsection}{\numberline {3.1}Algoritmo de clasificación por vecindad k-nn}{13}{subsection.0.3.1}%
 \contentsline {subsection}{\numberline {3.2}Algoritmo de clasificación mediante métodos Kernel (SVM)}{21}{subsection.0.3.2}%
-\contentsline {section}{\numberline {4}Conclusiones finales}{39}{section.0.4}%
-\contentsline {section}{\numberline {5}Bibliografía}{41}{section.0.5}%
+\contentsline {section}{\numberline {4}Bibliografía}{24}{section.0.4}%
