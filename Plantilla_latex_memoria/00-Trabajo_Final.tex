@@ -253,81 +253,14 @@ El hecho de que falten datos para alguno de los atributos dificulta que los algo
 
 Por otro lado, se observa que la columna \textit{Poisonous} es la que define la característica o atributo objetivo que permite clasificar cada seta en comestible o venenosa. Realizando un recuento de cuantas de las setas analizadas son comestibles o venenosas, se obtiene que 3768 son aptas para el consumo y las 2168 restantes no lo son. Esto refleja que el 63,48\% de las muestras son comestibles, lo que implica que los datos no están balanceados. Esto representa un problema para los algoritmos de clasificación, ya que provoca que el modelo determine de manera sesgada si una seta es apta o no para el consumo, tendiendo a considerarla como comestible. Este problema se abordará más adelante.
 
-A continuación, se muestra el código que se ha utilizado para realizar el análisis que se ha descrito en el presente apartado.
-
-\begin{lstlisting}[style=mypython, caption={Eliminar filas con información incompleta}, label={lst:eliminar-filas-con-información-incompleta}]
-	
-	df_orig=pd.read_csv('mushroms1.csv', na_values=["?"]) #Lectura de los datos y conversión del símbolo "?" a NaN.
-	df_orig.head()
-	df_orig.shape #Se consulta la dimensión del conjunto de datos
-	df_orig.isnull().sum() #Contabilización de la cantidad de muestras para las que faltan datos en cada atributo o característica.
-	df=df_orig.dropna(axis=0) #Se elimnan las filas que contienen alguna columna que tenga un valor nulo y se guarda todo en la variable "df".
-	df.shape
-	df.isnull().sum() #Se consulta si existe algún valor nulo.
-	df['poisonous'].value_counts() #Agrupa los valores únicos que hay en la columna "Poisonous" y devuelve la cuenta.
-	
-\end{lstlisting}
-
 \subsection{Transformación de los valores del conjunto de datos de texto a número}
 
 
-Un problema que presenta este conjunto de datos es que todos sus valores están en formato texto, lo que imposibilita realizar todo el estudio sobre este conjunto de datos. Para evitar esto, se pasan todos los valores presentes en el conjunto de datos de texto a número mediante la siguiente técnica de preprocesado:
-\begin{lstlisting}[style=mypython, caption={Transformación de los valores de texto a número}, label={lst:Transformación-de-los-valores-de-texto-a-número}]
-	
-	encoder = preprocessing.OrdinalEncoder(dtype=int)	#Se le ordena que convierta palabaras a números enteros
-	df_encoded = encoder.fit_transform(df[['poisonous', "cap-shape","cap-surface","cap-color","bruises","odor",
-	"gill-attachment","gill-spacing","gill-size","gill-color","stalk-shape","stalk-root",
-	"stalk-surface-above-ring","stalk-surface-below-ring","stalk-color-above-ring",
-	"stalk-color-below-ring","veil-type","veil-color","ring-number","ring-type",
-	"spore-print-color","population","habitat"]]) #Conversión de palabras a enteros
-	encoder.categories_ #Muestra el diccionario que la herramienta "encoder" ha creado
-	
-	df_encoded #Se muestran los números enteros que definen el conjunto de datos
-	
-	#Se guardan en cada una de las columnas de la variable "df" todos los datos originales convertidos a número
-	
-	df["poisonous"] = df_encoded[:,0]
-	df["cap-shape"] = df_encoded[:,1]
-	df["cap-surface"] = df_encoded[:,2]
-	df["cap-color"] = df_encoded[:,3]
-	df["bruises"] = df_encoded[:,4]
-	df["odor"] = df_encoded[:,5]
-	df["gill-attachment"] = df_encoded[:,6]
-	df["gill-spacing"] = df_encoded[:,7]
-	df["gill-size"] = df_encoded[:,8]
-	df["gill-color"] = df_encoded[:,9]
-	df["stalk-shape"] = df_encoded[:,10]
-	df["stalk-root"] = df_encoded[:,11]
-	df["stalk-surface-above-ring"] = df_encoded[:,12]
-	df["stalk-surface-below-ring"] = df_encoded[:,13]
-	df["stalk-color-above-ring"] = df_encoded[:,14]
-	df["stalk-color-below-ring"] = df_encoded[:,15]
-	df["veil-type"] = df_encoded[:,16]
-	df["veil-color"] = df_encoded[:,17]
-	df["ring-number"] = df_encoded[:,18]
-	df["ring-type"] = df_encoded[:,19]
-	df["spore-print-color"] = df_encoded[:,20]
-	df["population"] = df_encoded[:,21]
-	df["habitat"] = df_encoded[:,22]
-	
-\end{lstlisting}
-
-Al ejecutar este código se sustituyen los valores que presenta el conjunto de datos en formato texto a la hora de clasificar los tipos de setas por números enteros, lo que nos permitirá trabajar con estos datos más adelante sin problema.
+Un problema que presenta este conjunto de datos es que todos sus valores están en formato texto, lo que imposibilita realizar todo el estudio sobre este conjunto de datos. Para evitar esto, se pasan todos los valores presentes en el conjunto de datos de texto a número por lo que, pasará a ser este nuevo valor el que definirá las diferentes características de las setas permitiéndonos realizar el resto de preprocesado y las predicciones sobre este conjunto de datos sin problema.
 
 \subsection{División del conjunto de datos en datos de entrada y salida}
 
-Una vez que se tiene el conjunto de datos en donde para cada atributo se le asocia un número que define dicha caraterística, se procederá a definir cuales son los datos de entrada y salida. Para ello, se seleccionan las columnas que se utilizarán como entradas y se convierten en un array de \textit{NumPy}, para poder utilizarlo con los algoritmos de clasificación de la librería \textit{Scikit-learn} (con la columna que se utilizará como salida se hace lo mismo), utilizando el siguiente código:
-
-\begin{lstlisting}[style=mypython, caption={División del conjunto de datos en datos de entrada y salida}, label={lst:División-del-conjunto-de-datos-entrada-salida}]
-	
-	feature_df = df[df.columns[1:df.shape[1]]] #Se cogen todas las columnas menos la primera.
-	X = feature_df #Se define el conjunto de datos de entrada
-	X_readed = np.asarray(feature_df) #Se convierte el conjunto de datos de entrada en una matriz NumPy
-	X_readed[0:5]
-	y_readed = np.asarray(df['poisonous']) #Se coge la primera columna como dato de salida
-	y_readed[0:5]
-	
-\end{lstlisting}
+Una vez que se tiene el conjunto de datos en donde para cada atributo se le asocia un número que define dicha característica, se procederá a definir cuales son los datos de entrada y salida. Para ello, se seleccionan las columnas que se utilizarán como entradas y se convierten en un array de \textit{NumPy}, para poder utilizarlo con los algoritmos de clasificación de la librería \textit{Scikit-learn} (con la columna que se utilizará como salida se hace lo mismo). 
 
 La columna \textgravedbl Poisonous\textacutedbl representa la salida, el valor que se quiere predecir, y el resto de columnas constituyen las entradas, los valores a partir de los cuales se realizará la predicción.
 	
@@ -336,17 +269,11 @@ A la hora de entrenar un modelo, este necesita una cantidad de datos de \textit{
  
 Por lo tanto, este paso es clave para alcanzar el objetivo de definir un modelo que sea capaz de clasificar si una seta es comestible o venenosa, una vez se tiene la información de los 22 atributos que se están utilizando.  
 
-El código empleado para realizar esta separación de los datos es el siguiente:
-\begin{lstlisting}[style=mypython, caption={División del conjunto de datos en datos de entrenamiento y prueba}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
-		
-	X_train, X_test, y_train, y_test = train_test_split(X_readed, y_readed, random_state = 1)
-	print ('Train set:', X_train.shape,  y_train.shape)
-	print ('Test set:', X_test.shape,  y_test.shape)
-		
-\end{lstlisting}
 En la función \textgravedbl train\_test\_split\textacutedbl se podría añadir un valor (\textgravedbl test\_size\textacutedbl) que permite modificar la proporción de la división de los datos según se considere. Por defecto, esta función establece que el 75\% de los datos sea de entrenamiento y el 25\% restante sean datos de prueba. 
 
 Dado que el conjunto de datos que se está utilizando es bastante grande, se ha decidido que esta proporción es adecuada, obteniendo finalmente 4452 filas de datos de entrenamiento y 1484 filas de datos de prueba, a falta de terminar con el proceso de preprocesado.
+
+Como se pide realizar 5 pruebas para 5 ($X\_train$, $Y\_train$, $X\_test$ e $Y\_test$) distintos, lo que se va a hacer en este caso, será modificar el \textgravedbl random\_state\textacutedbl para que, al darle diferentes valores, este nos genere los 5 ($X\_train$, $Y\_train$, $X\_test$ e $Y\_test$) que buscamos y poder realizar de esta forma 5 pruebas para conjuntos de datos distintos.
 
 
 \subsection{Balanceo de datos}
@@ -361,24 +288,6 @@ La técnica de \textit{Undersampling} elimina muestras que se clasifican como se
 
 Además, el algoritmo \textit{NearMiss} no elimina las muestras de setas comestibles al azar. Calcula matemáticamente cuáles son las setas comestibles que están más cerca (o se parecen más) a las setas venenosas y se queda con esas, descartando las comestibles que son demasiado \textgravedbl obvias\textacutedbl. De esta manera, el futuro modelo de clasificación aprenderá a distinguir los casos más difíciles.
 
-El código empleado para realizar el balanceo de datos utilizando la técnica de \textit{Undersampling} es el siguiente:
-
-
-
-
-\begin{lstlisting}[style=mypython, caption={Balanceo del conjunto de datos: Undersampling}, label={lst:Undersampling}]
-
-	unique, counts = np.unique(y_train, return_counts=True) 
-	#Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
-	sm = NearMiss() #Inicializa el algoritmo NearMiss y lo guarda en la variable "sm"
-	X_train, y_train= sm.fit_resample(X_train, y_train) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
-	
-	print('\nBalanceado undersampling:', X_train.shape,  y_train.shape)
-	unique, counts = np.unique(y_train, return_counts=True) 
-	print(dict(zip(unique, counts))) #Comprobación de que el proceso de balanceado se ha realizado con éxito
-
-
-\end{lstlisting}
 
 
 \subsubsection{Oversampling}
@@ -386,20 +295,6 @@ El código empleado para realizar el balanceo de datos utilizando la técnica de
 La técnica de \textit{Oversampling} genera muestras que se clasifican como setas venenosas, es decir, identifica cuál es el tipo de muestra minoritaria y añade filas que sean de ese tipo. El objetivo es generar de forma sintética todas las muestras necesarias para que la cantidad de setas que se clasifican como comestibles y venenosas sea la misma para ambos casos.
 
 El algoritmo \textit{SMOTE}, no se limita a copiar y pegar muestras de tipo seta venenosa, sino que genera nuevas muestras muy similares a las ya existentes, de forma que sus propiedades sean realistas para una seta venenosa. Además, definiendo la opción \textit{random\_state = 1}, se consigue que siempre genere las mismas muestras cada vez que se ejecuta el código (es lo que se conoce como una \textit{semilla aleatoria}).
-
-El código empleado para realizar el balanceo de datos utilizando la técnica de \textit{Oversampling} es el siguiente:
-
-\begin{lstlisting}[style=mypython, caption={Balanceo del conjunto de datos: Oversampling}, label={lst:Oversampling}]
-
-	unique, counts = np.unique(y_train, return_counts=True) #Escanea y cuenta cuántas setas hay de cada tipo antes de hacer la transformación.
-	sm = SMOTE(random_state=1) #Inicializa el algoritmo SMOTE y lo guarda en la variable "sm"
-	X_train, y_train= sm.fit_resample(X_train, y_train) #Generación de muestras sintéticas del tipo minoriario (setas venenosas) y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
-	
-	print('\nBalanceado oversampling:', X_train.shape,  y_train.shape)
-	unique, counts = np.unique(y_train, return_counts=True)
-	print(dict(zip(unique, counts))) #Comprobación de que el proceso de balanceado se ha realizado con éxito
-
-\end{lstlisting}
 
 
 \subsection{Normalizado}
@@ -419,34 +314,7 @@ El \textit{StandardScaler} tiene como objetivo modificar todos los valores del c
 	xi=\frac{xi-\mu i}{\sigma i}
 \end{equation*}
 	
-Finalmente, el código que se ha utilizado para el MinMaxScaler es el siguiente:
-\begin{lstlisting}[style=mypython, caption={Normalización mediante MinMaxScaler}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
-		
-	scaler = preprocessing.MinMaxScaler()
-		
-	X_train = scaler.fit_transform(X_train) 
-	# aplica los calculos sobre el conjunto de datos de entrenamiento para escalarlos 
-	X_test = scaler.transform(X_test) 
-	# aplica los calculos sobre el conjunto de datos de prueba para escalarlos
-		
-		
-\end{lstlisting}
-	
-Y, para el caso de StandarScaler es el siguiente:
-\begin{lstlisting}[style=mypython, caption={Normalización mediante StandarScaler}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
-		
-	scaler = preprocessing.StandardScaler()
-
-	X_train = scaler.fit_transform(X_train) 
-	# aplica los calculos sobre el conjunto de datos de entrenamiento para escalarlos 
-	X_test = scaler.transform(X_test) 
-	# aplica los calculos sobre el conjunto de datos de prueba para escalarlos
-	 
-		
-\end{lstlisting}
-	
-Realizando pruebas de exactitud y precisión, se pudo observar que ambos casos proporcionan resultados muy similares en los dos ámbitos, aunque definitivamente no funcionan igual, esto se puede observar en las gráficas que se muestran a continuación, que al realizar el escalado de forma distinta varían las densidades de muestras en el conjunto. Además, también se puede observar que si tiene un efecto claro sobre el conjunto de datos donde se equiparan los resultados obtenidos mucho más, haciendo la muestra más homogénea.
-%Ponerlo más claro, explicar que la distribución normal se centra sobre un valor medio distinto y también las diferencias relativas entre los datos cambian
+Realizando pruebas de exactitud y precisión, se pudo observar que ambos casos proporcionan resultados muy similares en los dos ámbitos. La distribución normal realiza el normalizado, como se pudo observar en la ecuación anterior, a partir de la media y la desviación típica, mientras que en el caso del MinMaxScaler se trabaja con los valores máximos y mínimos del conjunto de datos, para, categorizar todos los valores entre 0(valor mínimo) y 1(valor máximo). Esto nos lleva a observar que las diferencias relativas entre los valores ya normalizados cambian, esto se puede observar en las gráficas que se muestran a continuación, que, al realizar el escalado de forma distinta, varían las distancias relativas entre componentes y las densidades de muestras en el conjunto. Además, también se puede observar que si tiene un efecto claro sobre el conjunto de datos donde se equiparan los resultados obtenidos mucho más, haciendo la muestra más homogénea.
 	
 \begin{figure}[!ht]
 	\centering
@@ -454,31 +322,14 @@ Realizando pruebas de exactitud y precisión, se pudo observar que ambos casos p
 	\caption{Gráfica de variación de la densidad y el escalado de los datos }
 	\label{Mennekes}
 \end{figure}
+
+Para los diferentes conjuntos de datos se decide realizar una prueba con ambos métodos de normalización y, de esta forma, comparar el rendimiento y funcionamiento de ambos metodos sobre los conjuntos de datos. Es necesario destacar, que en aquellos conjuntos de datos donde se apliquen técnicas de balanceo de datos, el normalizado se aplicará de forma posterior a estas técnicas de balanceo, ya que el normalizado modifica las distancias entre los distintos datos provocando que las técnicas de balanceo no resulten tan efectivas sobre el conjunto de datos.
 	
 	
 \subsection{Análisis de componentes principales (PCA)}
 Una vez se ha llevado a cabo la normalización de los 3 conjuntos de datos (original, original con undersampling y original con oversampling), se procederá a realizar el PCA para buscar conjuntos de ejes de coordenadas en los que algunas de las dimensiones no sean necesarias para estos 3 conjuntos de datos.
 	
-Para ello se utilizará el algoritmo \textit{PCA} implementando la librería \textit{scikit-learn}. Inicialmente utilizaremos el algoritmo sin parámetros para analizar el porcentaje de varianza de todos los componentes utilizando \textit{explained\_variance\_ratio\_}, que devuelve una lista en este caso, con 22 elementos, donde cada elemento de la lista indica el porcentaje de variabilidad que representa ese componente. Además, sumando estos porcentajes de variabilidad se consigue saber la varianza acumulada correspondiente al número de componentes utilizado,s cumpliéndose siempre que la suma de todos los elementos de la lista dará 1 como resultado. El código que se ha utilizado para obtener la varianza y la varianza acumulada es el siguiente:
-\begin{lstlisting}[style=mypython, caption={Varianza y varianza acumulada de los componentes}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
-		
-	mypca = PCA()
-	mypca.fit(X_train)
-		
-	mypca.explained_variance_ratio_	#	muestra todos los componentes de la lista
-		
-	mypca.explained_variance_ratio_.sum()  # Suma todos los elementos de la lista 
-		
-	print("\n Varianza que aporta cada componente:")
-	variance = mypca.explained_variance_ratio_
-	print(variance)
-		
-	print("\n Varianza acumulada:")
-	acumvar = variance.cumsum()
-		
-	for i in range(len(acumvar)):
-	print(f" {(i+1):2} componentes: {acumvar[i]:.8f} ")		
-\end{lstlisting}
+Para ello se utilizará el algoritmo \textit{PCA} implementando la librería \textit{scikit-learn}. Inicialmente utilizaremos el algoritmo sin parámetros para analizar el porcentaje de varianza de todos los componentes utilizando \textit{explained\_variance\_ratio\_}, que devuelve una lista en este caso, con 22 elementos, donde cada elemento de la lista indica el porcentaje de variabilidad que representa ese componente. Además, sumando estos porcentajes de variabilidad se consigue saber la varianza acumulada correspondiente al número de componentes utilizado,s cumpliéndose siempre que la suma de todos los elementos de la lista dará 1 como resultado.
 	
 Conocidos estos porcentajes de varianza acumulada se pueden representar en una gráfica para poder ver claramente cual es la cantidad de componentes que se debería utilizar para hacer PCA.
 	
@@ -489,19 +340,7 @@ Conocidos estos porcentajes de varianza acumulada se pueden representar en una g
 	\label{Varianza_acumulada}
 \end{figure}
 	
-Aquí se puede observar como a partir del decimoquinto componente la varianza acumulada tiene un valor muy cercano al 95\%, esto quiere decir que los datos que se van a perder se corresponden con el 5\% de los datos totales. Es por ello que se decide tomar un total de 15 componentes para realizar el cálculo del PCA, ya que con menos componentes las pérdidas de datos se consideran demasiado grandes todavía. Para confirmar que el \textit{Projection loss} no es demasiado alto, se utilizará el siguiente código que nos devolverá su valor:
-\begin{lstlisting}[style=mypython, caption={Projection loss para 15 componentes}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
-		
-	mypca15 = PCA(n_components=15)
-	mypca15.fit(X_train)
-	values_proj15 = mypca15.transform(X_train)
-		
-	X_projected15 = mypca15.inverse_transform(values_proj15)
-	loss15 = ((X_train - X_projected15) ** 2).mean()
-		
-	print("Projection loss (15 components): " + str(loss15)) 
-		
-\end{lstlisting}
+Aquí se puede observar como a partir del decimoquinto componente la varianza acumulada tiene un valor muy cercano al 95\%, esto quiere decir que los datos que se van a perder se corresponden con el 5\% de los datos totales. Es por ello que se decide tomar un total de 15 componentes para realizar el cálculo del PCA, ya que con menos componentes las pérdidas de datos se consideran demasiado grandes todavía. Para confirmar que el \textit{Projection loss} no es demasiado alto.
 	
 Obteniendo finalmente un valor de \textit{Proyection loss} del 5.07\% reduciendo las dimensiones del conjunto de 22 a 15, por lo que se considera aceptable.
 	
@@ -512,47 +351,11 @@ Una vez hemos terminado de realizar todas las técnicas de preprocesado tenemos 
 Este será el primer algoritmo de clasificación que se utilice. A la hora de determinar un dato perteneciente a una clase, se estima que aquellos datos pertenecientes a la misma clase se encontrarán próximos en el espacio de representación, siendo estos los \textgravedbl vecinos\textacutedbl representados en el código por la letra k. 
 	
 Las pruebas que se realizarán serán para un rango de k de entre 5 y 100, tratando de buscar un valor que otorgue buenos resultados. Además, se intentará que este valor de k no sea ni muy bajo ni muy alto, ya que  un valor de k alto da lugar a un modelo muy estable y poco sensible al ruido, pero puede perder detalles. En cambio, un valor de k bajo que proporciona un modelo flexible, que se adapta muy bien a variaciones y detalles, pero que es muy sensible al ruido.
-\\
 
-Para realizar pruebas de una forma cómoda y comprobar cual es el mejor caso se ha empleado un bucle \textit{for} que permite obtener el valor de exactitud del modelo y el tiempo de entrenamiento empleado para cada valor de \textit{k}. De esta manera, se realiza el cálculo de exactitud y tiempo de entrenamiento 5 veces para cada valor de k para, posteriormente,  escoger el mejor caso de los 5 calculados.
+Para realizar pruebas de una forma cómoda y comprobar cual es el mejor valor de \textit{k}, se ha empleado un bucle \textit{for} que permite obtener el valor de exactitud medio del modelo para cada valor de \textit{k} de cada conjunto de datos, esto se debe a los 5 posibles valores de $X\_train$, $Y\_train$, $X\_test$ e $Y\_test$ que se han generado en la división de los datos para cada valor de \textit{k}. De esta manera, se realiza el cálculo de exactitud media, desviación y tiempo de entrenamiento 5 veces para cada valor de \textit{k}.
 	
-\begin{lstlisting}[style=mypython, caption={Código del algoritmo de clasificación k-nn}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
-		
-		Score = np.zeros(95)
-		Posicion = np.zeros(95)
-		Time = np.zeros(95)
-		for i in range(5,100):
-		k = i   # Numero de vecinos
-		Score_ind=np.zeros(5)
-		Posicion_ind=np.zeros(5)
-		Time_ind=np.zeros(5)
-		for u in range (1,6):
-		ini = time.time()
-		# Creamos nuestra instancia de nuestro algoritmo KNN con K vecinos
-		neigh = KNeighborsClassifier(n_neighbors = k)
-		neigh.fit(X_train,y_train)
-		y_predict_knn = neigh.predict(X_test)
-		
-		Time_ind[u-1] = (time.time() - ini)*1000
-		Score_ind[u-1] = neigh.score(X_test, y_test)
-		Posicion_ind[u-1] = i
-		Time[i-5] = np.max(Time_ind)
-		Score[i-5] = np.max(Score_ind)
-		Posicion[i-5] = i
-		print(f"Tiempo entrenamiento para k={i}  = {Time[i-5]} ms") 
-		print("Exactitud media obtenida con k-NN para k={i}: ".format(i=i), neigh.score(X_test, y_test))
-		
-		Valor_maximo = np.max(Score)
-		Tiempo_min = np.min(Time)
-		print(f"El valor maximo de exactitud es de: {Valor_maximo}")
-		print(f"Y esta situado en la posicion: {Score.argmax()+1}")
-		print(f"El valor minimo de tiempo es de: {Tiempo_min}")
-		print(f"Y esta situado en la posicion: {Time.argmin()+1}")
-		
-	\end{lstlisting}
-	
-	Con este código obtendremos de resultado final el caso para el valor máximo de exactitud y el caso para el tiempo mínimo de entrenamiento, para el modelo sin balancear y sin PCA el caso para mayor precisión se da en el rango de entre k=5 y k=13, mientras que el tiempo de entrenamiento mínimo se dió para k=7, pero para poder estudiar más en detalle todos los casos y ver claramente que opción escoger, se mostrarán las gráficas para cada conjunto de datos a estudiar las cuales servirán como guía:
-	
+Con este código obtendremos de resultado final el valor de \textit{k} para el cual la exactitud media y desviación son más favorables y, posteriormente, se le calculará tiempo que le lleva al modelo realizar las predicciones.
+	%dejo las formulas de las gráficas por si te sirven de algo.
 	\begin{figure}[H]
 		\centering
 		
@@ -573,120 +376,16 @@ Para realizar pruebas de una forma cómoda y comprobar cual es el mejor caso se 
 		\caption{Precisión y tiempo de entrenamiento del modelo original sin PCA}
 		\label{fig:comparacion}
 	\end{figure}
-	Por lo tanto nuestro mejor caso será para k=7 con una precisión del 100\% y un tiempo de entrenamiento de 5.38 ms. Este proceso se realizará de igual forma para el resto de casos que se realizarán a continuación:
 	
-		\begin{figure}[H]
-		\centering
-		
-		\begin{subfigure}[c]{0.7\textwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figuras/PrecModeloOriginalConPCA.png}
-			\caption{\centering Precisión del modelo con PCA}
-			\label{fig:sub1}
-		\end{subfigure}
-		\hfill
-		\begin{subfigure}[c]{0.7\textwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figuras/TimeModeloOriginalConPCA.png}
-			\caption{\centering Tiempo de entrenamiento del modelo con PCA}
-			\label{fig:sub2}
-		\end{subfigure}
-		
-		\caption{Precisión y tiempo de entrenamiento del modelo original con PCA}
-		\label{fig:comparacion}
-	\end{figure}
+	Por lo tanto nuestro mejor caso será para k=7 con una precisión del 100\% y un tiempo de entrenamiento de 5.38 ms. Este proceso se realizará de igual forma para el resto de casos que se realizarán a continuación:
 	
 	En este caso se obtuvo que el mejor caso es para k=8 con una precisión del 100\% y un tiempo de entrenamiento de 7.2 ms. Ahora se realizarán las pruebas con este algoritmo para el caso con undersampling:
 	
-			\begin{figure}[H]
-		\centering
-		
-		\begin{subfigure}[c]{0.7\textwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figuras/PrecModeloUndersamplingSinPCA.png}
-			\caption{\centering Precisión del modelo sin PCA}
-			\label{fig:sub1}
-		\end{subfigure}
-		\hfill
-		\begin{subfigure}[c]{0.7\textwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figuras/TimeModeloUndersamplingSinPCA.png}
-			\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
-			\label{fig:sub2}
-		\end{subfigure}
-		
-		\caption{Precisión y tiempo de entrenamiento del modelo undersampled sin PCA}
-		\label{fig:comparacion}
-	\end{figure}
-	
 	Tras lo observado en las gráficas y los datos obtenidos con el código, se puede determinar que el mejor caso es para k=7 con una exactitud de 0.985 y un tiempo de entrenamiento de 4.96 ms. Aplicando PCA para 15 componentes se obtendrán por lo tanto:
-	
-	\begin{figure}[H]
-		\centering
-		
-		\begin{subfigure}[c]{0.7\textwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figuras/PrecModeloUndersamplingConPCA.png}
-			\caption{\centering Precisión del modelo con PCA}
-			\label{fig:sub1}
-		\end{subfigure}
-		\hfill
-		\begin{subfigure}[c]{0.7\textwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figuras/TimeModeloUndersamplingConPCA.png}
-			\caption{\centering Tiempo de entrenamiento del modelo con PCA}
-			\label{fig:sub2}
-		\end{subfigure}
-		
-		\caption{Precisión y tiempo de entrenamiento del modelo undersampled con PCA}
-		\label{fig:comparacion}
-	\end{figure}
 	
 	En este modelo el mejor caso es para k=6 donde se obtiene una precisión de 0.981 y un tiempo de entrenamiento de 6.03 ms. Una vez se han realizado los cálculos para el conjunto original y aplicando undersampling se realizará el mismo proceso para el conjunto de datos al que se le ha aplicado oversampling.
 	
-	\begin{figure}[H]
-	\centering
-		
-		\begin{subfigure}[c]{0.7\textwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figuras/PrecModeloOversamplingSinPCA.png}
-			\caption{\centering Precisión del modelo sin PCA}
-			\label{fig:sub1}
-		\end{subfigure}
-		\hfill
-		\begin{subfigure}[c]{0.7\textwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figuras/TimeModeloOversamplingSinPCA.png}
-			\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
-			\label{fig:sub2}
-		\end{subfigure}
-		
-		\caption{Precisión y tiempo de entrenamiento del modelo oversampled sin PCA}
-		\label{fig:comparacion}
-	\end{figure}
-	
 	Donde se puede observar que el mejor caso es para k=10, donde conseguimos una precisión del 1.00 con un tiempo de entrenamiento de 6.44 ms. Terminaremos analizando y obteniendo las gráficas para el caso de oversampling con PCA.
-	
-	\begin{figure}[H]
-	\centering
-		
-		\begin{subfigure}[c]{0.7\textwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figuras/PrecModeloOversamplingConPCA.png}
-			\caption{\centering Precisión del modelo con PCA}
-			\label{fig:sub1}
-		\end{subfigure}
-		\hfill
-		\begin{subfigure}[c]{0.7\textwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figuras/TimeModeloOversamplingConPCA.png}
-			\caption{\centering Tiempo de entrenamiento del modelo con PCA}
-			\label{fig:sub2}
-		\end{subfigure}
-		
-		\caption{Precisión y tiempo de entrenamiento del modelo oversampled con PCA}
-		\label{fig:comparacion}
-	\end{figure}
 	
 	Para este último caso, de oversampling con PCA, se ha vuelto a obtener una precisión del 1.00 para valores de k comprendidos entre 5 y 17 por lo que, guiándonos por el tiempo de entrenamiento, se toma que la mejor situación es para k= 8 donde se obtiene un tiempo de entrenamiento de 6.93 ms, siendo este el mejor caso para oversampling con PCA.
 	
@@ -708,68 +407,168 @@ Para realizar pruebas de una forma cómoda y comprobar cual es el mejor caso se 
 	\label{tab:leyenda-dual}
 \end{table}
 
-Observando esta tabla se puede observar que la precisión del conjunto de datos es extremadamente alta, consiguiendo para aquellos casos con mayor cantidad de datos, es decir, el conjunto de datos original y el conjunto de datos con oversampling, que cuentan con una cantidad de filas muy superior al caso de undersampling, consiguen una precisión del 100\%. 
-\\
+Observando esta tabla se puede ver con rapidez que la precisión del conjunto de datos es extremadamente alta, consiguiendo para aquellos casos con mayor cantidad de datos, es decir, el conjunto de datos original y el conjunto de datos con oversampling, que cuentan con una cantidad de filas muy superior al caso de undersampling, una precisión del 100\%. 
 
-Esto nos quiere decir que la cantidad de datos que se tienen para entrenar el modelo es un factor clave a la hora de conseguir precisiones altas con el mismo, aunque esto también esté sujeto a aumentos en el tiempo de entrenamiento, como se puede ver en la comparativa entre los conjuntos de datos de aplicación de undersampling sin PCA y oversampling sin PCA, donde a pesar de que con el oversampling se consigue una precisión del 100\%, las diferencias en los tiempos de entrenamiento es de 1.48 ms. Este valor aunque no implica gran cosa a simple vista, supone un aumento en los tiempos de entrenamiento del 30\% en comparación con el caso con undersampling. 
-\\
+Esto nos quiere decir que la cantidad de datos y el tipo de datos que se tienen para entrenar el modelo es un factor clave a la hora de conseguir precisiones altas con el mismo. El hecho de tener más de 4000 datos con 22 componentes categóricas que permitan predecir al modelo si la seta es comestible o venenosa, esto se considera un factor muy a tener en cuenta para explicar las precisiones tan altas que está consiguiendo el modelo.
 
 Para la aplicación de PCA se puede observar como, al disminuir el número de dimensiones que se analizan de 22 a 15 disminuye la exactitud del modelo sutilmente, como se puede observar en los 2 casos con undersampling, pero no solo eso, también es notable un aumento en los tiempos de entrenamiento en relación con los casos donde no se aplica lo que nos lleva a una duda considerable con respecto a los beneficios de su aplicación.
-\\
 
 Por lo tanto, si nos guiásemos unicamente por la tabla resumen, el mejor caso sería para el conjunto de datos original sin PCA. Esta afirmación tiene ciertos matices ya que este modelo podría tener algún tipo de sesgo a la hora de predecir debido al propio conjunto de datos. Esto se debe a que la correlación entre setas venenosas y comestibles no es 50/50 sino que se tienen 1600 casos adicionales de setas comestibles en comparación con las setas venenosas. Es por esto que finalmente se decide que el modelo óptimo es el que se corresponde con el conjunto de datos con oversampling sin PCA aplicando un valor de k=10, ya que se busca priorizar la exactitud del modelo frente a un tiempo de entrenamiento más bajo. Por último, no se muestran las matrices de confusión en estos casos ya que para una precisión de 1.00 no son muy representativas, no hay ningún error que se pueda observar.
 
 \subsection{Algoritmo de clasificación mediante métodos Kernel (SVM)}
-	Ahora se realizarán las pruebas sobre los distintos conjuntos de datos con el algoritmo SVM. El algoritmo SVM se caracteriza por minimizar el riesgo estructural para reducir la posibilidad de cometer errores futuros. Dentro de este algoritmo, este se puede modificar y variar de dos formas, campbiando el valor de C o cambiando el tipo de kernel. 
-	\\
+
+	Ahora se realizarán las pruebas sobre los distintos conjuntos de datos con el algoritmo SVM. El algoritmo SVM se caracteriza por minimizar el riesgo estructural para reducir la posibilidad de cometer errores futuros. Dentro de este algoritmo, este se puede modificar y variar de dos formas, cambiando el valor de C o cambiando el tipo de kernel. 
 	
 	Para realizar el estudio de este algoritmo se llevarán a cabo 2 pruebas, la primera consistirá en cambiar el valor de C en el rango de 1-10 para ver de que manera varían los resultados obtenidos, y la segunda será cambiando el tipo de kernel utilizado para tratar de obtener los mejores resultados con nuestro código.
-	\\
 	
-	El parametro C es el que controla el peso de los terminos de error, es decir, indica cuanto castiga la SVM los errores de clasificación. Esto quiere decir que con un valor de C alto el sistema será más sensible al ruido y tendrá una tendencia a sobreajustar, lo que lo hace menos fiable en otros conjuntos de datos. Sin embargo para un valor de C bajo el modelo tenderá más a ignorar el ruido presente en el conjunto, pero tiene una mayor tendencia a no capturar bien estructuras complejas.
-	\\
+	El parametro C es el que controla el peso de los términos de error, es decir, indica cuanto castiga el SVM los errores de clasificación. Esto quiere decir que con un valor de C alto el sistema será más sensible al ruido y tendrá una tendencia a sobreajustar, lo que lo hace menos fiable en otros conjuntos de datos. Sin embargo para un valor de C bajo el modelo tenderá más a ignorar el ruido presente en el conjunto, pero tiene una mayor tendencia a no capturar bien estructuras complejas.
 	
-	En lo referente al kernel aplicado, se aplicarán 2 tipos de kernel, kernel lineal y kernel no lineal para tratar de observar como afecta al resultado obtenido. Las principales diferencias entre ambos son que un kernel lineal siempre buscará trazar una frontera lineal para separar las clases, mientras que un kernel no lineal permite crear fronteras de decisión no lineales, muy flexibles y capaces de adaptarse a datos complejos. Por lo tanto, se decidió aplicar los kernel \textit{lineal}, \textit{RBF} y \textit{polinómico}.
-	\\
+	En lo referente al kernel aplicado, se aplicarán 2 tipos de kernel, kernel lineal y kernel no lineal para tratar de observar como afecta al resultado obtenido. Las principales diferencias entre ambos son que un kernel lineal siempre buscará trazar una frontera lineal para separar las clases, mientras que un kernel no lineal permite crear fronteras de decisión no lineales, muy flexibles y capaces de adaptarse a datos complejos. Por lo tanto, se decidió aplicar los kernel \textit{lineal} y \textit{RBF}.
 	
-	Como consecuencia de todos los parámetros que se quieren evaluar se diseñó un código muy similar al aplicado para el algoritmo k-nn solo que en este caso el bucle se realizará para unos valores de C de 1.0 hasta 10.0 e inicialmente, se aplicará para un kernel lineal:
+	Como consecuencia de todos los parámetros que se quieren evaluar se diseñó un código muy similar al aplicado para el algoritmo k-nn solo que en este caso el bucle se realizará para unos valores de C de 1.0 hasta 10.0 inicialmente y se sustituirán aquellas funciones propias del k-nn por funciones aplicadas al algoritmo SVM. El objetivo será, de nuevo, observar el valor medio de la exactitud para cada valor de C y su desviación para determinar cual es el valor de C más óptimo.
 	
-		\begin{lstlisting}[style=mypython, caption={Código del algoritmo de clasificación SVM con kernel linear}, label={lst:División-del-conjunto-de-datos-entrenamiento-prueba}]
-		
-		Score_linear = np.zeros(10)
-		Posicion_linear = np.zeros(10)
-		Time_linear = np.zeros(10)
-		for i in range(1,11):
-		Score_ind=np.zeros(5)
-		Posicion_ind=np.zeros(5)
-		Time_ind=np.zeros(5)
-		for u in range (1,6):
-		ini = time.time() 
-		clf_svm = svm.SVC(C=i,kernel='linear')
-		clf_svm.fit(X_train, y_train) 
-		y_predict_svm = clf_svm.predict(X_test)
-		Score_ind[u-1] = clf_svm.score(X_test, y_test)
-		Posicion_ind[u-1] = i
-		Time_ind[u-1] = (time.time() - ini)*1000
-		Time_linear[i-1] = np.max(Time_ind)
-		Score_linear[i-1] = np.max(Score_ind)
-		Posicion_linear[i-1] = i
-		print(f"Tiempo entrenamiento para C={i}  = {Time_linear[i-1]} ms") 
-		print("Exactitud media obtenida con SVM para C={i}: ".format(i=i), clf_svm.score(X_test, y_test))
-		
-		Valor_maximo = np.max(Score_linear)
-		Tiempo_min = np.min(Time_linear)
-		
-		print(f"El valor máximo de exactitud es de: {Valor_maximo}")
-		print(f"Y está situado en la posición: {Score_linear.argmax()}")
-		print(f"El valor mínimo de tiempo es de: {Tiempo_min}")
-		print(f"Y está situado en la posición: {Time_linear.argmin()}")
-		
-		clf_svm = svm.SVC(C=Score_linear.argmax(),kernel='linear')
-		
-	\end{lstlisting}
-	
+
+\subsubsection{SVM Linear}
+
 	Con este código obtendremos de resultado final el caso para el valor máximo de exactitud y el caso para el tiempo mínimo de entrenamiento, para el modelo sin balancear y sin PCA el caso para mayor precisión se da para C=10, mientras que el tiempo de entrenamiento mínimo se dió para C=7, por lo que, para poder estudiar más en detalle todos los casos y ver claramente que opción escoger, se mostrarán las gráficas para cada conjunto de datos a estudiar las cuales servirán como guía:
+
+\begin{figure}[H]
+	\centering
+	
+	\begin{subfigure}[c]{0.7\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Figuras/PrecModeloOriginalSinPCALinear.png}
+		\caption{\centering Precisión del modelo sin PCA}
+		\label{fig:sub1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[c]{0.7\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Figuras/TimeModeloOriginalSinPCALinear.png}
+		\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
+		\label{fig:sub2}
+	\end{subfigure}
+	
+	\caption{Precisión y tiempo de entrenamiento del modelo original sin PCA}
+	\label{fig:comparacion}
+\end{figure}
+
+Por lo tanto, se considera que el mejor caso es para C=7 donde se consigue una precisión del valor de 0.998 y en un tiempo de entrenamiento de 63.122 ms. Ahora se realizará el mismo proceso para el conjunto de datos original aplicandole PCA:
+
+\begin{figure}[H]
+	\centering
+	
+	\begin{subfigure}[c]{0.7\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Figuras/PrecModeloOriginalConPCALinear.png}
+		\caption{\centering Precisión del modelo con PCA}
+		\label{fig:sub1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[c]{0.7\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Figuras/TimeModeloOriginalConPCALinear.png}
+		\caption{\centering Tiempo de entrenamiento del modelo con PCA}
+		\label{fig:sub2}
+	\end{subfigure}
+	
+	\caption{Precisión y tiempo de entrenamiento del modelo original con PCA}
+	\label{fig:comparacion}
+\end{figure}
+
+Para este caso se puede observar un dato muy curioso, la exactitud se mantiene constante, no se ve afectada por la variación de C y el tiempo de entrenamineto aumenta de forma drástica cuanto mayor es C, es por ello que nuestro mejor caso será para C=1 con una exactitud del 0.929 y su tiempo de entrenamiento será de 173.155 ms, un valor muy superior a los obtenidos anteriormente. Ahora se aplicará undersampling y se probará el conjunto de datos sin PCA:
+
+\begin{figure}[H]
+	\centering
+	
+	\begin{subfigure}[c]{0.7\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Figuras/PrecModeloUndersamplingSinPCALinear.png}
+		\caption{\centering Precisión del modelo sin PCA}
+		\label{fig:sub1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[c]{0.7\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Figuras/TimeModeloUndersamplingSinPCALinear.png}
+		\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
+		\label{fig:sub2}
+	\end{subfigure}
+	
+	\caption{Precisión y tiempo de entrenamiento del modelo con undersampling sin PCA}
+	\label{fig:comparacion}
+\end{figure}
+
+Para este caso se puede ver de manera clara que los mejores resultados se obtienen para C=2, se llega a una precisión alta, 0.9838 y en un tiempo reducido para los tiempos habituales en SVM, 22.786 ms. Una vez conocido este valor se aplicará PCA al modelo con undersampling y se estudiarán los resultados:
+
+\begin{figure}[H]
+	\centering
+	
+	\begin{subfigure}[c]{0.7\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Figuras/PrecModeloUndersamplingConPCALinear.png}
+		\caption{\centering Precisión del modelo con PCA}
+		\label{fig:sub1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[c]{0.7\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Figuras/TimeModeloUndersamplingConPCALinear.png}
+		\caption{\centering Tiempo de entrenamiento del modelo con PCA}
+		\label{fig:sub2}
+	\end{subfigure}
+	
+	\caption{Precisión y tiempo de entrenamiento del modelo con undersampling con PCA}
+	\label{fig:comparacion}
+\end{figure}
+
+A pesar de que para el caso de aplicación de undersampling sin PCA se conseguían unos resultados muy buenos, mejores que para el mismo caso de aplicación de k-nn, en el momento en el que se le aplica PCA la exactitud se desploma casi un 0.2, el mejor caso se da para C=4 donde se tiene una precisión de 0.817 para un tiempo de entrenamiento de 93.559 ms. Este conjunto de datos se puede observar que tiene un desempeño claramente peor al resto mostrado, esto puede ser debido a la reducción del número de componentes, que condiciona y reduce la capacidad de predecir los resultados para un conjunto de datos más pequeño que para el caso original, esto quiere decir que los datos que las dimensiones que se han reducido han reducido enormemente el margen que hay entre el plano linear que separa los valores y los puntos más cercanos a este margen. Ahora se realizarán las pruebas para el caso de oversampling sin PCA:
+
+\begin{figure}[H]
+	\centering
+	
+	\begin{subfigure}[c]{0.7\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Figuras/PrecModeloOversamplingSinPCALinear.png}
+		\caption{\centering Precisión del modelo sin PCA}
+		\label{fig:sub1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[c]{0.7\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Figuras/TimeModeloOversamplingSinPCALinear.png}
+		\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
+		\label{fig:sub2}
+	\end{subfigure}
+	
+	\caption{Precisión y tiempo de entrenamiento del modelo con oversampling sin PCA}
+	\label{fig:comparacion}
+\end{figure}
+
+Estas gráficas nos muestran los datos para las pruebas realizadas y, aunque se llega al 100\% de exactitud, se considera que el mejor caso es para C=4 donde la exactitud es de 0.996 y el tiempo de entrenamiento es de 73.350 ms, mucho más bajo que para C=10. Por último se comprobará que valores se pueden obtener para el conjunto de datos aplicando PCA:
+
+\begin{figure}[H]
+	\centering
+	
+	\begin{subfigure}[c]{0.7\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Figuras/PrecModeloOversamplingConPCALinear.png}
+		\caption{\centering Precisión del modelo con PCA}
+		\label{fig:sub1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[c]{0.7\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Figuras/TimeModeloOversamplingConPCALinear.png}
+		\caption{\centering Tiempo de entrenamiento del modelo con PCA}
+		\label{fig:sub2}
+	\end{subfigure}
+	
+	\caption{Precisión y tiempo de entrenamiento del modelo con oversampling con PCA}
+	\label{fig:comparacion}
+\end{figure}
+
+Vistos los resultados obtenidos por las gráficas, se determina que para este caso la mejor opción es para C=1 donde se obtiene una precisión de 0.932 con un tiempo de entrenamiento de 300.632 ms.
 	
 	
 	
