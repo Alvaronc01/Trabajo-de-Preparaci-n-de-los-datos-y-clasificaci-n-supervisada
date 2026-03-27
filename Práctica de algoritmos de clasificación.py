@@ -72,33 +72,42 @@ def Normalizado_minmax(X_train, X_test):
 
 def Caso_1_Datos_originales(X_train, X_test, y_train, y_test):
     #Caso 1: Datos originales
+
+    #Normalizado de datos
+    for i in range(1, 6):
+        #Normalizado Standard
+        #X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+        #Normalizado MinMax
+        X_train[i], X_test[i] = Normalizado_minmax(X_train[i], X_test[i])
+
+    #Inicialización de variables
     Score = np.zeros(95)
     Score_desvest = np.zeros(95)
     Posicion = np.zeros(95)
     
     for k in range(5,100):
         Score_ind=np.zeros(5)
-        Posicion_ind=np.zeros(5)
         for i in range(1,6):
-             
-
             #Método KNN
-            
-            neigh = KNeighborsClassifier(n_neighbors = k)
-            neigh.fit(X_train[i],y_train[i])
-            y_predict_knn = neigh.predict(X_test[i])
-        
-            
-            Score_ind[i-1] = neigh.score(X_test[i], y_test[i])
-            Posicion_ind[i-1] = k
-        Score[k-5] = np.mean(Score_ind)
-        Score_desvest[k-5] = np.std(Score_ind)
-        Posicion[k-5] = k 
+            neigh = KNeighborsClassifier(n_neighbors = k) # Se crea la instancia del algoritmo KNN con K vecinos
+            neigh.fit(X_train[i],y_train[i]) #Entrenamiento del algoritmo con los datos de entrenamiento
+            y_predict_knn = neigh.predict(X_test[i]) #Cálculo de la predicción con los datos de test
+            Score_ind[i-1] = neigh.score(X_test[i], y_test[i]) #Cálculo de la exactitud de la predicción del algoritmo que se ha entrenado
+        Score[k-5] = np.mean(Score_ind) #Exactitud media de las 5 ejecuciones del algoritmo que se han realizado
+        Score_desvest[k-5] = np.std(Score_ind) #Desviación estándar de las 5 ejecuciones del algoritmo que se han realizado
+        Posicion[k-5] = k #Se guarda el valor de K
         print("Exactitud media obtenida con k-NN para k={k}: ".format(k=k), Score[k-5])
-    Top_5 = np.sort(Score)[-5:]
-    print(f"Los 5 valores de K con mayor exactitud son: ", Top_5)
-    print(f"El valor de K con mayor precisión es: K = ",Score.argmax()+5)
-    print(f"El valor de K con menor desviación es: K = ",Score_desvest.argmin()+5)
+
+    indices_top_5 = np.argsort(Score)[::-1][:5] # Se ordena el Score de mayor a mayor y se seleccionan los índices de los 5 mejores valores
+    
+    top_5 = Posicion[indices_top_5] #Conociendo los índices de los mejores valores de K se obtienen los 5 mejores valores.
+    
+    top_5_scores = Score[indices_top_5] #Se obtiene la exactitud de los 5 mejores valores de K.
+    
+    print(f"Los 5 valores de K con mayor exactitud son: {top_5.astype(int)}")
+    print(f"Sus exactitudes correspondientes son: {top_5_scores}")
+    print("El valor de K con mayor precisión es: K = ",Score.argmax()+5)
+    print("El valor de K con menor desviación es: K = ",Score_desvest.argmin()+5)
 
     # Considerando el mejor valor de K, se calcula la exactitud del modelo
     ini = time.time()
@@ -108,7 +117,7 @@ def Caso_1_Datos_originales(X_train, X_test, y_train, y_test):
     y_predict_knn = neigh.predict(X_test[1])
     Time = (time.time() - ini)*1000
     Exactiud_K = neigh.score(X_test[1], y_test[1])
-    print("La exactitud del modelo para el mejor valor de K es de: ",Exactiud_K)
+    print(f"La exactitud del modelo para el mejor valor de K es de: {Exactiud_K:.4f}")
     print("El tiempo de ejecución para el mejor valor de K es de: ",Time,"(ms)")
     
 
@@ -133,57 +142,73 @@ def Caso_1_Datos_originales(X_train, X_test, y_train, y_test):
 
 def Caso_2_Datos_originales_PCA(X_train, X_test, y_train, y_test):
     #Caso 2: Datos originales con PCA
+    
+    #Inicialización de variables
+    X_test_PCA_15 = {}
+    X_train_PCA_15 = {}
+    X_train_projected15 = {}
+    loss15 = np.zeros(5)
+    print(X_train[1].shape, X_train[2].shape)
+    #Normalizado de datos
     for i in range(1, 6):
+        #Normalizado Standard
         X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
-        mypca = PCA()
-        mypca.fit(X_train[i])
-        mypca.explained_variance_ratio_
-        variance = mypca.explained_variance_ratio_
-        acumvar = variance.cumsum()
+        #Normalizado MinMax
+        #X_train[i], X_test[i] = Normalizado_minmax(X_train[i], X_test[i])
 
+        #Aplicación del PCA
+        
         mypca15 = PCA(n_components=15)
-        mypca15.fit(X_train[i])
-        values_proj15 = mypca15.transform(X_train[i])
+        mypca15.fit(X_train[i]) #Análisis de cuales son las características más relevantes.
+        X_train_PCA_15[i] = mypca15.transform(X_train[i]) #Base de datos comprimida en la que solo se tienen 15 componentes que se utilizará para el entrenamiento del algoritmo
+        X_test_PCA_15[i] = mypca15.transform(X_test[i]) #Base de datos comprimida en la que solo se tienen 15 componentes que se utilizará para el test del algoritmo
 
-        X_train[i] = mypca15.inverse_transform(values_proj15)
 
+        #Cálculo de la pérdida de información
+        X_train_projected15[i] = mypca15.inverse_transform(X_train_PCA_15[i]) #Base de datos reconstruída en la que se vuelven a tener los 22 componentes
+        loss15[i-1] = ((X_train[i] - X_train_projected15[i]) ** 2).mean() #Estimación de la pérdida de información como consecuencia de la reducción de los componentes del conjunto de datos
+
+        print("Projection loss (15 components): " + str(loss15[i-1]))
+
+    print(X_train_PCA_15[1].shape, X_train_PCA_15[2].shape)
+    #Inicialización de variables
     Score = np.zeros(95)
     Score_desvest = np.zeros(95)
     Posicion = np.zeros(95)
     
     for k in range(5,100):
         Score_ind=np.zeros(5)
-        Posicion_ind=np.zeros(5)
         for i in range(1,6):
-             
-
             #Método KNN
-            
-            neigh = KNeighborsClassifier(n_neighbors = k)
-            neigh.fit(X_train[i],y_train[i])
-            y_predict_knn = neigh.predict(X_test[i])
-        
-            
-            Score_ind[i-1] = neigh.score(X_test[i], y_test[i])
-            Posicion_ind[i-1] = k
-        Score[k-5] = np.mean(Score_ind)
-        Score_desvest[k-5] = np.std(Score_ind)
-        Posicion[k-5] = k 
+            neigh = KNeighborsClassifier(n_neighbors = k) # Se crea la instancia del algoritmo KNN con K vecinos
+            neigh.fit(X_train_PCA_15[i],y_train[i]) #Entrenamiento del algoritmo con los datos de entrenamiento
+            y_predict_knn = neigh.predict(X_test_PCA_15[i]) #Cálculo de la predicción con los datos de test
+            Score_ind[i-1] = neigh.score(X_test_PCA_15[i], y_test[i]) #Cálculo de la exactitud de la predicción del algoritmo que se ha entrenado
+        Score[k-5] = np.mean(Score_ind) #Exactitud media de las 5 ejecuciones del algoritmo que se han realizado
+        Score_desvest[k-5] = np.std(Score_ind) #Desviación estándar de las 5 ejecuciones del algoritmo que se han realizado
+        Posicion[k-5] = k #Se guarda el valor de K
         print("Exactitud media obtenida con k-NN para k={k}: ".format(k=k), Score[k-5])
-    Top_5 = np.sort(Score)[-5:]
-    print(f"Los 5 valores de K con mayor exactitud son: ", Top_5)
-    print(f"El valor de K con mayor precisión es: K = ",Score.argmax()+5)
-    print(f"El valor de K con menor desviación es: K = ",Score_desvest.argmin()+5)
+
+    indices_top_5 = np.argsort(Score)[::-1][:5] # Se ordena el Score de mayor a mayor y se seleccionan los índices de los 5 mejores valores
+    
+    top_5 = Posicion[indices_top_5] #Conociendo los índices de los mejores valores de K se obtienen los 5 mejores valores.
+    
+    top_5_scores = Score[indices_top_5] #Se obtiene la exactitud de los 5 mejores valores de K.
+    
+    print(f"Los 5 valores de K con mayor exactitud son: {top_5.astype(int)}")
+    print(f"Sus exactitudes correspondientes son: {top_5_scores}")
+    print("El valor de K con mayor precisión es: K = ",Score.argmax()+5)
+    print("El valor de K con menor desviación es: K = ",Score_desvest.argmin()+5)
 
     # Considerando el mejor valor de K, se calcula la exactitud del modelo
     ini = time.time()
     mejor_k = Score.argmax()+5 #Mejor valor de K
     neigh = KNeighborsClassifier(n_neighbors = mejor_k)
-    neigh.fit(X_train[1],y_train[1])
-    y_predict_knn = neigh.predict(X_test[1])
+    neigh.fit(X_train_PCA_15[1],y_train[1])
+    y_predict_knn = neigh.predict(X_test_PCA_15[1])
     Time = (time.time() - ini)*1000
-    Exactiud_K = neigh.score(X_test[1], y_test[1])
-    print("La exactitud del modelo para el mejor valor de K es de: ",Exactiud_K)
+    Exactiud_K = neigh.score(X_test_PCA_15[1], y_test[1])
+    print(f"La exactitud del modelo para el mejor valor de K es de: {Exactiud_K:.4f}")
     print("El tiempo de ejecución para el mejor valor de K es de: ",Time,"(ms)")
     
 
@@ -209,38 +234,45 @@ def Caso_2_Datos_originales_PCA(X_train, X_test, y_train, y_test):
 def Caso_3_Datos_undersampling(X_train, X_test, y_train, y_test):
     #Caso 3: Datos con undersampling
     for i in range(1, 6):
+        
+        
         unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
         sm = NearMiss() #Inicializa el algoritmo NearMiss y lo guarda en la variable "sm"
         X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
+        
+        #Normalizado Standard
         X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+        #Normalizado MinMax
+        #X_train[i], X_test[i] = Normalizado_minmax(X_train[i], X_test[i])
 
+    #Inicialización de variables
     Score = np.zeros(95)
     Score_desvest = np.zeros(95)
     Posicion = np.zeros(95)
     
     for k in range(5,100):
         Score_ind=np.zeros(5)
-        Posicion_ind=np.zeros(5)
         for i in range(1,6):
-             
-
             #Método KNN
-            
-            neigh = KNeighborsClassifier(n_neighbors = k)
-            neigh.fit(X_train[i],y_train[i])
-            y_predict_knn = neigh.predict(X_test[i])
-        
-            
-            Score_ind[i-1] = neigh.score(X_test[i], y_test[i])
-            Posicion_ind[i-1] = k
-        Score[k-5] = np.mean(Score_ind)
-        Score_desvest[k-5] = np.std(Score_ind)
-        Posicion[k-5] = k 
+            neigh = KNeighborsClassifier(n_neighbors = k) # Se crea la instancia del algoritmo KNN con K vecinos
+            neigh.fit(X_train[i],y_train[i]) #Entrenamiento del algoritmo con los datos de entrenamiento
+            y_predict_knn = neigh.predict(X_test[i]) #Cálculo de la predicción con los datos de test
+            Score_ind[i-1] = neigh.score(X_test[i], y_test[i]) #Cálculo de la exactitud de la predicción del algoritmo que se ha entrenado
+        Score[k-5] = np.mean(Score_ind) #Exactitud media de las 5 ejecuciones del algoritmo que se han realizado
+        Score_desvest[k-5] = np.std(Score_ind) #Desviación estándar de las 5 ejecuciones del algoritmo que se han realizado
+        Posicion[k-5] = k #Se guarda el valor de K
         print("Exactitud media obtenida con k-NN para k={k}: ".format(k=k), Score[k-5])
-    Top_5 = np.sort(Score)[-5:]
-    print(f"Los 5 valores de K con mayor exactitud son: ", Top_5)
-    print(f"El valor de K con mayor precisión es: K = ",Score.argmax()+5)
-    print(f"El valor de K con menor desviación es: K = ",Score_desvest.argmin()+5)
+
+    indices_top_5 = np.argsort(Score)[::-1][:5] # Se ordena el Score de mayor a mayor y se seleccionan los índices de los 5 mejores valores
+    
+    top_5 = Posicion[indices_top_5] #Conociendo los índices de los mejores valores de K se obtienen los 5 mejores valores.
+    
+    top_5_scores = Score[indices_top_5] #Se obtiene la exactitud de los 5 mejores valores de K.
+    
+    print(f"Los 5 valores de K con mayor exactitud son: {top_5.astype(int)}")
+    print(f"Sus exactitudes correspondientes son: {top_5_scores}")
+    print("El valor de K con mayor precisión es: K = ",Score.argmax()+5)
+    print("El valor de K con menor desviación es: K = ",Score_desvest.argmin()+5)
 
     # Considerando el mejor valor de K, se calcula la exactitud del modelo
     ini = time.time()
@@ -250,7 +282,7 @@ def Caso_3_Datos_undersampling(X_train, X_test, y_train, y_test):
     y_predict_knn = neigh.predict(X_test[1])
     Time = (time.time() - ini)*1000
     Exactiud_K = neigh.score(X_test[1], y_test[1])
-    print("La exactitud del modelo para el mejor valor de K es de: ",Exactiud_K)
+    print(f"La exactitud del modelo para el mejor valor de K es de: {Exactiud_K:.4f}")
     print("El tiempo de ejecución para el mejor valor de K es de: ",Time,"(ms)")
     
 
@@ -261,17 +293,18 @@ def Caso_3_Datos_undersampling(X_train, X_test, y_train, y_test):
     })
     print(tabla_KNN)
 
-    tabla_KNN.to_csv("tabla_KNN_Caso 3.csv", index=False)
+    tabla_KNN.to_csv("tabla_KNN_Caso 1.csv", index=False)
 
     #Matriz de confusión
     cm_kNN = confusion_matrix(y_test[1], y_predict_knn, labels=[0,1])
     disp_knn = ConfusionMatrixDisplay(confusion_matrix=cm_kNN,display_labels=['EDIBLE(0)','POISONOUS(1)'])
     disp_knn.plot(cmap=plt.cm.Blues)
-    plt.title("k-NN: conjunto de datos undersampling")
-    plt.savefig("matriz_confusion_knn_Caso 3.png", dpi=300, bbox_inches="tight")
+    plt.title("k-NN: conjunto de datos original")
+    plt.savefig("matriz_confusion_knn_Caso 1.png", dpi=300, bbox_inches="tight")
     plt.close()
 
     return Time, mejor_k, Exactiud_K
+
 
 def Caso_4_Datos_undersampling_PCA(X_train, X_test, y_train, y_test):
     #Caso 3: Datos con undersampling con PCA
@@ -1409,28 +1442,25 @@ def main():
 
 
     for i in range(1, 6):
-        # 2. Ahora sí podemos asignar directamente a la "llave" i
+        # Separación de los datos en conjunto de entrenamiento y conjunto de test
         X_train[i], X_test[i], y_train[i], y_test[i] = train_test_split(X_readed, y_readed, random_state=i)
-        #Normalizado Standard
-        #X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
-        #Normalizado MinMax
-        #X_train[i], X_test[i] = Normalizado_minmax(X_train[i], X_test[i])
+        
 
 
     #Time_C1, K_C1, Exactitud_C1 =  Caso_1_Datos_originales(X_train, X_test, y_train, y_test)
     #print(Time_C1, K_C1, Exactitud_C1)
     #Time_C2, K_C2, Exactitud_C2 =  Caso_2_Datos_originales_PCA(X_train, X_test, y_train, y_test)
     #print(Time_C2, K_C2, Exactitud_C2)
-    #Time_C3, K_C3, Exactitud_C3 =  Caso_3_Datos_undersampling(X_train, X_test, y_train, y_test)
-    #print(Time_C3, K_C3, Exactitud_C3)
+    Time_C3, K_C3, Exactitud_C3 =  Caso_3_Datos_undersampling(X_train, X_test, y_train, y_test)
+    print(Time_C3, K_C3, Exactitud_C3)
     #Time_C4, K_C4, Exactitud_C4 =  Caso_4_Datos_undersampling_PCA(X_train, X_test, y_train, y_test)
     #print(Time_C4, K_C4, Exactitud_C4)
     #Time_C5, K_C5, Exactitud_C5 =  Caso_5_Datos_oversampling(X_train, X_test, y_train, y_test)
     #print(Time_C5, K_C5, Exactitud_C5)
     #Time_C6, K_C6, Exactitud_C6 =  Caso_6_Datos_oversampling_PCA(X_train, X_test, y_train, y_test)
     #print(Time_C6, K_C6, Exactitud_C6)
-    Time_SVM_Linear_C1, C_Linear_C1, Exactitud_SVM_Linear_C1 =  SVM_linear_1_Datos_originales(X_train, X_test, y_train, y_test)
-    print(Time_SVM_Linear_C1, C_Linear_C1, Exactitud_SVM_Linear_C1)
+    #Time_SVM_Linear_C1, C_Linear_C1, Exactitud_SVM_Linear_C1 =  SVM_linear_1_Datos_originales(X_train, X_test, y_train, y_test)
+    #print(Time_SVM_Linear_C1, C_Linear_C1, Exactitud_SVM_Linear_C1)
 
 if __name__ == "__main__":
     main()
