@@ -57,7 +57,7 @@ def Normalizado_minmax(X_train, X_test):
     X_test_minmax = scaler.transform(X_test)
     return X_train_minmax, X_test_minmax
 
-def PCA(X_train):
+#def PCA(X_train):
 
     mypca15 = PCA(n_components=15)
     mypca15.fit(X_train)
@@ -71,14 +71,6 @@ def PCA(X_train):
     return X_projected15
 
 def Caso_1_Datos_originales(X_train, X_test, y_train, y_test):
-    print(X_train[1].shape)
-    for i in range(1, 6):
-        unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
-        sm = NearMiss() #Inicializa el algoritmo NearMiss y lo guarda en la variable "sm"
-        X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
-        
-        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
-
     #Caso 1: Datos originales
     Score = np.zeros(95)
     Score_desvest = np.zeros(95)
@@ -139,6 +131,1222 @@ def Caso_1_Datos_originales(X_train, X_test, y_train, y_test):
 
     return Time, mejor_k, Exactiud_K
 
+def Caso_2_Datos_originales_PCA(X_train, X_test, y_train, y_test):
+    #Caso 2: Datos originales con PCA
+    for i in range(1, 6):
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+        mypca = PCA()
+        mypca.fit(X_train[i])
+        mypca.explained_variance_ratio_
+        variance = mypca.explained_variance_ratio_
+        acumvar = variance.cumsum()
+
+        mypca15 = PCA(n_components=15)
+        mypca15.fit(X_train[i])
+        values_proj15 = mypca15.transform(X_train[i])
+
+        X_train[i] = mypca15.inverse_transform(values_proj15)
+
+    Score = np.zeros(95)
+    Score_desvest = np.zeros(95)
+    Posicion = np.zeros(95)
+    
+    for k in range(5,100):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            neigh = KNeighborsClassifier(n_neighbors = k)
+            neigh.fit(X_train[i],y_train[i])
+            y_predict_knn = neigh.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = neigh.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = k
+        Score[k-5] = np.mean(Score_ind)
+        Score_desvest[k-5] = np.std(Score_ind)
+        Posicion[k-5] = k 
+        print("Exactitud media obtenida con k-NN para k={k}: ".format(k=k), Score[k-5])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de K con mayor exactitud son: ", Top_5)
+    print(f"El valor de K con mayor precisión es: K = ",Score.argmax()+5)
+    print(f"El valor de K con menor desviación es: K = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_k = Score.argmax()+5 #Mejor valor de K
+    neigh = KNeighborsClassifier(n_neighbors = mejor_k)
+    neigh.fit(X_train[1],y_train[1])
+    y_predict_knn = neigh.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_K = neigh.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de K es de: ",Exactiud_K)
+    print("El tiempo de ejecución para el mejor valor de K es de: ",Time,"(ms)")
+    
+
+    tabla_KNN = pd.DataFrame({
+        "Valor de k": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_KNN)
+
+    tabla_KNN.to_csv("tabla_KNN_Caso 2.csv", index=False)
+
+    #Matriz de confusión
+    cm_kNN = confusion_matrix(y_test[1], y_predict_knn, labels=[0,1])
+    disp_knn = ConfusionMatrixDisplay(confusion_matrix=cm_kNN,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_knn.plot(cmap=plt.cm.Blues)
+    plt.title("k-NN: conjunto de datos original con PCA")
+    plt.savefig("matriz_confusion_knn_Caso 2.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_k, Exactiud_K
+
+def Caso_3_Datos_undersampling(X_train, X_test, y_train, y_test):
+    #Caso 3: Datos con undersampling
+    for i in range(1, 6):
+        unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
+        sm = NearMiss() #Inicializa el algoritmo NearMiss y lo guarda en la variable "sm"
+        X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+
+    Score = np.zeros(95)
+    Score_desvest = np.zeros(95)
+    Posicion = np.zeros(95)
+    
+    for k in range(5,100):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            neigh = KNeighborsClassifier(n_neighbors = k)
+            neigh.fit(X_train[i],y_train[i])
+            y_predict_knn = neigh.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = neigh.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = k
+        Score[k-5] = np.mean(Score_ind)
+        Score_desvest[k-5] = np.std(Score_ind)
+        Posicion[k-5] = k 
+        print("Exactitud media obtenida con k-NN para k={k}: ".format(k=k), Score[k-5])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de K con mayor exactitud son: ", Top_5)
+    print(f"El valor de K con mayor precisión es: K = ",Score.argmax()+5)
+    print(f"El valor de K con menor desviación es: K = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_k = Score.argmax()+5 #Mejor valor de K
+    neigh = KNeighborsClassifier(n_neighbors = mejor_k)
+    neigh.fit(X_train[1],y_train[1])
+    y_predict_knn = neigh.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_K = neigh.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de K es de: ",Exactiud_K)
+    print("El tiempo de ejecución para el mejor valor de K es de: ",Time,"(ms)")
+    
+
+    tabla_KNN = pd.DataFrame({
+        "Valor de k": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_KNN)
+
+    tabla_KNN.to_csv("tabla_KNN_Caso 3.csv", index=False)
+
+    #Matriz de confusión
+    cm_kNN = confusion_matrix(y_test[1], y_predict_knn, labels=[0,1])
+    disp_knn = ConfusionMatrixDisplay(confusion_matrix=cm_kNN,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_knn.plot(cmap=plt.cm.Blues)
+    plt.title("k-NN: conjunto de datos undersampling")
+    plt.savefig("matriz_confusion_knn_Caso 3.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_k, Exactiud_K
+
+def Caso_4_Datos_undersampling_PCA(X_train, X_test, y_train, y_test):
+    #Caso 3: Datos con undersampling con PCA
+    for i in range(1, 6):
+        unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
+        sm = NearMiss() #Inicializa el algoritmo NearMiss y lo guarda en la variable "sm"
+        X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+        mypca = PCA()
+        mypca.fit(X_train[i])
+        mypca.explained_variance_ratio_
+        variance = mypca.explained_variance_ratio_
+        acumvar = variance.cumsum()
+
+        mypca15 = PCA(n_components=15)
+        mypca15.fit(X_train[i])
+        values_proj15 = mypca15.transform(X_train[i])
+
+        X_train[i] = mypca15.inverse_transform(values_proj15)
+
+    Score = np.zeros(95)
+    Score_desvest = np.zeros(95)
+    Posicion = np.zeros(95)
+    
+    for k in range(5,100):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            neigh = KNeighborsClassifier(n_neighbors = k)
+            neigh.fit(X_train[i],y_train[i])
+            y_predict_knn = neigh.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = neigh.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = k
+        Score[k-5] = np.mean(Score_ind)
+        Score_desvest[k-5] = np.std(Score_ind)
+        Posicion[k-5] = k 
+        print("Exactitud media obtenida con k-NN para k={k}: ".format(k=k), Score[k-5])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de K con mayor exactitud son: ", Top_5)
+    print(f"El valor de K con mayor precisión es: K = ",Score.argmax()+5)
+    print(f"El valor de K con menor desviación es: K = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_k = Score.argmax()+5 #Mejor valor de K
+    neigh = KNeighborsClassifier(n_neighbors = mejor_k)
+    neigh.fit(X_train[1],y_train[1])
+    y_predict_knn = neigh.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_K = neigh.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de K es de: ",Exactiud_K)
+    print("El tiempo de ejecución para el mejor valor de K es de: ",Time,"(ms)")
+    
+
+    tabla_KNN = pd.DataFrame({
+        "Valor de k": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_KNN)
+
+    tabla_KNN.to_csv("tabla_KNN_Caso 4.csv", index=False)
+
+    #Matriz de confusión
+    cm_kNN = confusion_matrix(y_test[1], y_predict_knn, labels=[0,1])
+    disp_knn = ConfusionMatrixDisplay(confusion_matrix=cm_kNN,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_knn.plot(cmap=plt.cm.Blues)
+    plt.title("k-NN: conjunto de datos undersampling con PCA")
+    plt.savefig("matriz_confusion_knn_Caso 4.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_k, Exactiud_K
+
+def Caso_5_Datos_oversampling(X_train, X_test, y_train, y_test):
+    #Caso 5: Datos con oversampling
+    for i in range(1, 6):
+        unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
+        sm = SMOTE(random_state=1) #Inicializa el algoritmo SMOTE y lo guarda en la variable "sm"
+        X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+
+    Score = np.zeros(95)
+    Score_desvest = np.zeros(95)
+    Posicion = np.zeros(95)
+    
+    for k in range(5,100):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            neigh = KNeighborsClassifier(n_neighbors = k)
+            neigh.fit(X_train[i],y_train[i])
+            y_predict_knn = neigh.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = neigh.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = k
+        Score[k-5] = np.mean(Score_ind)
+        Score_desvest[k-5] = np.std(Score_ind)
+        Posicion[k-5] = k 
+        print("Exactitud media obtenida con k-NN para k={k}: ".format(k=k), Score[k-5])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de K con mayor exactitud son: ", Top_5)
+    print(f"El valor de K con mayor precisión es: K = ",Score.argmax()+5)
+    print(f"El valor de K con menor desviación es: K = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_k = Score.argmax()+5 #Mejor valor de K
+    neigh = KNeighborsClassifier(n_neighbors = mejor_k)
+    neigh.fit(X_train[1],y_train[1])
+    y_predict_knn = neigh.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_K = neigh.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de K es de: ",Exactiud_K)
+    print("El tiempo de ejecución para el mejor valor de K es de: ",Time,"(ms)")
+    
+
+    tabla_KNN = pd.DataFrame({
+        "Valor de k": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_KNN)
+
+    tabla_KNN.to_csv("tabla_KNN_Caso 5.csv", index=False)
+
+    #Matriz de confusión
+    cm_kNN = confusion_matrix(y_test[1], y_predict_knn, labels=[0,1])
+    disp_knn = ConfusionMatrixDisplay(confusion_matrix=cm_kNN,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_knn.plot(cmap=plt.cm.Blues)
+    plt.title("k-NN: conjunto de datos oversampling")
+    plt.savefig("matriz_confusion_knn_Caso 5.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_k, Exactiud_K
+
+def Caso_6_Datos_oversampling_PCA(X_train, X_test, y_train, y_test):
+    #Caso 6: Datos con oversampling con PCA
+    for i in range(1, 6):
+        unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
+        sm = SMOTE(random_state=1)#Inicializa el algoritmo SMOTE y lo guarda en la variable "sm"
+        X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+        mypca = PCA()
+        mypca.fit(X_train[i])
+        mypca.explained_variance_ratio_
+        variance = mypca.explained_variance_ratio_
+        acumvar = variance.cumsum()
+
+        mypca15 = PCA(n_components=15)
+        mypca15.fit(X_train[i])
+        values_proj15 = mypca15.transform(X_train[i])
+
+        X_train[i] = mypca15.inverse_transform(values_proj15)
+
+    Score = np.zeros(95)
+    Score_desvest = np.zeros(95)
+    Posicion = np.zeros(95)
+    
+    for k in range(5,100):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            neigh = KNeighborsClassifier(n_neighbors = k)
+            neigh.fit(X_train[i],y_train[i])
+            y_predict_knn = neigh.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = neigh.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = k
+        Score[k-5] = np.mean(Score_ind)
+        Score_desvest[k-5] = np.std(Score_ind)
+        Posicion[k-5] = k 
+        print("Exactitud media obtenida con k-NN para k={k}: ".format(k=k), Score[k-5])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de K con mayor exactitud son: ", Top_5)
+    print(f"El valor de K con mayor precisión es: K = ",Score.argmax()+5)
+    print(f"El valor de K con menor desviación es: K = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_k = Score.argmax()+5 #Mejor valor de K
+    neigh = KNeighborsClassifier(n_neighbors = mejor_k)
+    neigh.fit(X_train[1],y_train[1])
+    y_predict_knn = neigh.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_K = neigh.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de K es de: ",Exactiud_K)
+    print("El tiempo de ejecución para el mejor valor de K es de: ",Time,"(ms)")
+    
+
+    tabla_KNN = pd.DataFrame({
+        "Valor de k": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_KNN)
+
+    tabla_KNN.to_csv("tabla_KNN_Caso 6.csv", index=False)
+
+    #Matriz de confusión
+    cm_kNN = confusion_matrix(y_test[1], y_predict_knn, labels=[0,1])
+    disp_knn = ConfusionMatrixDisplay(confusion_matrix=cm_kNN,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_knn.plot(cmap=plt.cm.Blues)
+    plt.title("k-NN: conjunto de datos oversampling con PCA")
+    plt.savefig("matriz_confusion_knn_Caso 6.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_k, Exactiud_K
+
+def SVM_linear_1_Datos_originales(X_train, X_test, y_train, y_test):
+    #Caso 1: Datos originales
+    Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    
+    for C in range(1,10):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            clf_svm = svm.SVC(C=i,kernel='linear')
+            clf_svm.fit(X_train[i], y_train[i]) 
+            y_predict_svm = clf_svm.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = clf_svm.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = C
+        Score[C-1] = np.mean(Score_ind)
+        Score_desvest[C-1] = np.std(Score_ind)
+        Posicion[C-1] = C 
+        print("Exactitud media obtenida con SVM para C={C}: ".format(C=C), Score[C-1])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de K con mayor exactitud son: ", Top_5)
+    print(f"El valor de C con mayor precisión es: C = ",Score.argmax()+5)
+    print(f"El valor de C con menor desviación es: C = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_C = Score.argmax()+5 #Mejor valor de C
+    clf_svm = svm.SVC(C=(Score.argmax())+1,kernel='linear')
+    clf_svm.fit(X_train[1],y_train[1])
+    y_predict_svm = clf_svm.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_C = clf_svm.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de C es de: ",Exactiud_C)
+    print("El tiempo de ejecución para el mejor valor de C es de: ",Time,"(ms)")
+    
+
+    tabla_SVM_linear = pd.DataFrame({
+        "Valor de C": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_SVM_linear)
+
+    tabla_SVM_linear.to_csv("tabla_SVM_Linear_Caso 1.csv", index=False)
+
+    #Matriz de confusión
+    cm_SVM = confusion_matrix(y_test[1], y_predict_svm, labels=[0,1])
+    disp_SVM = ConfusionMatrixDisplay(confusion_matrix=cm_SVM,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_SVM.plot(cmap=plt.cm.Blues)
+    plt.title("SVM: conjunto de datos original")
+    plt.savefig("matriz_confusion_SVM_Linear_Caso 1.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_C, Exactiud_C
+
+#def SVM_linear_2_Datos_originales_PCA(X_train, X_test, y_train, y_test):
+    #Caso 2: Datos originales con PCA
+    for i in range(1, 6):
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+        mypca = PCA()
+        mypca.fit(X_train[i])
+        mypca.explained_variance_ratio_
+        variance = mypca.explained_variance_ratio_
+        acumvar = variance.cumsum()
+
+        mypca15 = PCA(n_components=15)
+        mypca15.fit(X_train[i])
+        values_proj15 = mypca15.transform(X_train[i])
+
+        X_train[i] = mypca15.inverse_transform(values_proj15)
+
+        Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    
+    for C in range(1,10):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            clf_svm = svm.SVC(C=i,kernel='linear')
+            clf_svm.fit(X_train[i], y_train[i]) 
+            y_predict_svm = clf_svm.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = clf_svm.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = C
+        Score[C-1] = np.mean(Score_ind)
+        Score_desvest[C-1] = np.std(Score_ind)
+        Posicion[C-1] = C 
+        print("Exactitud media obtenida con SVM para C={C}: ".format(C=C), Score[C-1])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de C con mayor exactitud son: ", Top_5)
+    print(f"El valor de C con mayor precisión es: C = ",Score.argmax()+5)
+    print(f"El valor de C con menor desviación es: C = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_C = Score.argmax()+5 #Mejor valor de C
+    clf_svm = svm.SVC(C=(Score.argmax())+1,kernel='linear')
+    clf_svm.fit(X_train[1],y_train[1])
+    y_predict_svm = clf_svm.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_C = clf_svm.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de C es de: ",Exactiud_C)
+    print("El tiempo de ejecución para el mejor valor de C es de: ",Time,"(ms)")
+    
+
+    tabla_SVM_linear = pd.DataFrame({
+        "Valor de C": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_SVM_linear)
+
+    tabla_SVM_linear.to_csv("tabla_SVM_Linear_Caso 2.csv", index=False)
+
+    #Matriz de confusión
+    cm_SVM = confusion_matrix(y_test[1], y_predict_svm, labels=[0,1])
+    disp_SVM = ConfusionMatrixDisplay(confusion_matrix=cm_SVM,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_SVM.plot(cmap=plt.cm.Blues)
+    plt.title("SVM: conjunto de datos original con PCA")
+    plt.savefig("matriz_confusion_SVM_Linear_Caso 2.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_C, Exactiud_C
+
+#def SVM_linear_3_Datos_Undersampling(X_train, X_test, y_train, y_test):
+    #Caso 3: Datos con undersampling
+    for i in range(1, 6):
+        unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
+        sm = NearMiss() #Inicializa el algoritmo NearMiss y lo guarda en la variable "sm"
+        X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+
+        Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    
+    for C in range(1,10):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            clf_svm = svm.SVC(C=i,kernel='linear')
+            clf_svm.fit(X_train[i], y_train[i]) 
+            y_predict_svm = clf_svm.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = clf_svm.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = C
+        Score[C-1] = np.mean(Score_ind)
+        Score_desvest[C-1] = np.std(Score_ind)
+        Posicion[C-1] = C 
+        print("Exactitud media obtenida con SVM para C={C}: ".format(C=C), Score[C-1])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de C con mayor exactitud son: ", Top_5)
+    print(f"El valor de C con mayor precisión es: C = ",Score.argmax()+5)
+    print(f"El valor de C con menor desviación es: C = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_C = Score.argmax()+5 #Mejor valor de C
+    clf_svm = svm.SVC(C=(Score.argmax())+1,kernel='linear')
+    clf_svm.fit(X_train[1],y_train[1])
+    y_predict_svm = clf_svm.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_C = clf_svm.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de C es de: ",Exactiud_C)
+    print("El tiempo de ejecución para el mejor valor de C es de: ",Time,"(ms)")
+    
+
+    tabla_SVM_linear = pd.DataFrame({
+        "Valor de C": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_SVM_linear)
+
+    tabla_SVM_linear.to_csv("tabla_SVM_Linear_Caso 3.csv", index=False)
+
+    #Matriz de confusión
+    cm_SVM = confusion_matrix(y_test[1], y_predict_svm, labels=[0,1])
+    disp_SVM = ConfusionMatrixDisplay(confusion_matrix=cm_SVM,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_SVM.plot(cmap=plt.cm.Blues)
+    plt.title("SVM: conjunto de datos con undersampling")
+    plt.savefig("matriz_confusion_SVM_Linear_Caso 3.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_C, Exactiud_C
+
+#def SVM_linear_4_Datos_Undersampling_PCA(X_train, X_test, y_train, y_test):
+    #Caso 3: Datos con undersampling con PCA
+    for i in range(1, 6):
+        unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
+        sm = NearMiss() #Inicializa el algoritmo NearMiss y lo guarda en la variable "sm"
+        X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+        mypca = PCA()
+        mypca.fit(X_train[i])
+        mypca.explained_variance_ratio_
+        variance = mypca.explained_variance_ratio_
+        acumvar = variance.cumsum()
+
+        mypca15 = PCA(n_components=15)
+        mypca15.fit(X_train[i])
+        values_proj15 = mypca15.transform(X_train[i])
+
+        X_train[i] = mypca15.inverse_transform(values_proj15)
+
+        Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    
+    for C in range(1,10):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            clf_svm = svm.SVC(C=i,kernel='linear')
+            clf_svm.fit(X_train[i], y_train[i]) 
+            y_predict_svm = clf_svm.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = clf_svm.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = C
+        Score[C-1] = np.mean(Score_ind)
+        Score_desvest[C-1] = np.std(Score_ind)
+        Posicion[C-1] = C 
+        print("Exactitud media obtenida con SVM para C={C}: ".format(C=C), Score[C-1])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de C con mayor exactitud son: ", Top_5)
+    print(f"El valor de C con mayor precisión es: C = ",Score.argmax()+5)
+    print(f"El valor de C con menor desviación es: C = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_C = Score.argmax()+5 #Mejor valor de C
+    clf_svm = svm.SVC(C=(Score.argmax())+1,kernel='linear')
+    clf_svm.fit(X_train[1],y_train[1])
+    y_predict_svm = clf_svm.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_C = clf_svm.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de C es de: ",Exactiud_C)
+    print("El tiempo de ejecución para el mejor valor de C es de: ",Time,"(ms)")
+    
+
+    tabla_SVM_linear = pd.DataFrame({
+        "Valor de C": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_SVM_linear)
+
+    tabla_SVM_linear.to_csv("tabla_SVM_Linear_Caso 4.csv", index=False)
+
+    #Matriz de confusión
+    cm_SVM = confusion_matrix(y_test[1], y_predict_svm, labels=[0,1])
+    disp_SVM = ConfusionMatrixDisplay(confusion_matrix=cm_SVM,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_SVM.plot(cmap=plt.cm.Blues)
+    plt.title("SVM: conjunto de datos con undersampling con PCA")
+    plt.savefig("matriz_confusion_SVM_Linear_Caso 4.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_C, Exactiud_C
+
+#def SVM_linear_5_Datos_Oversampling(X_train, X_test, y_train, y_test):
+    #Caso 5: Datos con oversampling
+    for i in range(1, 6):
+        unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
+        sm = SMOTE(random_state=1) #Inicializa el algoritmo SMOTE y lo guarda en la variable "sm"
+        X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+
+    Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    
+    for C in range(1,10):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            clf_svm = svm.SVC(C=i,kernel='linear')
+            clf_svm.fit(X_train[i], y_train[i]) 
+            y_predict_svm = clf_svm.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = clf_svm.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = C
+        Score[C-1] = np.mean(Score_ind)
+        Score_desvest[C-1] = np.std(Score_ind)
+        Posicion[C-1] = C 
+        print("Exactitud media obtenida con SVM para C={C}: ".format(C=C), Score[C-1])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de C con mayor exactitud son: ", Top_5)
+    print(f"El valor de C con mayor precisión es: C = ",Score.argmax()+5)
+    print(f"El valor de C con menor desviación es: C = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_C = Score.argmax()+5 #Mejor valor de C
+    clf_svm = svm.SVC(C=(Score.argmax())+1,kernel='linear')
+    clf_svm.fit(X_train[1],y_train[1])
+    y_predict_svm = clf_svm.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_C = clf_svm.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de C es de: ",Exactiud_C)
+    print("El tiempo de ejecución para el mejor valor de C es de: ",Time,"(ms)")
+    
+
+    tabla_SVM_linear = pd.DataFrame({
+        "Valor de C": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_SVM_linear)
+
+    tabla_SVM_linear.to_csv("tabla_SVM_Linear_Caso 5.csv", index=False)
+
+    #Matriz de confusión
+    cm_SVM = confusion_matrix(y_test[1], y_predict_svm, labels=[0,1])
+    disp_SVM = ConfusionMatrixDisplay(confusion_matrix=cm_SVM,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_SVM.plot(cmap=plt.cm.Blues)
+    plt.title("SVM: conjunto de datos con oversampling")
+    plt.savefig("matriz_confusion_SVM_Linear_Caso 5.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_C, Exactiud_C
+
+#def SVM_Lineal_6_Datos_oversampling_PCA(X_train, X_test, y_train, y_test):
+    #Caso 6: Datos con oversampling con PCA
+    for i in range(1, 6):
+        unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
+        sm = SMOTE(random_state=1)#Inicializa el algoritmo SMOTE y lo guarda en la variable "sm"
+        X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+        mypca = PCA()
+        mypca.fit(X_train[i])
+        mypca.explained_variance_ratio_
+        variance = mypca.explained_variance_ratio_
+        acumvar = variance.cumsum()
+
+        mypca15 = PCA(n_components=15)
+        mypca15.fit(X_train[i])
+        values_proj15 = mypca15.transform(X_train[i])
+
+        X_train[i] = mypca15.inverse_transform(values_proj15)
+
+    Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    
+    for C in range(1,10):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            clf_svm = svm.SVC(C=i,kernel='linear')
+            clf_svm.fit(X_train[i], y_train[i]) 
+            y_predict_svm = clf_svm.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = clf_svm.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = C
+        Score[C-1] = np.mean(Score_ind)
+        Score_desvest[C-1] = np.std(Score_ind)
+        Posicion[C-1] = C 
+        print("Exactitud media obtenida con SVM para C={C}: ".format(C=C), Score[C-1])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de C con mayor exactitud son: ", Top_5)
+    print(f"El valor de C con mayor precisión es: C = ",Score.argmax()+5)
+    print(f"El valor de C con menor desviación es: C = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_C = Score.argmax()+5 #Mejor valor de C
+    clf_svm = svm.SVC(C=(Score.argmax())+1,kernel='linear')
+    clf_svm.fit(X_train[1],y_train[1])
+    y_predict_svm = clf_svm.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_C = clf_svm.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de C es de: ",Exactiud_C)
+    print("El tiempo de ejecución para el mejor valor de C es de: ",Time,"(ms)")
+    
+
+    tabla_SVM_linear = pd.DataFrame({
+        "Valor de C": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_SVM_linear)
+
+    tabla_SVM_linear.to_csv("tabla_SVM_Linear_Caso 6.csv", index=False)
+
+    #Matriz de confusión
+    cm_SVM = confusion_matrix(y_test[1], y_predict_svm, labels=[0,1])
+    disp_SVM = ConfusionMatrixDisplay(confusion_matrix=cm_SVM,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_SVM.plot(cmap=plt.cm.Blues)
+    plt.title("SVM: conjunto de datos con oversampling con PCA")
+    plt.savefig("matriz_confusion_SVM_Linear_Caso 6.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_C, Exactiud_C
+
+def SVM_RBF_1_Datos_originales(X_train, X_test, y_train, y_test):
+    #Caso 1: Datos originales
+    Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    
+    for C in range(1,10):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            clf_svm = svm.SVC(C=i,kernel='rbf')
+            clf_svm.fit(X_train[i], y_train[i]) 
+            y_predict_svm = clf_svm.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = clf_svm.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = C
+        Score[C-1] = np.mean(Score_ind)
+        Score_desvest[C-1] = np.std(Score_ind)
+        Posicion[C-1] = C 
+        print("Exactitud media obtenida con SVM para C={C}: ".format(C=C), Score[C-1])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de K con mayor exactitud son: ", Top_5)
+    print(f"El valor de C con mayor precisión es: C = ",Score.argmax()+5)
+    print(f"El valor de C con menor desviación es: C = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_C = Score.argmax()+5 #Mejor valor de C
+    clf_svm = svm.SVC(C=(Score.argmax())+1,kernel='rbf')
+    clf_svm.fit(X_train[1],y_train[1])
+    y_predict_svm = clf_svm.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_C = clf_svm.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de C es de: ",Exactiud_C)
+    print("El tiempo de ejecución para el mejor valor de C es de: ",Time,"(ms)")
+    
+
+    tabla_SVM_linear = pd.DataFrame({
+        "Valor de C": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_SVM_linear)
+
+    tabla_SVM_linear.to_csv("tabla_SVM_RBF_Caso 1.csv", index=False)
+
+    #Matriz de confusión
+    cm_SVM = confusion_matrix(y_test[1], y_predict_svm, labels=[0,1])
+    disp_SVM = ConfusionMatrixDisplay(confusion_matrix=cm_SVM,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_SVM.plot(cmap=plt.cm.Blues)
+    plt.title("SVM: conjunto de datos original")
+    plt.savefig("matriz_confusion_SVM_RBF_Caso 1.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_C, Exactiud_C
+
+#def SVM_RBF_2_Datos_originales_PCA(X_train, X_test, y_train, y_test):
+    #Caso 2: Datos originales con PCA
+    for i in range(1, 6):
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+        mypca = PCA()
+        mypca.fit(X_train[i])
+        mypca.explained_variance_ratio_
+        variance = mypca.explained_variance_ratio_
+        acumvar = variance.cumsum()
+
+        mypca15 = PCA(n_components=15)
+        mypca15.fit(X_train[i])
+        values_proj15 = mypca15.transform(X_train[i])
+
+        X_train[i] = mypca15.inverse_transform(values_proj15)
+
+        Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    
+    for C in range(1,10):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            clf_svm = svm.SVC(C=i,kernel='rbf')
+            clf_svm.fit(X_train[i], y_train[i]) 
+            y_predict_svm = clf_svm.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = clf_svm.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = C
+        Score[C-1] = np.mean(Score_ind)
+        Score_desvest[C-1] = np.std(Score_ind)
+        Posicion[C-1] = C 
+        print("Exactitud media obtenida con SVM para C={C}: ".format(C=C), Score[C-1])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de C con mayor exactitud son: ", Top_5)
+    print(f"El valor de C con mayor precisión es: C = ",Score.argmax()+5)
+    print(f"El valor de C con menor desviación es: C = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_C = Score.argmax()+5 #Mejor valor de C
+    clf_svm = svm.SVC(C=(Score.argmax())+1,kernel='rbf')
+    clf_svm.fit(X_train[1],y_train[1])
+    y_predict_svm = clf_svm.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_C = clf_svm.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de C es de: ",Exactiud_C)
+    print("El tiempo de ejecución para el mejor valor de C es de: ",Time,"(ms)")
+    
+
+    tabla_SVM_linear = pd.DataFrame({
+        "Valor de C": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_SVM_linear)
+
+    tabla_SVM_linear.to_csv("tabla_SVM_RBF_Caso 2.csv", index=False)
+
+    #Matriz de confusión
+    cm_SVM = confusion_matrix(y_test[1], y_predict_svm, labels=[0,1])
+    disp_SVM = ConfusionMatrixDisplay(confusion_matrix=cm_SVM,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_SVM.plot(cmap=plt.cm.Blues)
+    plt.title("SVM: conjunto de datos original con PCA")
+    plt.savefig("matriz_confusion_SVM_RBF_Caso 2.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_C, Exactiud_C
+
+#def SVM_RBF_3_Datos_Undersampling(X_train, X_test, y_train, y_test):
+    #Caso 3: Datos con undersampling
+    for i in range(1, 6):
+        unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
+        sm = NearMiss() #Inicializa el algoritmo NearMiss y lo guarda en la variable "sm"
+        X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+
+        Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    
+    for C in range(1,10):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            clf_svm = svm.SVC(C=i,kernel='rbf')
+            clf_svm.fit(X_train[i], y_train[i]) 
+            y_predict_svm = clf_svm.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = clf_svm.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = C
+        Score[C-1] = np.mean(Score_ind)
+        Score_desvest[C-1] = np.std(Score_ind)
+        Posicion[C-1] = C 
+        print("Exactitud media obtenida con SVM para C={C}: ".format(C=C), Score[C-1])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de C con mayor exactitud son: ", Top_5)
+    print(f"El valor de C con mayor precisión es: C = ",Score.argmax()+5)
+    print(f"El valor de C con menor desviación es: C = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_C = Score.argmax()+5 #Mejor valor de C
+    clf_svm = svm.SVC(C=(Score.argmax())+1,kernel='rbf')
+    clf_svm.fit(X_train[1],y_train[1])
+    y_predict_svm = clf_svm.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_C = clf_svm.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de C es de: ",Exactiud_C)
+    print("El tiempo de ejecución para el mejor valor de C es de: ",Time,"(ms)")
+    
+
+    tabla_SVM_linear = pd.DataFrame({
+        "Valor de C": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_SVM_linear)
+
+    tabla_SVM_linear.to_csv("tabla_SVM_RBF_Caso 3.csv", index=False)
+
+    #Matriz de confusión
+    cm_SVM = confusion_matrix(y_test[1], y_predict_svm, labels=[0,1])
+    disp_SVM = ConfusionMatrixDisplay(confusion_matrix=cm_SVM,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_SVM.plot(cmap=plt.cm.Blues)
+    plt.title("SVM: conjunto de datos con undersampling")
+    plt.savefig("matriz_confusion_SVM_RBF_Caso 3.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_C, Exactiud_C
+
+#def SVM_linear_4_Datos_Undersampling_PCA(X_train, X_test, y_train, y_test):
+    #Caso 3: Datos con undersampling con PCA
+    for i in range(1, 6):
+        unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
+        sm = NearMiss() #Inicializa el algoritmo NearMiss y lo guarda en la variable "sm"
+        X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+        mypca = PCA()
+        mypca.fit(X_train[i])
+        mypca.explained_variance_ratio_
+        variance = mypca.explained_variance_ratio_
+        acumvar = variance.cumsum()
+
+        mypca15 = PCA(n_components=15)
+        mypca15.fit(X_train[i])
+        values_proj15 = mypca15.transform(X_train[i])
+
+        X_train[i] = mypca15.inverse_transform(values_proj15)
+
+        Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    
+    for C in range(1,10):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            clf_svm = svm.SVC(C=i,kernel='rbf')
+            clf_svm.fit(X_train[i], y_train[i]) 
+            y_predict_svm = clf_svm.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = clf_svm.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = C
+        Score[C-1] = np.mean(Score_ind)
+        Score_desvest[C-1] = np.std(Score_ind)
+        Posicion[C-1] = C 
+        print("Exactitud media obtenida con SVM para C={C}: ".format(C=C), Score[C-1])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de C con mayor exactitud son: ", Top_5)
+    print(f"El valor de C con mayor precisión es: C = ",Score.argmax()+5)
+    print(f"El valor de C con menor desviación es: C = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_C = Score.argmax()+5 #Mejor valor de C
+    clf_svm = svm.SVC(C=(Score.argmax())+1,kernel='rbf')
+    clf_svm.fit(X_train[1],y_train[1])
+    y_predict_svm = clf_svm.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_C = clf_svm.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de C es de: ",Exactiud_C)
+    print("El tiempo de ejecución para el mejor valor de C es de: ",Time,"(ms)")
+    
+
+    tabla_SVM_linear = pd.DataFrame({
+        "Valor de C": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_SVM_linear)
+
+    tabla_SVM_linear.to_csv("tabla_SVM_RBF_Caso 4.csv", index=False)
+
+    #Matriz de confusión
+    cm_SVM = confusion_matrix(y_test[1], y_predict_svm, labels=[0,1])
+    disp_SVM = ConfusionMatrixDisplay(confusion_matrix=cm_SVM,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_SVM.plot(cmap=plt.cm.Blues)
+    plt.title("SVM: conjunto de datos con undersampling con PCA")
+    plt.savefig("matriz_confusion_SVM_RBF_Caso 4.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_C, Exactiud_C
+
+#def SVM_RBF_5_Datos_Oversampling(X_train, X_test, y_train, y_test):
+    #Caso 5: Datos con oversampling
+    for i in range(1, 6):
+        unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
+        sm = SMOTE(random_state=1) #Inicializa el algoritmo SMOTE y lo guarda en la variable "sm"
+        X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+
+    Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    
+    for C in range(1,10):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            clf_svm = svm.SVC(C=i,kernel='rbf')
+            clf_svm.fit(X_train[i], y_train[i]) 
+            y_predict_svm = clf_svm.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = clf_svm.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = C
+        Score[C-1] = np.mean(Score_ind)
+        Score_desvest[C-1] = np.std(Score_ind)
+        Posicion[C-1] = C 
+        print("Exactitud media obtenida con SVM para C={C}: ".format(C=C), Score[C-1])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de C con mayor exactitud son: ", Top_5)
+    print(f"El valor de C con mayor precisión es: C = ",Score.argmax()+5)
+    print(f"El valor de C con menor desviación es: C = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_C = Score.argmax()+5 #Mejor valor de C
+    clf_svm = svm.SVC(C=(Score.argmax())+1,kernel='rbf')
+    clf_svm.fit(X_train[1],y_train[1])
+    y_predict_svm = clf_svm.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_C = clf_svm.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de C es de: ",Exactiud_C)
+    print("El tiempo de ejecución para el mejor valor de C es de: ",Time,"(ms)")
+    
+
+    tabla_SVM_linear = pd.DataFrame({
+        "Valor de C": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_SVM_linear)
+
+    tabla_SVM_linear.to_csv("tabla_SVM_RBF_Caso 5.csv", index=False)
+
+    #Matriz de confusión
+    cm_SVM = confusion_matrix(y_test[1], y_predict_svm, labels=[0,1])
+    disp_SVM = ConfusionMatrixDisplay(confusion_matrix=cm_SVM,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_SVM.plot(cmap=plt.cm.Blues)
+    plt.title("SVM: conjunto de datos con oversampling")
+    plt.savefig("matriz_confusion_SVM_RBF_Caso 5.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_C, Exactiud_C
+
+#def SVM_RBF_6_Datos_oversampling_PCA(X_train, X_test, y_train, y_test):
+    #Caso 6: Datos con oversampling con PCA
+    for i in range(1, 6):
+        unique, counts = np.unique(y_train[i], return_counts=True) #Escanea la variable "y_train" y contabiliza cuantas muestras hay de cada tipo
+        sm = SMOTE(random_state=1)#Inicializa el algoritmo SMOTE y lo guarda en la variable "sm"
+        X_train[i], y_train[i]= sm.fit_resample(X_train[i], y_train[i]) #Se elimina el exceso de muestras de la clase mayoritaria y se sobreescriben las variables X_train e y_train con los datos ya balanceados.
+        X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
+        mypca = PCA()
+        mypca.fit(X_train[i])
+        mypca.explained_variance_ratio_
+        variance = mypca.explained_variance_ratio_
+        acumvar = variance.cumsum()
+
+        mypca15 = PCA(n_components=15)
+        mypca15.fit(X_train[i])
+        values_proj15 = mypca15.transform(X_train[i])
+
+        X_train[i] = mypca15.inverse_transform(values_proj15)
+
+    Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    
+    for C in range(1,10):
+        Score_ind=np.zeros(5)
+        Posicion_ind=np.zeros(5)
+        for i in range(1,6):
+             
+
+            #Método KNN
+            
+            clf_svm = svm.SVC(C=i,kernel='rbf')
+            clf_svm.fit(X_train[i], y_train[i]) 
+            y_predict_svm = clf_svm.predict(X_test[i])
+        
+            
+            Score_ind[i-1] = clf_svm.score(X_test[i], y_test[i])
+            Posicion_ind[i-1] = C
+        Score[C-1] = np.mean(Score_ind)
+        Score_desvest[C-1] = np.std(Score_ind)
+        Posicion[C-1] = C 
+        print("Exactitud media obtenida con SVM para C={C}: ".format(C=C), Score[C-1])
+    Top_5 = np.sort(Score)[-5:]
+    print(f"Los 5 valores de C con mayor exactitud son: ", Top_5)
+    print(f"El valor de C con mayor precisión es: C = ",Score.argmax()+5)
+    print(f"El valor de C con menor desviación es: C = ",Score_desvest.argmin()+5)
+
+    # Considerando el mejor valor de K, se calcula la exactitud del modelo
+    ini = time.time()
+    mejor_C = Score.argmax()+5 #Mejor valor de C
+    clf_svm = svm.SVC(C=(Score.argmax())+1,kernel='rbf')
+    clf_svm.fit(X_train[1],y_train[1])
+    y_predict_svm = clf_svm.predict(X_test[1])
+    Time = (time.time() - ini)*1000
+    Exactiud_C = clf_svm.score(X_test[1], y_test[1])
+    print("La exactitud del modelo para el mejor valor de C es de: ",Exactiud_C)
+    print("El tiempo de ejecución para el mejor valor de C es de: ",Time,"(ms)")
+    
+
+    tabla_SVM_linear = pd.DataFrame({
+        "Valor de C": Posicion,
+        "Exactiud media": Score,
+        "Desviación": Score_desvest
+    })
+    print(tabla_SVM_linear)
+
+    tabla_SVM_linear.to_csv("tabla_SVM_RBF_Caso 6.csv", index=False)
+
+    #Matriz de confusión
+    cm_SVM = confusion_matrix(y_test[1], y_predict_svm, labels=[0,1])
+    disp_SVM = ConfusionMatrixDisplay(confusion_matrix=cm_SVM,display_labels=['EDIBLE(0)','POISONOUS(1)'])
+    disp_SVM.plot(cmap=plt.cm.Blues)
+    plt.title("SVM: conjunto de datos con oversampling con PCA")
+    plt.savefig("matriz_confusion_SVM_RBF_Caso 6.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    return Time, mejor_C, Exactiud_C
 
 def main():
     df_orig=pd.read_csv('mushroms1.csv', na_values=["?"]) #Lectura de los datos y conversión del símbolo "?" a NaN
@@ -197,20 +1405,32 @@ def main():
     X_test = {}
     y_train = {}
     y_test = {}
+    X_proyected = {}
+
 
     for i in range(1, 6):
         # 2. Ahora sí podemos asignar directamente a la "llave" i
         X_train[i], X_test[i], y_train[i], y_test[i] = train_test_split(X_readed, y_readed, random_state=i)
         #Normalizado Standard
-        
+        #X_train[i], X_test[i] = Normalizado_estandar(X_train[i], X_test[i])
         #Normalizado MinMax
         #X_train[i], X_test[i] = Normalizado_minmax(X_train[i], X_test[i])
 
 
-    Time_C1, K_C1, Exactitud_C1 =  Caso_1_Datos_originales(X_train, X_test, y_train, y_test)
-
-    print(Time_C1, K_C1, Exactitud_C1)
-
+    #Time_C1, K_C1, Exactitud_C1 =  Caso_1_Datos_originales(X_train, X_test, y_train, y_test)
+    #print(Time_C1, K_C1, Exactitud_C1)
+    #Time_C2, K_C2, Exactitud_C2 =  Caso_2_Datos_originales_PCA(X_train, X_test, y_train, y_test)
+    #print(Time_C2, K_C2, Exactitud_C2)
+    #Time_C3, K_C3, Exactitud_C3 =  Caso_3_Datos_undersampling(X_train, X_test, y_train, y_test)
+    #print(Time_C3, K_C3, Exactitud_C3)
+    #Time_C4, K_C4, Exactitud_C4 =  Caso_4_Datos_undersampling_PCA(X_train, X_test, y_train, y_test)
+    #print(Time_C4, K_C4, Exactitud_C4)
+    #Time_C5, K_C5, Exactitud_C5 =  Caso_5_Datos_oversampling(X_train, X_test, y_train, y_test)
+    #print(Time_C5, K_C5, Exactitud_C5)
+    #Time_C6, K_C6, Exactitud_C6 =  Caso_6_Datos_oversampling_PCA(X_train, X_test, y_train, y_test)
+    #print(Time_C6, K_C6, Exactitud_C6)
+    Time_SVM_Linear_C1, C_Linear_C1, Exactitud_SVM_Linear_C1 =  SVM_linear_1_Datos_originales(X_train, X_test, y_train, y_test)
+    print(Time_SVM_Linear_C1, C_Linear_C1, Exactitud_SVM_Linear_C1)
 
 if __name__ == "__main__":
     main()
