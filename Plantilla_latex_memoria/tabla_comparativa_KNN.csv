@@ -1,0 +1,7 @@
+Casos de análisis,Valor de K,Exactitud,Tiempo de ejecución
+Caso 1: Datos originales,5,1.0,19.573450088500977
+Caso 2: Datos originales con PCA,5,1.0,58.255910873413086
+Caso 3: Datos undersampling,5,0.9851752021563343,14.957904815673828
+Caso 4: Datos undersampling con PCA,6,0.9811320754716981,61.48386001586914
+Caso 5: Datos oversampling,5,1.0,20.927906036376953
+Caso 6: Datos oversampling con PCA,5,1.0,55.119991302490234

@@ -616,11 +616,11 @@ def SVM_linear_1_Datos_originales(X_train, X_test, y_train, y_test):
         #X_train[i], X_test[i] = Normalizado_minmax(X_train[i], X_test[i])
 
     #Inicialización de variables
-    Score = np.zeros(30)
-    Score_desvest = np.zeros(30)
-    Posicion = np.zeros(30)
+    Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
     
-    for C in range(1,30):
+    for C in range(1,11):
         Score_ind=np.zeros(5)
         for i in range(1,6):
             #Método SVM
@@ -641,8 +641,8 @@ def SVM_linear_1_Datos_originales(X_train, X_test, y_train, y_test):
     print(f"Los 5 valores de C con mayor exactitud son: {top_5.astype(int)}")
     print(f"Sus desviaciones estándar correspondientes son: {top_5_desvest.astype(float)}")
     print(f"Sus exactitudes correspondientes son: {top_5_scores}")
-    print("El valor de C con mayor precisión es: K = ",Score.argmax()+5)
-    print("El valor de C con menor desviación es: K = ",Score_desvest.argmin()+5)
+    print("El valor de C con mayor precisión es: C = ",Score.argmax()+1)
+    print("El valor de C con menor desviación es: C = ",Score_desvest.argmin()+1)
 
     tabla_SVMs = pd.DataFrame({
         "Valores de C": top_5,
@@ -717,10 +717,10 @@ def SVM_linear_2_Datos_originales_PCA(X_train, X_test, y_train, y_test):
         print("Projection loss (15 components): " + str(loss15[i-1]))
     
     #Inicialización de variables
-    Score = np.zeros(30)
-    Score_desvest = np.zeros(30)
-    Posicion = np.zeros(30)
-    for C in range(1,30):
+    Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    for C in range(1,11):
         Score_ind=np.zeros(5)
         for i in range(1,6):
             #Método SVM
@@ -741,8 +741,8 @@ def SVM_linear_2_Datos_originales_PCA(X_train, X_test, y_train, y_test):
     print(f"Los 5 valores de C con mayor exactitud son: {top_5.astype(int)}")
     print(f"Sus desviaciones estándar correspondientes son: {top_5_desvest.astype(float)}")
     print(f"Sus exactitudes correspondientes son: {top_5_scores}")
-    print("El valor de C con mayor precisión es: K = ",Score.argmax()+5)
-    print("El valor de C con menor desviación es: K = ",Score_desvest.argmin()+5)
+    print("El valor de C con mayor precisión es: C = ",Score.argmax()+1)
+    print("El valor de C con menor desviación es: C = ",Score_desvest.argmin()+1)
 
     tabla_SVMs = pd.DataFrame({
         "Valores de C": top_5,
@@ -800,11 +800,11 @@ def SVM_linear_3_Datos_Undersampling(X_train, X_test, y_train, y_test):
         #X_train[i], X_test[i] = Normalizado_minmax(X_train[i], X_test[i])
 
    #Inicialización de variables
-    Score = np.zeros(30)
-    Score_desvest = np.zeros(30)
-    Posicion = np.zeros(30)
+    Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
     
-    for C in range(1,30):
+    for C in range(1,11):
         Score_ind=np.zeros(5)
         for i in range(1,6):
             #Método SVM
@@ -825,8 +825,8 @@ def SVM_linear_3_Datos_Undersampling(X_train, X_test, y_train, y_test):
     print(f"Los 5 valores de C con mayor exactitud son: {top_5.astype(int)}")
     print(f"Sus desviaciones estándar correspondientes son: {top_5_desvest.astype(float)}")
     print(f"Sus exactitudes correspondientes son: {top_5_scores}")
-    print("El valor de C con mayor precisión es: K = ",Score.argmax()+5)
-    print("El valor de C con menor desviación es: K = ",Score_desvest.argmin()+5)
+    print("El valor de C con mayor precisión es: C = ",Score.argmax()+1)
+    print("El valor de C con menor desviación es: C = ",Score_desvest.argmin()+1)
 
     tabla_SVMs = pd.DataFrame({
         "Valores de C": top_5,
@@ -906,10 +906,10 @@ def SVM_linear_4_Datos_Undersampling_PCA(X_train, X_test, y_train, y_test):
         print("Projection loss (15 components): " + str(loss15[i-1]))
 
    #Inicialización de variables
-    Score = np.zeros(30)
-    Score_desvest = np.zeros(30)
-    Posicion = np.zeros(30)
-    for C in range(1,30):
+    Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    for C in range(1,11):
         Score_ind=np.zeros(5)
         for i in range(1,6):
             #Método SVM
@@ -930,8 +930,8 @@ def SVM_linear_4_Datos_Undersampling_PCA(X_train, X_test, y_train, y_test):
     print(f"Los 5 valores de C con mayor exactitud son: {top_5.astype(int)}")
     print(f"Sus desviaciones estándar correspondientes son: {top_5_desvest.astype(float)}")
     print(f"Sus exactitudes correspondientes son: {top_5_scores}")
-    print("El valor de C con mayor precisión es: K = ",Score.argmax()+5)
-    print("El valor de C con menor desviación es: K = ",Score_desvest.argmin()+5)
+    print("El valor de C con mayor precisión es: C = ",Score.argmax()+1)
+    print("El valor de C con menor desviación es: C = ",Score_desvest.argmin()+1)
 
     tabla_SVMs = pd.DataFrame({
         "Valores de C": top_5,
@@ -991,11 +991,11 @@ def SVM_linear_5_Datos_Oversampling(X_train, X_test, y_train, y_test):
         #X_train[i], X_test[i] = Normalizado_minmax(X_train[i], X_test[i])
     
     #Inicialización de variables
-    Score = np.zeros(30)
-    Score_desvest = np.zeros(30)
-    Posicion = np.zeros(30)
+    Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
     
-    for C in range(1,30):
+    for C in range(1,11):
         Score_ind=np.zeros(5)
         for i in range(1,6):
             #Método SVM
@@ -1016,8 +1016,8 @@ def SVM_linear_5_Datos_Oversampling(X_train, X_test, y_train, y_test):
     print(f"Los 5 valores de C con mayor exactitud son: {top_5.astype(int)}")
     print(f"Sus desviaciones estándar correspondientes son: {top_5_desvest.astype(float)}")
     print(f"Sus exactitudes correspondientes son: {top_5_scores}")
-    print("El valor de C con mayor precisión es: K = ",Score.argmax()+5)
-    print("El valor de C con menor desviación es: K = ",Score_desvest.argmin()+5)
+    print("El valor de C con mayor precisión es: C = ",Score.argmax()+1)
+    print("El valor de C con menor desviación es: C = ",Score_desvest.argmin()+1)
 
     tabla_SVMs = pd.DataFrame({
         "Valores de C": top_5,
@@ -1099,10 +1099,10 @@ def SVM_linear_6_Datos_Oversampling_PCA(X_train, X_test, y_train, y_test):
         print("Projection loss (15 components): " + str(loss15[i-1]))
     
     #Inicialización de variables
-    Score = np.zeros(30)
-    Score_desvest = np.zeros(30)
-    Posicion = np.zeros(30)
-    for C in range(1,30):
+    Score = np.zeros(10)
+    Score_desvest = np.zeros(10)
+    Posicion = np.zeros(10)
+    for C in range(1,11):
         Score_ind=np.zeros(5)
         for i in range(1,6):
             #Método SVM
@@ -1123,8 +1123,8 @@ def SVM_linear_6_Datos_Oversampling_PCA(X_train, X_test, y_train, y_test):
     print(f"Los 5 valores de C con mayor exactitud son: {top_5.astype(int)}")
     print(f"Sus desviaciones estándar correspondientes son: {top_5_desvest.astype(float)}")
     print(f"Sus exactitudes correspondientes son: {top_5_scores}")
-    print("El valor de C con mayor precisión es: K = ",Score.argmax()+5)
-    print("El valor de C con menor desviación es: K = ",Score_desvest.argmin()+5)
+    print("El valor de C con mayor precisión es: C = ",Score.argmax()+1)
+    print("El valor de C con menor desviación es: C = ",Score_desvest.argmin()+1)
 
     tabla_SVMs = pd.DataFrame({
         "Valores de C": top_5,

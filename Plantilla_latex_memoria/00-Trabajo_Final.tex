@@ -101,7 +101,7 @@
 	{Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
 	{ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1 {¡}{{!`}}1
 }
-
+\usepackage{csvsimple} % Paquete necesario
 \renewcommand{\thesection}{\arabic{section}}
 
 \begin{document}
@@ -128,6 +128,7 @@
 	Para poder realizar este análisis, se implementará un programa en Python utilizando la librería \textit{scikit-learn} para aplicar las técnicas de preprocesado de los datos y de aprendizaje automático. Además, se emplearán otras librerías como \textit{Pandas} o \textit{Numpy}, necesarias para la correcta lectura y manejo de los datos.
 	
 \section{Descripción del conjunto de datos}
+\renewcommand{\NombreDocumento}{Descripción de conjunto de datos}
 La elección del conjunto de datos con el que se vaya a trabajar representa el primer paso de este proyecto. Como el objetivo es emplear conjuntos de datos reales, se han consultado distintas opciones en plataformas web como Kaggle o UCI y finalmente, se ha escogido una base de datos que permite clasificar las setas pertenecientes a la familia \textit{Agaricus y Lepiota} como o venenosas o comestibles. \cite{Dataset}
 
 El conjunto de datos seleccionado contiene un total de 8124 muestras. Para cada una de ellas se asocian un total de 22 características, cada una con distintas opciones. Aunque los autores de este conjunto de datos consideran distintas posibilidades dentro de cada característica, existen algunas opciones para las que no existe ninguna muestra, por lo que aparecen tachadas. A continuación se exponen cada una de las 22 variables que conforman la base de datos:
@@ -314,7 +315,7 @@ El \textit{StandardScaler} tiene como objetivo modificar todos los valores del c
 	xi=\frac{xi-\mu i}{\sigma i}
 \end{equation*}
 	
-Realizando pruebas de exactitud y precisión, se pudo observar que ambos casos proporcionan resultados muy similares en los dos ámbitos. La distribución normal realiza el normalizado, como se pudo observar en la ecuación anterior, a partir de la media y la desviación típica, mientras que en el caso del MinMaxScaler se trabaja con los valores máximos y mínimos del conjunto de datos, para, categorizar todos los valores entre 0(valor mínimo) y 1(valor máximo). Esto nos lleva a observar que las diferencias relativas entre los valores ya normalizados cambian, esto se puede observar en las gráficas que se muestran a continuación, que, al realizar el escalado de forma distinta, varían las distancias relativas entre componentes y las densidades de muestras en el conjunto. Además, también se puede observar que si tiene un efecto claro sobre el conjunto de datos donde se equiparan los resultados obtenidos mucho más, haciendo la muestra más homogénea.
+Realizando pruebas de exactitud y precisión, se pudo observar que ambos casos proporcionan resultados muy similares en los dos ámbitos. La distribución normal realiza el normalizado, como se pudo observar en la ecuación anterior, a partir de la media y la desviación típica, mientras que en el caso del MinMaxScaler se trabaja con los valores máximos y mínimos del conjunto de datos, para, categorizar todos los valores entre 0(valor mínimo) y 1(valor máximo). Esto nos lleva a observar que las diferencias relativas entre los valores ya normalizados cambian, tal y como se puede observar en las gráficas que se muestran a continuación. 
 	
 \begin{figure}[!ht]
 	\centering
@@ -323,7 +324,9 @@ Realizando pruebas de exactitud y precisión, se pudo observar que ambos casos p
 	\label{Mennekes}
 \end{figure}
 
-Para los diferentes conjuntos de datos se decide realizar una prueba con ambos métodos de normalización y, de esta forma, comparar el rendimiento y funcionamiento de ambos metodos sobre los conjuntos de datos. Es necesario destacar, que en aquellos conjuntos de datos donde se apliquen técnicas de balanceo de datos, el normalizado se aplicará de forma posterior a estas técnicas de balanceo, ya que el normalizado modifica las distancias entre los distintos datos provocando que las técnicas de balanceo no resulten tan efectivas sobre el conjunto de datos.
+Se observa que al realizar el escalado de forma distinta, varían las distancias relativas entre componentes y las densidades de muestras en el conjunto. Además, también se puede observar que sí tiene un efecto claro sobre el conjunto de datos, donde se equiparan los resultados obtenidos mucho más, haciendo la muestra más homogénea.
+
+Para los diferentes conjuntos de datos se decide emplear la técnica \textit{StandardScaler}. Por otro lado, es necesario destacar que en aquellos conjuntos de datos donde se apliquen técnicas de balanceo de datos, el normalizado se aplicará de forma posterior a estas técnicas de balanceo, ya que el normalizado modifica las distancias entre los distintos datos provocando que las técnicas de balanceo no resulten tan efectivas sobre el conjunto de datos.
 	
 	
 \subsection{Análisis de componentes principales (PCA)}
@@ -344,8 +347,9 @@ Aquí se puede observar como a partir del decimoquinto componente la varianza ac
 	
 Obteniendo finalmente un valor de \textit{Proyection loss} del 5.07\% reduciendo las dimensiones del conjunto de 22 a 15, por lo que se considera aceptable.
 	
-\section{Descripción de las pruebas realizadas y las gráficas obtenidas}
-Una vez hemos terminado de realizar todas las técnicas de preprocesado tenemos finalmente 6 posibles conjuntos a probar (original, original + PCA, oversampling sin PCA, oversampling + PCA, undersampling sin PCA, undersampling + PCA). A estos conjuntos de datos se les aplicarán los algoritmos de clasificación que se han seleccionado, en este caso, \textit{k-nn} y \textit{SVM}.
+\section{Descripción de las pruebas realizadas}
+\renewcommand{\NombreDocumento}{Descripción de las pruebas realizadas}
+Una vez se han terminado de realizar todas las técnicas de preprocesado se tienen finalmente 6 posibles conjuntos a probar: Datos originales, Original + PCA, Undersampling sin PCA, Undersampling + PCA, Oversampling sin PCA, Oversampling + PCA. A estos conjuntos de datos se les aplicarán los algoritmos de clasificación que se han seleccionado, en este caso, \textit{k-nn} y \textit{SVM}.
 	
 \subsection{Algoritmo de clasificación por vecindad k-nn}
 Este será el primer algoritmo de clasificación que se utilice. A la hora de determinar un dato perteneciente a una clase, se estima que aquellos datos pertenecientes a la misma clase se encontrarán próximos en el espacio de representación, siendo estos los \textgravedbl vecinos\textacutedbl representados en el código por la letra k. 
@@ -356,26 +360,7 @@ Para realizar pruebas de una forma cómoda y comprobar cual es el mejor valor de
 	
 Con este código obtendremos de resultado final el valor de \textit{k} para el cual la exactitud media y desviación son más favorables y, posteriormente, se le calculará tiempo que le lleva al modelo realizar las predicciones.
 	%dejo las formulas de las gráficas por si te sirven de algo.
-	\begin{figure}[H]
-		\centering
-		
-		\begin{subfigure}[c]{0.7\textwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figuras/PrecModeloOriginalSinPCA.png}
-			\caption{\centering Precisión del modelo sin PCA}
-			\label{fig:sub1}
-		\end{subfigure}
-		\hfill
-		\begin{subfigure}[c]{0.7\textwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figuras/TimeModeloOriginalSinPCA.png}
-			\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
-			\label{fig:sub2}
-		\end{subfigure}
-		
-		\caption{Precisión y tiempo de entrenamiento del modelo original sin PCA}
-		\label{fig:comparacion}
-	\end{figure}
+
 	
 	Por lo tanto nuestro mejor caso será para k=7 con una precisión del 100\% y un tiempo de entrenamiento de 5.38 ms. Este proceso se realizará de igual forma para el resto de casos que se realizarán a continuación:
 	
@@ -419,156 +404,231 @@ Por lo tanto, si nos guiásemos unicamente por la tabla resumen, el mejor caso s
 
 	Ahora se realizarán las pruebas sobre los distintos conjuntos de datos con el algoritmo SVM. El algoritmo SVM se caracteriza por minimizar el riesgo estructural para reducir la posibilidad de cometer errores futuros. Dentro de este algoritmo, este se puede modificar y variar de dos formas, cambiando el valor de C o cambiando el tipo de kernel. 
 	
-	Para realizar el estudio de este algoritmo se llevarán a cabo 2 pruebas, la primera consistirá en cambiar el valor de C en el rango de 1-10 para ver de que manera varían los resultados obtenidos, y la segunda será cambiando el tipo de kernel utilizado para tratar de obtener los mejores resultados con nuestro código.
+	Para realizar el estudio de este algoritmo, se llevará a cabo una prueba que consistirá en cambiar el valor de C en el rango de 1-10, para ver de que manera varían los resultados obtenidos.
 	
-	El parametro C es el que controla el peso de los términos de error, es decir, indica cuanto castiga el SVM los errores de clasificación. Esto quiere decir que con un valor de C alto el sistema será más sensible al ruido y tendrá una tendencia a sobreajustar, lo que lo hace menos fiable en otros conjuntos de datos. Sin embargo para un valor de C bajo el modelo tenderá más a ignorar el ruido presente en el conjunto, pero tiene una mayor tendencia a no capturar bien estructuras complejas.
+	El parámetro C es el que controla el peso de los términos de error, es decir, indica cuanto castiga el SVM los errores de clasificación. Esto quiere decir que con un valor de C alto, el modelo será más sensible al ruido y tendrá una tendencia a sobreajustar, lo que lo hace menos fiable si se aplicase a otros conjuntos de datos. Sin embargo para un valor de C bajo el modelo tenderá más a ignorar el ruido presente en el conjunto, pero tiene una mayor tendencia a no capturar bien estructuras complejas.
 	
-	En lo referente al kernel aplicado, se aplicarán 2 tipos de kernel, kernel lineal y kernel no lineal para tratar de observar como afecta al resultado obtenido. Las principales diferencias entre ambos son que un kernel lineal siempre buscará trazar una frontera lineal para separar las clases, mientras que un kernel no lineal permite crear fronteras de decisión no lineales, muy flexibles y capaces de adaptarse a datos complejos. Por lo tanto, se decidió aplicar los kernel \textit{lineal} y \textit{RBF}.
+	Por otro lado, en lo referente al kernel aplicado, un kernel lineal asume que los datos son linealmente separables y busca trazar un hiperplano óptimo que maximice el margen entre ambas clases (setas comestibles y venenosas). La elección de este kernel no solo simplifica la complejidad matemática del modelo, reduciendo notablemente los tiempos de ejecución frente a kernels no lineales, sino que también resulta especialmente adecuado al trabajar con espacios de alta dimensionalidad. Esto cobra especial relevancia en nuestro estudio al analizar el impacto de técnicas como el Análisis de Componentes Principales (PCA), donde buscamos observar si la proyección lineal de las características facilita la labor del clasificador.
 	
-	Como consecuencia de todos los parámetros que se quieren evaluar se diseñó un código muy similar al aplicado para el algoritmo k-nn solo que en este caso el bucle se realizará para unos valores de C de 1.0 hasta 10.0 inicialmente y se sustituirán aquellas funciones propias del k-nn por funciones aplicadas al algoritmo SVM. El objetivo será, de nuevo, observar el valor medio de la exactitud para cada valor de C y su desviación para determinar cual es el valor de C más óptimo.
+	Como consecuencia de todos los parámetros que se quieren evaluar se diseñó un código muy similar al aplicado para el algoritmo K-NN, solo que en este caso el bucle se realizará para unos valores de C de 1.0 hasta 10.0, y se sustituirán aquellas funciones propias del k-nn por funciones aplicadas al algoritmo SVM. El objetivo será, de nuevo, observar el valor medio de la exactitud para cada valor de C y su desviación para determinar cual es el valor de C más óptimo para cada caso. Finalmente, se concluirá qué modelo utilizando SVM es mejor.
 	
 
-\subsubsection{SVM Linear}
+\subsubsection{Estudio de los distintos casos}
 
-	Con este código obtendremos de resultado final el caso para el valor máximo de exactitud y el caso para el tiempo mínimo de entrenamiento, para el modelo sin balancear y sin PCA el caso para mayor precisión se da para C=10, mientras que el tiempo de entrenamiento mínimo se dió para C=7, por lo que, para poder estudiar más en detalle todos los casos y ver claramente que opción escoger, se mostrarán las gráficas para cada conjunto de datos a estudiar las cuales servirán como guía:
+Con el objetivo de obtener el mejor modelo basado en el algoritmo de clasificación SVM, se han modificado los datos de entrenamiento que utiliza para establecer patrones entre el atributo objetivo y las demás características que definen si una seta es comestible o venenosa. El objetivo es definir cuáles son las técnicas de preprocesado idóneas para que la precisión del modelo sea la mayor posible.
 
-\begin{figure}[H]
-	\centering
+De esta manera, al igual que se hizo con el algoritmo KNN se definen 6 tipologías de datos de entrada, donde cada una de ellas tiene aplicadas unas técnicas de preprocesado diferentes. Además, para cada tipología, se generarán 5 conjuntos de datos diferentes, en donde lo que cambia es el cojunto de datos que define los datos de entrenamiento (\textit{X\_train}, \textit{Y\_train}) y datos de prueba (\textit{X\_test}, \textit{Y\_test}). Tal y como se explicó con anterioridad, todo esto permite elegir el valor de C idóneo para cada caso.
+
+\subsubsection*{Caso 1: Datos originales}
+
+El primer caso evaluado es el más sencillo de todos, ya que consiste en tomar los datos originales, aplicarles una normalización estándar y entrenar el algoritmo SVM para 10 valores distintos de C. Una vez concluido el entrenamiento, el resultado de la predicción se puede ver en la siguiente tabla, en la que se muestran los 5 valores de C que provocan que el modelo alcance una mayor exactitud y menor desviación:
+
+\begin{longtable}{|c|c|c|}
 	
-	\begin{subfigure}[c]{0.7\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figuras/PrecModeloOriginalSinPCALinear.png}
-		\caption{\centering Precisión del modelo sin PCA}
-		\label{fig:sub1}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[c]{0.7\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figuras/TimeModeloOriginalSinPCALinear.png}
-		\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
-		\label{fig:sub2}
-	\end{subfigure}
+	\hline
 	
-	\caption{Precisión y tiempo de entrenamiento del modelo original sin PCA}
-	\label{fig:comparacion}
-\end{figure}
-
-Por lo tanto, se considera que el mejor caso es para C=7 donde se consigue una precisión del valor de 0.998 y en un tiempo de entrenamiento de 63.122 ms. Ahora se realizará el mismo proceso para el conjunto de datos original aplicandole PCA:
-
-\begin{figure}[H]
-	\centering
+	\textbf{Valor de C} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_SVMs_Linear_Caso_1.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Mayores precisiones para el conjunto de datos con los datos originales}
+	\\
 	
-	\begin{subfigure}[c]{0.7\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figuras/PrecModeloOriginalConPCALinear.png}
-		\caption{\centering Precisión del modelo con PCA}
-		\label{fig:sub1}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[c]{0.7\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figuras/TimeModeloOriginalConPCALinear.png}
-		\caption{\centering Tiempo de entrenamiento del modelo con PCA}
-		\label{fig:sub2}
-	\end{subfigure}
-	
-	\caption{Precisión y tiempo de entrenamiento del modelo original con PCA}
-	\label{fig:comparacion}
-\end{figure}
+\end{longtable}
 
-Para este caso se puede observar un dato muy curioso, la exactitud se mantiene constante, no se ve afectada por la variación de C y el tiempo de entrenamineto aumenta de forma drástica cuanto mayor es C, es por ello que nuestro mejor caso será para C=1 con una exactitud del 0.929 y su tiempo de entrenamiento será de 173.155 ms, un valor muy superior a los obtenidos anteriormente. Ahora se aplicará undersampling y se probará el conjunto de datos sin PCA:
 
-\begin{figure}[H]
-	\centering
-	
-	\begin{subfigure}[c]{0.7\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figuras/PrecModeloUndersamplingSinPCALinear.png}
-		\caption{\centering Precisión del modelo sin PCA}
-		\label{fig:sub1}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[c]{0.7\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figuras/TimeModeloUndersamplingSinPCALinear.png}
-		\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
-		\label{fig:sub2}
-	\end{subfigure}
-	
-	\caption{Precisión y tiempo de entrenamiento del modelo con undersampling sin PCA}
-	\label{fig:comparacion}
-\end{figure}
 
-Para este caso se puede ver de manera clara que los mejores resultados se obtienen para C=2, se llega a una precisión alta, 0.9838 y en un tiempo reducido para los tiempos habituales en SVM, 22.786 ms. Una vez conocido este valor se aplicará PCA al modelo con undersampling y se estudiarán los resultados:
+Se puede observar que la precisión del modelo aumenta a medida que el valor de C se hace más grande, llegando a tener una exactitud media del 100\% para los 5 conjuntos de datos analizados, y una desviación estándar nula en el caso de C = 10.
+
+\subsubsection*{Caso 2: PCA}
+
+En el segundo caso se ha considerado una normalización estándar y un análisis de componentes principales (PCA), con el objetivo de reducir las dimensiones de la base de datos que tiene que analizar el algoritmo. Se aplicado un PCA de 15 componentes, mostrándose resultados en la siguiente tabla:
+
+\begin{longtable}{|c|c|c|}
+	
+	\hline
+	
+	\textbf{Valor de C} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_SVMs_Linear_Caso_2.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Mayores precisiones para el conjunto de datos original con PCA}
+	\\
+	
+\end{longtable}
+
+
+
+
+Se observa que al reducir las componentes del sistema se ha perdido información, lo que ha provocado que el modelo tenga una menor exactitud. Además, se observa que a medida que C se incrementa el modelo se vuelve menos preciso, lo que puede indicar un ligero sobreentrenamiento, ya que la diferencia de precisión es muy baja. 
+
+El valor de C con mayor precisión es C = 1, con el que se obtiene un modelo capaz de predecir con una exactitud media del 92,69\% si una seta es comestible o bien es venenosa. No obstante, dicho valor de C es el que tiene una mayor desviación media también.
+
+En este caso, si es de interés mostrar la matriz de confusión, ya que la exactitud ya no es total. En la siguiente imagen se observa que para un conjunto de datos determinado (uno de los cinco evaluados), de todas las muestras evaluadas (1484), existen 105 que el algoritmo no clasifica bien. Son especialmente relevantes las 47 setas venenosas que determina como comestibles, ya que es el caso que se quiere evitar a toda costa.
 
 \begin{figure}[H]
 	\centering
-	
-	\begin{subfigure}[c]{0.7\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figuras/PrecModeloUndersamplingConPCALinear.png}
-		\caption{\centering Precisión del modelo con PCA}
-		\label{fig:sub1}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[c]{0.7\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figuras/TimeModeloUndersamplingConPCALinear.png}
-		\caption{\centering Tiempo de entrenamiento del modelo con PCA}
-		\label{fig:sub2}
-	\end{subfigure}
-	
-	\caption{Precisión y tiempo de entrenamiento del modelo con undersampling con PCA}
-	\label{fig:comparacion}
+	\includegraphics[width=0.7\textwidth]{matriz_confusion_SVM_Linear_Caso_2.png}
+	\caption{Matriz de confusión para el conjunto de datos con PCA }
 \end{figure}
 
-A pesar de que para el caso de aplicación de undersampling sin PCA se conseguían unos resultados muy buenos, mejores que para el mismo caso de aplicación de k-nn, en el momento en el que se le aplica PCA la exactitud se desploma casi un 0.2, el mejor caso se da para C=4 donde se tiene una precisión de 0.817 para un tiempo de entrenamiento de 93.559 ms. Este conjunto de datos se puede observar que tiene un desempeño claramente peor al resto mostrado, esto puede ser debido a la reducción del número de componentes, que condiciona y reduce la capacidad de predecir los resultados para un conjunto de datos más pequeño que para el caso original, esto quiere decir que los datos que las dimensiones que se han reducido han reducido enormemente el margen que hay entre el plano linear que separa los valores y los puntos más cercanos a este margen. Ahora se realizarán las pruebas para el caso de oversampling sin PCA:
+\subsubsection*{Caso 3: Undersampling}
+En el tercer caso, se ha realizado un balanceo del conjunto de datos utilizando la técnica de \textit{Undersampling} y luego una normalización estándar. Esto permite balancear los datos originales, de manera que el algoritmo aprenda sobre un conjunto de datos en el que hay la misma cantidad de setas comestibles y venenosas. Los resultados se muestran en la siguiente tabla:
+
+
+\begin{longtable}{|c|c|c|}
+	
+	\hline
+	
+	\textbf{Valor de C} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_SVMs_Linear_Caso_3.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Mayores precisiones para el conjunto de datos con Undersampling}
+	\\
+	
+\end{longtable}
+
+
+En la tabla se puede ver que para los cinco valores mostrados el modelo tiene de media la misma precisión y desviación estándar. Esto resulta en que cualquiera valor de C de los que se han evaluado, excepto para el valor de C = 1, se pueden elegir como parámetro del algoritmo.
+
+Finalmente, se escogió un valor de C = 2 para el cual el modelo tiene una precisión del 98,68\% y una desviación estándar de 0,258\%. La matriz de confusión del modelo para dicho valor de C es la siguiente:
 
 \begin{figure}[H]
 	\centering
-	
-	\begin{subfigure}[c]{0.7\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figuras/PrecModeloOversamplingSinPCALinear.png}
-		\caption{\centering Precisión del modelo sin PCA}
-		\label{fig:sub1}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[c]{0.7\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figuras/TimeModeloOversamplingSinPCALinear.png}
-		\caption{\centering Tiempo de entrenamiento del modelo sin PCA}
-		\label{fig:sub2}
-	\end{subfigure}
-	
-	\caption{Precisión y tiempo de entrenamiento del modelo con oversampling sin PCA}
-	\label{fig:comparacion}
+	\includegraphics[width=0.7\textwidth]{matriz_confusion_SVM_Linear_Caso_3.png}
+	\caption{Matriz de confusión para el conjunto de datos con Undersampling }
 \end{figure}
 
-Estas gráficas nos muestran los datos para las pruebas realizadas y, aunque se llega al 100\% de exactitud, se considera que el mejor caso es para C=4 donde la exactitud es de 0.996 y el tiempo de entrenamiento es de 73.350 ms, mucho más bajo que para C=10. Por último se comprobará que valores se pueden obtener para el conjunto de datos aplicando PCA:
+Se puede observar que de las 1484 muestras analizadas en solo 24 el modelo falla en su predicción, al considerarlas venenosas cuando en realidad son comestibles. Este fallo de predicción no es muy grave, ya que se sitúa del lado de la seguridad.
+
+\subsubsection*{Caso 4: Undersampling + PCA}
+En el cuarto caso se ha llevado un balanceo de datos aplicando la técnica de \textit{Undersampling}, luego se ha realizado una normalización estándar para, finalmente, ejecutar un PCA de 15 componentes. De esta manera, el algoritmo ha trabajado con un conjunto de datos balanceado y cuyas dimensiones son reducidas en comparación con la base de datos original. Los resultados se muestran en la siguiente tabla:
+
+
+\begin{longtable}{|c|c|c|}
+	
+	\hline
+	
+	\textbf{Valor de C} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_SVMs_Linear_Caso_4.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Mayores precisiones para el conjunto de datos con Undersampling y PCA}
+	\\
+	
+\end{longtable}
+
+
+
+
+Se puede observar que en esta ocasión que la precisión del modelo se incrementa junto con el valor de C. En cambio, la desviación disminuye a medida que C se hace más grande. Para valores de C mayores que C = 6, la exactitud de la previsión del modelo disminuye, lo que indica que puede existir un ligero sobreentrenamiento.
+
+Por lo tanto, el valor de C escogido como el mejor para este caso es C = 6, dando como resultado un modelo que genera la previsión menos veraz de todos los modelos analizados con el algoritmo SVM, siendo esta del 82,89\%.
+
+La matriz de confusión obtenida para dicho valor de C es la siguiente:
 
 \begin{figure}[H]
 	\centering
-	
-	\begin{subfigure}[c]{0.7\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figuras/PrecModeloOversamplingConPCALinear.png}
-		\caption{\centering Precisión del modelo con PCA}
-		\label{fig:sub1}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[c]{0.7\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figuras/TimeModeloOversamplingConPCALinear.png}
-		\caption{\centering Tiempo de entrenamiento del modelo con PCA}
-		\label{fig:sub2}
-	\end{subfigure}
-	
-	\caption{Precisión y tiempo de entrenamiento del modelo con oversampling con PCA}
-	\label{fig:comparacion}
+	\includegraphics[width=0.7\textwidth]{matriz_confusion_SVM_Linear_Caso_4.png}
+	\caption{Matriz de confusión para el conjunto de datos con Undersampling y PCA}
 \end{figure}
 
-Vistos los resultados obtenidos por las gráficas, se determina que para este caso la mejor opción es para C=1 donde se obtiene una precisión de 0.932 con un tiempo de entrenamiento de 300.632 ms.
+Se puede observar que de todas las setas analizadas, existen 21 que está clasificando como comestibles cuando en realidad son venenosas. Este es un valor más bajo que el del modelo definido en el \textit{Caso 2}, sin embargo, representa una característica muy negativa del presente modelo.
+
+\subsubsection*{Caso 5: Oversampling}
+En el quinto caso se ha considerado un balanceo del conjunto de datos empleando la técnica de \textit{Oversampling} y luego una normalización estándar. De esta manera, el algoritmo trabaja con un conjunto balanceado de datos y con una mayor cantidad de muestras en comparación con las bases de datos de los casos 3 y 4. Los resultados se muestran en la siguiente tabla:
+
+\begin{longtable}{|c|c|c|}
+	
+	\hline
+	
+	\textbf{Valor de C} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_SVMs_Linear_Caso_5.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Mayores precisiones para el conjunto de datos con Oversampling}
+	\\
+	
+\end{longtable}
+
+
+
+
+En la tabla se puede ver que el presente modelo se comporta de manera similar al visto en el \textit{Caso 1}, ya que la exactitud de la previsión se incrementa junto con el valor de C. Para C = 10 se obtiene una precisión del 100\% y una desviación nula, por lo que este es el valor elegido como el idóneo para este modelo.
+
+\subsubsection*{Caso 6: Oversampling + PCA}
+En el sexto y último modelo considerado, se ha realizado un balanceo del conjunto de datos empleando la técnica de \textit{Oversampling}, luego una normalización estándar y finalmente, un PCA de 15 componentes. Los resultados se muestran en la siguiente tabla:
+
+
+\begin{longtable}{|c|c|c|}
+	
+	\hline
+	
+	\textbf{Valor de C} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_SVMs_Linear_Caso_6.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Mayores precisiones para el conjunto de datos con Oversampling y PCA}
+	\\
+	
+\end{longtable}
+
+
+
+Al igual que ocurría con el modelo visto en el \textit{Caso 3}, la exactitud de la predicción no cambia con el valor de C a partir de C = 5, por lo que este es el valor escogido como parámetro del algoritmo.
+
+Como resultado, para dicho valor de C, el modelo tiene una precisión del 93,02\% y una desviación estándar del 0,709\%, obteniéndose para un conjunto de datos determinado la siguiente matriz de confusión:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{matriz_confusion_SVM_Linear_Caso_6.png}
+	\caption{Matriz de confusión para el conjunto de datos con Oversampling y PCA}
+\end{figure}
+
+En dicha matriz de confusión se aprecia que el modelo predice 32 muestras como comestibles cuando no lo son, lo que presenta un defecto significativo en comparación con el resto de modelos analizados.
+
+
+\newpage
+
+\subsubsection{Conclusiones casos SVM}
+Una vez analizados todos los casos planteados, se presenta a continuación una tabla comparativa de la exactitud y de los tiempos de ejecución de la predicción del modelo (en milisegundos), para cada uno de los valores con los que se obtiene un mejor modelo C para cada caso.
+
+\begin{longtable}{|c|c|c|c|}
+	\hline
+	\textbf{Casos de análisis} & \textbf{C} & \textbf{Exactitud} &  \textbf{Tiempo ejecución}\\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_comparativa_SVM.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii & \csvcoliv}
+	\caption{Mejores casos de cada conjunto de datos}\\
+\end{longtable}
+
+
+
+
+
+Se puede observar que desde el punto de vista de la exactitud, los modelos desarrollados en los casos 1 y 5 son los que presentan una mayor exactitud, aunque difieren en cuanto al tiempo de ejecución. 
+
+Como el \textit{Caso 1} tiene la mejor precisión y su tiempo de ejecución es la mitad respecto del \textit{Caso 5}, se considera que este es el mejor modelo utilizando el algoritmo SVM.
+
+Por último, mencionar que el resto de casos tienen el gran defecto de que consideran algunas seta como comestibles cuando estas son venenosas, excepto el \textit{Caso 3}, el cual tiene una precisión muy buena del 98,38\% y su tiempo de ejecución es el menor de todos. Además, para este último caso, se observó en su respectiva matriz de confusión que los fallos de predicción se sitúan del lado de la seguridad, por lo que este constituye también un muy buen modelo de predicción.
+
+
+
 	
 	
 	
