@@ -1,5 +1,11 @@
 \begin{thebibliography}{1}
 
+\bibitem{Guithub}
+Código de python - github.
+\newblock url = {https://github.com/Alvaronc01/\\
+  Trabajo-de-Preparaci-n-de-los-datos-y-clasificaci-n-supervisada}.
+\newblock Consultado: 27-03-2026.
+
 \bibitem{Dataset}
 Mushroom dataset.
 \newblock url = {https://archive.ics.uci.edu/dataset/73/mushroom}.

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.4.28)  28 MAR 2026 01:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.4.28)  28 MAR 2026 02:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -875,6 +875,13 @@ LaTeX Info: Redefining \. on input line 12.
 LaTeX Info: Redefining \% on input line 12.
 Package babel Info: 'spanish' activates 'spanish' shorthands.
 (babel)             Reported  on input line 12.
+
+
+LaTeX Warning: Label `Varianza_acumulada' multiply defined.
+
+
+LaTeX Warning: Label `Varianza_acumulada' multiply defined.
+
 )
 \openout1 = `00-Trabajo_Final.aux'.
 
@@ -1005,7 +1012,7 @@ anslations-basic-dictionary-english.trsl
 File: translations-basic-dictionary-english.trsl (english translation file `tra
 nslations-basic-dictionary')
 ) (Plantilla/Portada_principal.tex
-<Plantilla/Logo_UDC_EPEF.png, id=71, 300.3722pt x 65.49469pt>
+<Plantilla/Logo_UDC_EPEF.png, id=83, 300.3722pt x 65.49469pt>
 File: Plantilla/Logo_UDC_EPEF.png Graphic file (type png)
 <use Plantilla/Logo_UDC_EPEF.png>
 Package pdftex.def Info: Plantilla/Logo_UDC_EPEF.png  used on input line 15.
@@ -1014,7 +1021,7 @@ Package pdftex.def Info: Plantilla/Logo_UDC_EPEF.png  used on input line 15.
 
 pdfTeX warning: pdflatex.exe (file ./Plantilla/Logo_EPEF.pdf): PDF inclusion: f
 ound PDF version <1.6>, but at most version <1.5> allowed
-<Plantilla/Logo_EPEF.pdf, id=73, 76.84709pt x 83.71275pt>
+<Plantilla/Logo_EPEF.pdf, id=85, 76.84709pt x 83.71275pt>
 File: Plantilla/Logo_EPEF.pdf Graphic file (type pdf)
 <use Plantilla/Logo_EPEF.pdf>
 Package pdftex.def Info: Plantilla/Logo_EPEF.pdf  used on input line 17.
@@ -1146,7 +1153,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [6]
-<Figuras/GraficaNormalizado.png, id=157, 1293.633pt x 426.393pt>
+<Figuras/GraficaNormalizado.png, id=172, 1293.633pt x 426.393pt>
 File: Figuras/GraficaNormalizado.png Graphic file (type png)
 <use Figuras/GraficaNormalizado.png>
 Package pdftex.def Info: Figuras/GraficaNormalizado.png  used on input line 322
@@ -1163,7 +1170,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [7{C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}
  <./Figuras/GraficaNormalizado.png>]
-<Figuras/GraficaVarianzaAcumulada.png, id=165, 714.7503pt x 281.853pt>
+<Figuras/GraficaVarianzaAcumulada.png, id=180, 714.7503pt x 281.853pt>
 File: Figuras/GraficaVarianzaAcumulada.png Graphic file (type png)
 <use Figuras/GraficaVarianzaAcumulada.png>
 Package pdftex.def Info: Figuras/GraficaVarianzaAcumulada.png  used on input li
@@ -1184,6 +1191,9 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [8 <./Figuras/GraficaVarianzaAcumulada.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1193,56 +1203,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [9]
-Overfull \hbox (20.24437pt too wide) in paragraph at lines 381--391
- [][] 
- []
-
-
-Underfull \vbox (badness 1048) has occurred while \output is active []
-
-
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[10]
-Underfull \vbox (badness 5175) has occurred while \output is active []
-
-
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[11]
-<matriz_confusion_SVM_Linear_Caso_2.png, id=185, 434.8245pt x 327.8649pt>
-File: matriz_confusion_SVM_Linear_Caso_2.png Graphic file (type png)
-<use matriz_confusion_SVM_Linear_Caso_2.png>
-Package pdftex.def Info: matriz_confusion_SVM_Linear_Caso_2.png  used on input 
-line 475.
-(pdftex.def)             Requested size: 318.66946pt x 240.28491pt.
-
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[12]
-<matriz_confusion_SVM_Linear_Caso_3.png, id=191, 434.8245pt x 327.8649pt>
-File: matriz_confusion_SVM_Linear_Caso_3.png Graphic file (type png)
-<use matriz_confusion_SVM_Linear_Caso_3.png>
-Package pdftex.def Info: matriz_confusion_SVM_Linear_Caso_3.png  used on input 
-line 505.
+<matriz_confusion_knn_Caso_3.png, id=191, 434.8245pt x 327.8649pt>
+File: matriz_confusion_knn_Caso_3.png Graphic file (type png)
+<use matriz_confusion_knn_Caso_3.png>
+Package pdftex.def Info: matriz_confusion_knn_Caso_3.png  used on input line 41
+1.
 (pdftex.def)             Requested size: 318.66946pt x 240.28491pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1256,7 +1221,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[13 <./matriz_confusion_SVM_Linear_Caso_2.png>]
+[10]
+<matriz_confusion_knn_Caso_4.png, id=196, 434.8245pt x 327.8649pt>
+File: matriz_confusion_knn_Caso_4.png Graphic file (type png)
+<use matriz_confusion_knn_Caso_4.png>
+Package pdftex.def Info: matriz_confusion_knn_Caso_4.png  used on input line 43
+7.
+(pdftex.def)             Requested size: 318.66946pt x 240.28491pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1265,14 +1240,97 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[14 <./matriz_confusion_SVM_Linear_Caso_3.png>]
-<matriz_confusion_SVM_Linear_Caso_4.png, id=204, 434.8245pt x 327.8649pt>
+[11 <./matriz_confusion_knn_Caso_3.png>]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[12 <./matriz_confusion_knn_Caso_4.png>]
+Overfull \hbox (1.17804pt too wide) in alignment at lines 479--488
+ [] [] [] [] 
+ []
+
+
+Overfull \hbox (1.17804pt too wide) has occurred while \output is active
+ [] [] [] [] 
+ []
+
+
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[13]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[14]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[15]
+<matriz_confusion_SVM_Linear_Caso_2.png, id=222, 434.8245pt x 327.8649pt>
+File: matriz_confusion_SVM_Linear_Caso_2.png Graphic file (type png)
+<use matriz_confusion_SVM_Linear_Caso_2.png>
+Package pdftex.def Info: matriz_confusion_SVM_Linear_Caso_2.png  used on input 
+line 571.
+(pdftex.def)             Requested size: 318.66946pt x 240.28491pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[16 <./matriz_confusion_SVM_Linear_Caso_2.png>]
+<matriz_confusion_SVM_Linear_Caso_3.png, id=229, 434.8245pt x 327.8649pt>
+File: matriz_confusion_SVM_Linear_Caso_3.png Graphic file (type png)
+<use matriz_confusion_SVM_Linear_Caso_3.png>
+Package pdftex.def Info: matriz_confusion_SVM_Linear_Caso_3.png  used on input 
+line 601.
+(pdftex.def)             Requested size: 318.66946pt x 240.28491pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[17 <./matriz_confusion_SVM_Linear_Caso_3.png>]
+<matriz_confusion_SVM_Linear_Caso_4.png, id=236, 434.8245pt x 327.8649pt>
 File: matriz_confusion_SVM_Linear_Caso_4.png Graphic file (type png)
 <use matriz_confusion_SVM_Linear_Caso_4.png>
 Package pdftex.def Info: matriz_confusion_SVM_Linear_Caso_4.png  used on input 
-line 541.
+line 637.
 (pdftex.def)             Requested size: 318.66946pt x 240.28491pt.
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1281,12 +1339,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[15 <./matriz_confusion_SVM_Linear_Caso_4.png>]
-<matriz_confusion_SVM_Linear_Caso_6.png, id=211, 434.8245pt x 327.8649pt>
+[18 <./matriz_confusion_SVM_Linear_Caso_4.png>]
+<matriz_confusion_SVM_Linear_Caso_6.png, id=244, 434.8245pt x 327.8649pt>
 File: matriz_confusion_SVM_Linear_Caso_6.png Graphic file (type png)
 <use matriz_confusion_SVM_Linear_Caso_6.png>
 Package pdftex.def Info: matriz_confusion_SVM_Linear_Caso_6.png  used on input 
-line 597.
+line 691.
 (pdftex.def)             Requested size: 318.66946pt x 240.28491pt.
 
 
@@ -1297,8 +1355,8 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[16 <./matriz_confusion_SVM_Linear_Caso_6.png>]
-Overfull \hbox (3.7612pt too wide) in alignment at lines 609--618
+[19 <./matriz_confusion_SVM_Linear_Caso_6.png>]
+Overfull \hbox (3.7612pt too wide) in alignment at lines 705--714
  [] [] [] [] 
  []
 
@@ -1316,7 +1374,145 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[17] (00-Trabajo_Final.bbl)
+[20]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[21] (00-Trabajo_Final.bbl)
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[22]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[23]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[24]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[25]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[26]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[27]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[28]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[29]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[30]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[31]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[32]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[33]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[34]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[35]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[36]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[37]
 
 Package caption Warning: Unused \captionsetup[sub] on input line 73.
 See the caption package documentation for explanation.
@@ -1330,7 +1526,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[18] (00-Trabajo_Final.aux
+[38] (00-Trabajo_Final.aux
 LaTeX Info: Redefining \. on input line 12.
 LaTeX Info: Redefining \% on input line 12.
 )
@@ -1338,17 +1534,21 @@ LaTeX Info: Redefining \% on input line 12.
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-03-26>
  ***********
+
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `00-Trabajo_Final.out' has not changed.
-(rerunfilecheck)             Checksum: 1FA886E439D1571365E0F928D7D8C675;4029.
+(rerunfilecheck)             Checksum: 0E245157CEC653A7C5048A39CD2078E4;4404.
  ) 
 Here is how much of TeX's memory you used:
- 24800 strings out of 469958
- 482504 string characters out of 5468845
- 858030 words of memory out of 5000000
- 51128 multiletter control sequences out of 15000+600000
+ 24882 strings out of 469958
+ 483872 string characters out of 5468845
+ 914788 words of memory out of 5000000
+ 51166 multiletter control sequences out of 15000+600000
  685307 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,12n,93p,947b,1181s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,12n,93p,937b,1228s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.
 pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12
 .pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmss
@@ -1357,9 +1557,9 @@ ssbx10.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/public/l
 m/lmsso12.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/publi
 c/lm/lmsso17.pfb><C:/Users/USUARIO/AppData/Local/Programs/MiKTeX/fonts/type1/pu
 blic/lm/lmsy10.pfb>
-Output written on 00-Trabajo_Final.pdf (19 pages, 902498 bytes).
+Output written on 00-Trabajo_Final.pdf (39 pages, 1091992 bytes).
 PDF statistics:
- 281 PDF objects out of 1000 (max. 8388607)
- 68 named destinations out of 1000 (max. 500000)
- 177 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 393 PDF objects out of 1000 (max. 8388607)
+ 93 named destinations out of 1000 (max. 500000)
+ 211 words of extra memory for PDF output out of 10000 (max. 10000000)
 

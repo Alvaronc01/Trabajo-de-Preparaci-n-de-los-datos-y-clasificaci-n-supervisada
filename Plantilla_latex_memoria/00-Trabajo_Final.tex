@@ -353,52 +353,148 @@ Una vez se han terminado de realizar todas las técnicas de preprocesado se tien
 	
 \subsection{Algoritmo de clasificación por vecindad k-nn}
 Este será el primer algoritmo de clasificación que se utilice. A la hora de determinar un dato perteneciente a una clase, se estima que aquellos datos pertenecientes a la misma clase se encontrarán próximos en el espacio de representación, siendo estos los \textgravedbl vecinos\textacutedbl representados en el código por la letra k. 
-	
+
 Las pruebas que se realizarán serán para un rango de k de entre 5 y 100, tratando de buscar un valor que otorgue buenos resultados. Además, se intentará que este valor de k no sea ni muy bajo ni muy alto, ya que  un valor de k alto da lugar a un modelo muy estable y poco sensible al ruido, pero puede perder detalles. En cambio, un valor de k bajo que proporciona un modelo flexible, que se adapta muy bien a variaciones y detalles, pero que es muy sensible al ruido.
 
 Para realizar pruebas de una forma cómoda y comprobar cual es el mejor valor de \textit{k}, se ha empleado un bucle \textit{for} que permite obtener el valor de exactitud medio del modelo para cada valor de \textit{k} de cada conjunto de datos, esto se debe a los 5 posibles valores de $X\_train$, $Y\_train$, $X\_test$ e $Y\_test$ que se han generado en la división de los datos para cada valor de \textit{k}. De esta manera, se realiza el cálculo de exactitud media, desviación y tiempo de entrenamiento 5 veces para cada valor de \textit{k}.
-	
-Con este código obtendremos de resultado final el valor de \textit{k} para el cual la exactitud media y desviación son más favorables y, posteriormente, se le calculará tiempo que le lleva al modelo realizar las predicciones.
-	%dejo las formulas de las gráficas por si te sirven de algo.
 
-	
-	Por lo tanto nuestro mejor caso será para k=7 con una precisión del 100\% y un tiempo de entrenamiento de 5.38 ms. Este proceso se realizará de igual forma para el resto de casos que se realizarán a continuación:
-	
-	En este caso se obtuvo que el mejor caso es para k=8 con una precisión del 100\% y un tiempo de entrenamiento de 7.2 ms. Ahora se realizarán las pruebas con este algoritmo para el caso con undersampling:
-	
-	Tras lo observado en las gráficas y los datos obtenidos con el código, se puede determinar que el mejor caso es para k=7 con una exactitud de 0.985 y un tiempo de entrenamiento de 4.96 ms. Aplicando PCA para 15 componentes se obtendrán por lo tanto:
-	
-	En este modelo el mejor caso es para k=6 donde se obtiene una precisión de 0.981 y un tiempo de entrenamiento de 6.03 ms. Una vez se han realizado los cálculos para el conjunto original y aplicando undersampling se realizará el mismo proceso para el conjunto de datos al que se le ha aplicado oversampling.
-	
-	Donde se puede observar que el mejor caso es para k=10, donde conseguimos una precisión del 1.00 con un tiempo de entrenamiento de 6.44 ms. Terminaremos analizando y obteniendo las gráficas para el caso de oversampling con PCA.
-	
-	Para este último caso, de oversampling con PCA, se ha vuelto a obtener una precisión del 1.00 para valores de k comprendidos entre 5 y 17 por lo que, guiándonos por el tiempo de entrenamiento, se toma que la mejor situación es para k= 8 donde se obtiene un tiempo de entrenamiento de 6.93 ms, siendo este el mejor caso para oversampling con PCA.
-	
-	Para poder ver de una forma más clara los resultados finales obtenidos por cada conjunto de datos, se decide realizar una tabla para representarlos:
-	
-\begin{table}[H]
+\subsubsection*{Caso 1: Datos originales}
+El primer caso a estudiar será el caso para los datos del conjunto de datos original, para este caso se obtendrá el valor de \textit{k} para el cual la exactitud media y desviación son más favorables y, posteriormente, se le calculará tiempo que le lleva al modelo realizar las predicciones. Para el caso del conjunto de datos original estos son los mejores resultados:
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de k} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_KNNs_Caso_1.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Mayores precisiones para el conjunto de datos original}\\
+\end{longtable}
+
+Por lo tanto nuestro mejor caso será para k=5 con una precisión del 100\% y una desviación de 0\%. Esto quiere decir que el modelo es completamente exacto y robusto para k=5, siendo esta la mayor exactitud que se puede conseguir, por lo que es el mejor caso.
+
+\subsubsection*{Caso 2: Datos originales + PCA}
+Ahora se decide aplicar un PCA de 15 componentes sobre este mismo conjunto de datos para observar los cambios que esta técnica de preprocesado puede generar en los resultados. 
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de k} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_KNNs_Caso_2.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Mayores precisiones para el conjunto de datos original con PCA}\\
+\end{longtable}
+
+En este caso se obtuvo que el mejor caso es para \textit{k}=5 de nuevo con una precisión del 99.94\% y una desviación de  0.079\% ms. Por lo tanto se puede observar que no llega a ser tan preciso como para el conjunto de datos original aunque sigue teniendo una precisión extremadamente alta. 
+
+\subsubsection*{Caso 3: Undersampling}
+Dado que esto se le atribuye al conjunto de datos con el que se esta trabajando, ahora se realizarán las pruebas con este algoritmo para el caso con \textit{undersampling}, que reducirá la cantidad de valores que componen el conjunto de datos y lo balanceará:
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de k} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_KNNs_Caso_3.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Mayores precisiones para el conjunto de datos con undersampling}\\
+\end{longtable}
+
+Tras lo observado con los datos obtenidos por el nuevo conjunto, se puede determinar que, hay una reducción en la exactitud del modelo y un aumento en la desviación de los datos obtenidos, esto quiere decir que la robustez y precisión que tenía el conjunto de datos original podia ser en parte debido a la cantidad de valores que se tenían para entrenar el modelo. El mejor caso es para k=5 con una exactitud del 98.72\% y una desviación del 0.2\%. Ahora, ya que su precisión no es total, puede ser interesante observar que clase de errores comete el modelo. Por lo tanto, la matriz de confusión es:
+
+\begin{figure}[H]
 	\centering
-	\begin{tabular}{|c|c|c|c|}
-		\hline
-		Conjunto de datos& Exactitud del modelo & Tiempo de entrenamiento & Nº Vecinos \\ \hline
-		Original sin PCA & 1.000 & 5.38 ms & k=7 \\ \hline
-		Original con PCA & 1.000 & 7.20 ms & k=8 \\ \hline
-		Con undersampling sin PCA & 0.985 & 4.96 ms & k=7 \\ \hline
-		Con undersampling con PCA & 0.981 & 6.03 ms & k=6 \\ \hline
-		Con oversampling sin PCA & 1.000 & 6.44 ms & k=10 \\ \hline
-		Con oversampling con PCA & 1.000 & 6.93 ms & k=8 \\ \hline
-	\end{tabular}
-	\caption{Resultados obtenidos para los conjuntos de datos}
-	\label{tab:leyenda-dual}
-\end{table}
+	\includegraphics[width=0.7\textwidth]{matriz_confusion_knn_Caso_3.png}
+	\caption{Matriz de confusión K-NN: undersampling }
+	\label{Varianza_acumulada}
+\end{figure}
 
-Observando esta tabla se puede ver con rapidez que la precisión del conjunto de datos es extremadamente alta, consiguiendo para aquellos casos con mayor cantidad de datos, es decir, el conjunto de datos original y el conjunto de datos con oversampling, que cuentan con una cantidad de filas muy superior al caso de undersampling, una precisión del 100\%. 
+Como se puede observar en la imagen anterior, no hay ningún error a la hora de clasificar un valor como comestible cuando en verdad la seta era venenosa. Esto nos da cierta seguridad con el modelo ya que está trabajando del lado de la seguridad, aunque no sea 100\% exacto. 
 
-Esto nos quiere decir que la cantidad de datos y el tipo de datos que se tienen para entrenar el modelo es un factor clave a la hora de conseguir precisiones altas con el mismo. El hecho de tener más de 4000 datos con 22 componentes categóricas que permitan predecir al modelo si la seta es comestible o venenosa, esto se considera un factor muy a tener en cuenta para explicar las precisiones tan altas que está consiguiendo el modelo.
 
-Para la aplicación de PCA se puede observar como, al disminuir el número de dimensiones que se analizan de 22 a 15 disminuye la exactitud del modelo sutilmente, como se puede observar en los 2 casos con undersampling, pero no solo eso, también es notable un aumento en los tiempos de entrenamiento en relación con los casos donde no se aplica lo que nos lleva a una duda considerable con respecto a los beneficios de su aplicación.
+\subsubsection*{Caso 4: Undersampling + PCA}
+A este conjunto de datos se le aplicó PCA con 15 componentes de nuevo para ver de que manera podía afectar a la precisión, desviación y predicciones del conjunto de datos: 
 
-Por lo tanto, si nos guiásemos unicamente por la tabla resumen, el mejor caso sería para el conjunto de datos original sin PCA. Esta afirmación tiene ciertos matices ya que este modelo podría tener algún tipo de sesgo a la hora de predecir debido al propio conjunto de datos. Esto se debe a que la correlación entre setas venenosas y comestibles no es 50/50 sino que se tienen 1600 casos adicionales de setas comestibles en comparación con las setas venenosas. Es por esto que finalmente se decide que el modelo óptimo es el que se corresponde con el conjunto de datos con oversampling sin PCA aplicando un valor de k=10, ya que se busca priorizar la exactitud del modelo frente a un tiempo de entrenamiento más bajo. Por último, no se muestran las matrices de confusión en estos casos ya que para una precisión de 1.00 no son muy representativas, no hay ningún error que se pueda observar.
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de k} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_KNNs_Caso_4.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Mayores precisiones para el conjunto de datos con undersampling con PCA}\\
+\end{longtable}
+
+En este modelo el mejor caso se obtiene para k=6 donde se consigue una precisión de 98.18\% y una desviación del 0.2\%. Esto nos lleva a la conclusión de que el PCA no nos mejora el caso del \textit{undersampling}, por lo menos si se aplica con 15 componentes, ya que se obtienen resultados menos precisos. Además, también se revisará a continuación la matriz de confusión para volver a asegurar que nuestros errores están del lado de la seguridad.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{matriz_confusion_knn_Caso_4.png}
+	\caption{Matriz de confusión K-NN: undersampling con PCA }
+	\label{Varianza_acumulada}
+\end{figure}
+
+De nuevo, se puede visualizar que  el algoritmo trabaja del lado de la seguridad, no hay ninguna seta venenosa clasificada como comestible, por lo tanto es un conjunto de datos válido. 
+
+\subsubsection*{Caso 5: Oversampling}
+Ahora, se realizará el mismo proceso para el conjunto de datos al que se le ha aplicado \textit{oversampling} y comprobar si, al equilibrar el conjunto de datos, se puede observar alguna variación o dato importante:
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de k} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_KNNs_Caso_5.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Mayores precisiones para el conjunto de datos con oversampling}\\
+\end{longtable}
+
+Donde se puede observar que el mejor caso es para k=5, donde conseguimos una precisión del 99.98\% con un desviación del orden de 0.02\%, se toma el valor de k=5 aunque para k=5 y para k=7 se tienen los mismos resultados de exactitud y desviación. 
+
+\subsubsection*{Caso 6: Oversampling + PCA}
+Por último, Terminaremos analizando y obteniendo las gráficas para el caso de \textit{oversampling con PCA} y posteriormente analizar los resultados obtenidos más en detalle.
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de k} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_KNNs_Caso_6.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Mayores precisiones para el conjunto de datos con oversampling con PCA}\\
+\end{longtable}
+
+Para este último caso, de \textit{oversampling con PCA}, se ha vuelto a obtener una precisión del 99.94\% para el valor de k= 5, donde el conjunto de datos tiene una desviación de 0.08\%  para el mejor caso.
+
+\subsubsection{Conclusiones casos K-NN}
+Para poder ver de una forma más clara los resultados finales obtenidos por cada conjunto de datos y realizar un análisis, se decide realizar una tabla con el mejor caso de cada conjunto de datos para verlos de forma más clara.
+
+\begin{longtable}{|c|c|c|c|}
+	\hline
+	\textbf{Casos de análisis} & \textbf{K} & \textbf{Exactitud} &  \textbf{Tiempo ejecución}\\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_comparativa_KNN.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii & \csvcoliv}
+	\caption{Mejores casos de cada conjunto de datos}\\
+\end{longtable}
+
+
+Observando esta tabla se puede ver con rapidez que la precisión del conjunto de datos es extremadamente alta, consiguiendo para aquellos casos con mayor cantidad de datos, es decir, el conjunto de datos original y el conjunto de datos con \textit{oversampling}, que cuentan con una cantidad de filas muy superior al caso de \textit{undersampling}, una precisión del 100\%. 
+
+Esto nos quiere decir que la cantidad de datos y el tipo de datos que se tienen para entrenar el modelo es un factor clave a la hora de conseguir precisiones altas con el mismo. Ya que se cuenta con más de 4000 datos y 22 componentes categóricas que permiten al modelo predecir y realizar correlaciones entre las distintas componentes para determinar de forma clara si la seta es comestible o venenosa, esto se considera un factor muy a tener en cuenta para explicar las precisiones tan altas que está consiguiendo el modelo.
+
+Para la aplicación de PCA, para el que se consideró un valor de 15 componentes, se puede observar como, al disminuir el número de dimensiones que se analizan de 22 a 15 disminuye la exactitud del modelo sutilmente, como se puede observar en los 2 casos con \textit{undersampling}, pero no solo eso, también es notable un aumento en los tiempos de entrenamiento en relación con los casos donde no se aplica lo que nos lleva a una duda considerable con respecto a los beneficios de su aplicación, ya que no hay ningún punto positivo que poder obtener por su aplicación.
+
+Por lo tanto, si nos guiásemos unicamente por la tabla resumen, el mejor caso sería para el conjunto de datos original. Esta afirmación tiene ciertos matices ya que este modelo podría tener algún tipo de sesgo a la hora de predecir debido al propio conjunto de datos. Esto se debe a que la correlación entre setas venenosas y comestibles no es 50/50 sino que se tienen 1600 casos adicionales de setas comestibles en comparación con las setas venenosas. Es por esto que finalmente se decide que el modelo óptimo es el que se corresponde con el conjunto de datos con \textit{oversampling} aplicando un valor de k=5, ya que se busca priorizar la exactitud del modelo frente a un tiempo de entrenamiento más bajo. Por último, no se muestra la matriz de confusión de este caso ya que para una precisión del 100\% no son muy representativas, no hay ningún error que se pueda visualizar.
 
 \subsection{Algoritmo de clasificación mediante métodos Kernel (SVM)}
 
@@ -590,18 +686,18 @@ En el sexto y último modelo considerado, se ha realizado un balanceo del conjun
 
 Al igual que ocurría con el modelo visto en el \textit{Caso 3}, la exactitud de la predicción no cambia con el valor de C a partir de C = 5, por lo que este es el valor escogido como parámetro del algoritmo.
 
-Como resultado, para dicho valor de C, el modelo tiene una precisión del 93,02\% y una desviación estándar del 0,709\%, obteniéndose para un conjunto de datos determinado la siguiente matriz de confusión:
-
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{matriz_confusion_SVM_Linear_Caso_6.png}
 	\caption{Matriz de confusión para el conjunto de datos con Oversampling y PCA}
 \end{figure}
 
+Como resultado, para dicho valor de C, el modelo tiene una precisión del 93,02\% y una desviación estándar del 0,709\%, obteniéndose para un conjunto de datos determinado la matriz de confusión que se muestra.
+
+
 En dicha matriz de confusión se aprecia que el modelo predice 32 muestras como comestibles cuando no lo son, lo que presenta un defecto significativo en comparación con el resto de modelos analizados.
 
 
-\newpage
 
 \subsubsection{Conclusiones casos SVM}
 Una vez analizados todos los casos planteados, se presenta a continuación una tabla comparativa de la exactitud y de los tiempos de ejecución de la predicción del modelo (en milisegundos), para cada uno de los valores con los que se obtiene un mejor modelo C para cada caso.
@@ -628,16 +724,166 @@ Como el \textit{Caso 1} tiene la mejor precisión y su tiempo de ejecución es l
 Por último, mencionar que el resto de casos tienen el gran defecto de que consideran algunas seta como comestibles cuando estas son venenosas, excepto el \textit{Caso 3}, el cual tiene una precisión muy buena del 98,38\% y su tiempo de ejecución es el menor de todos. Además, para este último caso, se observó en su respectiva matriz de confusión que los fallos de predicción se sitúan del lado de la seguridad, por lo que este constituye también un muy buen modelo de predicción.
 
 
+\section{Conclusiones}
+Tras analizar todos los casos expuestos para los dos algoritmos, se concluye que para el conjunto de datos utilizado en el presente proyecto, el K-NN ofrece una mayor precisión para los distintos casos de análisis y unos menores tiempos de ejecución que el SVM.
+
+Con respecto a cada uno de los análisis, se ha podido observar que para ambos algoritmos, el \textit{Caso 1} es el que ofrece una mejor relación exactidud-tiempo de ejecución. Además, cuando se aplica PCA, en cualquiera de los modelos el tiempo de ejecución se incrementa considerablemente, a pesar de que el conjuntos de datos tiene menos dimensiones. En consecuencia, de esto último, los conjuntos de datos a los que se les aplica PCA, generan modelos menos precisos sobre todo en el caso de que se utilice el algoritmo SVM.
+
+El presente conjunto de datos presenta una gran facilidad para generar modelos de predicción muy precisos. Esto se debe a que todos los valores del conjunto de datos son categóricos y que existe una gran cantidad de muestras. 
+
+Por último, sería conveniente aplicar los modelos generados a un conjunto de datos cuya distribución sea distinta, con el objetivo de verificar que su gran precisión se mantiene, comprobando de esta manera, su robustez.
+\\
+El código de \textit{Python} desarrollado para realizar todos los análisis descritos se encuentra en un repositorio de \textit{Github} \cite{Guithub}.
+
+
 
 	
 	
 	
 	
-	\newpage
+\newpage
 \section{Bibliografía}
 \renewcommand{\NombreDocumento}{Bibliografía}
 \bibliographystyle{plain}
 \bibliography{Referencias}
+
+
+
+
+\newpage
+\section{Anexos}
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de k} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_KNN_Caso_1.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Valores de precisión para el conjunto de datos original para K-NN}\\
+\end{longtable}
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de k} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_KNN_Caso_2.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Valores de precisión para el conjunto de datos original con PCA para K-NN}\\
+\end{longtable}
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de k} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_KNN_Caso_3.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Valores de precisión para el conjunto de datos con undersampling para K-NN}\\
+\end{longtable}
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de k} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_KNN_Caso_4.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Valores de precisión para el conjunto de datos con undersampling con PCA para K-NN}\\
+\end{longtable}
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de k} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_KNN_Caso_5.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Valores de precisión para el conjunto de datos con oversampling para K-NN}\\
+\end{longtable}
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de k} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_KNN_Caso_6.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Valores de precisión para el conjunto de datos con oversampling con PCA para K-NN}\\
+\end{longtable}
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de C} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_SVM_Linear_Caso_1.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Valores de precisión para el conjunto de datos original para SVM linear}\\
+\end{longtable}
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de C} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_SVM_Linear_Caso_2.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Valores de precisión para el conjunto de datos original con PCA para SVM linear}\\
+\end{longtable}
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de C} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_SVM_Linear_Caso_3.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Valores de precisión para el conjunto de datos con undersampling para SVM linear}\\
+\end{longtable}
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de C} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_SVM_Linear_Caso_4.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Valores de precisión para el conjunto de datos con undersampling con PCA para SVM linear}\\
+\end{longtable}
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de C} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_SVM_Linear_Caso_5.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Valores de precisión para el conjunto de datos con oversampling para SVM linear}\\
+\end{longtable}
+
+\begin{longtable}{|c|c|c|}
+	\hline
+	\textbf{Valor de C} & \textbf{Exactitud media} & \textbf{Desviación} \\ \hline
+	\csvreader[
+	separator=comma,
+	late after line=\\ \hline
+	]{tabla_SVM_Linear_Caso_6.csv}{}%
+	{\csvcoli & \csvcolii & \csvcoliii}
+	\caption{Valores de precisión para el conjunto de datos con oversampling con PCA para SVM linear}\\
+\end{longtable}
 	
 \end{document}
 

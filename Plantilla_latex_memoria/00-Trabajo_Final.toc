@@ -13,7 +13,10 @@
 \contentsline {subsection}{\numberline {2.7}Análisis de componentes principales (PCA)}{8}{subsection.0.2.7}%
 \contentsline {section}{\numberline {3}Descripción de las pruebas realizadas}{9}{section.0.3}%
 \contentsline {subsection}{\numberline {3.1}Algoritmo de clasificación por vecindad k-nn}{9}{subsection.0.3.1}%
-\contentsline {subsection}{\numberline {3.2}Algoritmo de clasificación mediante métodos Kernel (SVM)}{11}{subsection.0.3.2}%
-\contentsline {subsubsection}{\numberline {3.2.1}Estudio de los distintos casos}{11}{subsubsection.0.3.2.1}%
-\contentsline {subsubsection}{\numberline {3.2.2}Conclusiones casos SVM}{17}{subsubsection.0.3.2.2}%
-\contentsline {section}{\numberline {4}Bibliografía}{18}{section.0.4}%
+\contentsline {subsubsection}{\numberline {3.1.1}Conclusiones casos K-NN}{13}{subsubsection.0.3.1.1}%
+\contentsline {subsection}{\numberline {3.2}Algoritmo de clasificación mediante métodos Kernel (SVM)}{14}{subsection.0.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Estudio de los distintos casos}{14}{subsubsection.0.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}Conclusiones casos SVM}{20}{subsubsection.0.3.2.2}%
+\contentsline {section}{\numberline {4}Conclusiones}{20}{section.0.4}%
+\contentsline {section}{\numberline {5}Bibliografía}{22}{section.0.5}%
+\contentsline {section}{\numberline {6}Anexos}{23}{section.0.6}%
